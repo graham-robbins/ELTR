@@ -1,0 +1,3 @@
+datetime,price_c,yes_bid_c,yes_ask_c,volume,price_o,price_h,price_l,yes_bid_o,yes_bid_h,yes_bid_l,yes_ask_o,yes_ask_h,yes_ask_l,trade_count,contract_id
+2025-01-03 16:22:00+00:00,1.0,0,1,500,1.0,1.0,1.0,0,0,0,1,1,1,,CLOSESTSTATE-24-GA
+2025-01-06 19:05:00+00:00,,0,1,0,,,,0,0,0,1,1,1,,CLOSESTSTATE-24-GA

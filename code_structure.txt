@@ -1,0 +1,375 @@
+.
+├── .claude
+│   └── settings.local.json
+├── IRP.py
+├── code_structure.txt
+├── config
+│   └── default.yaml
+├── data
+│   └── kalshi
+│       └── kalshi_data_pull_v2
+│           ├── csv_output
+│           │   ├── Culture
+│           │   │   ├── KXRTCAPTAINAMERICA-45.csv
+│           │   │   ├── KXRTCAPTAINAMERICA-50.csv
+│           │   │   ├── KXRTCAPTAINAMERICA-55.csv
+│           │   │   ├── KXRTCAPTAINAMERICA-60.csv
+│           │   │   ├── KXRTMINECRAFT-40.csv
+│           │   │   ├── KXRTMINECRAFT-45.csv
+│           │   │   ├── KXRTMINECRAFT-50.csv
+│           │   │   ├── KXRTMINECRAFT-55.csv
+│           │   │   ├── KXSBADS-25-AP.csv
+│           │   │   ├── KXSBADS-25-B.csv
+│           │   │   ├── KXSBADS-25-CB.csv
+│           │   │   ├── KXSBADS-25-CC.csv
+│           │   │   ├── KXSBADS-25-P.csv
+│           │   │   ├── KXSBADS-25-PR.csv
+│           │   │   ├── KXSBADS-25-SF.csv
+│           │   │   ├── KXSBADS-25-T.csv
+│           │   │   ├── KXSBADS-25-TM.csv
+│           │   │   ├── KXSBADS-25-V.csv
+│           │   │   ├── KXSUPERBOWLHEADLINE-26-ADE.csv
+│           │   │   ├── KXSUPERBOWLHEADLINE-26-BAD.csv
+│           │   │   └── KXSUPERBOWLHEADLINE-26-TAY.csv
+│           │   ├── Economics
+│           │   │   ├── KXAAAGASM-25APR30-3.10.csv
+│           │   │   ├── KXAAAGASM-25APR30-3.15.csv
+│           │   │   ├── KXAAAGASM-25JUL31-3.10.csv
+│           │   │   ├── KXAAAGASM-25JUL31-3.15.csv
+│           │   │   ├── KXAAAGASM-25JUN30-3.20.csv
+│           │   │   ├── KXAAAGASM-25JUN30-3.25.csv
+│           │   │   ├── KXAAAGASM-25JUN30-3.30.csv
+│           │   │   ├── KXAAAGASM-25MAY31-3.10.csv
+│           │   │   ├── KXAAAGASM-25MAY31-3.20.csv
+│           │   │   ├── KXAAAGASM-25MAY31-3.25.csv
+│           │   │   ├── KXCPI-25APR-T0.1.csv
+│           │   │   ├── KXCPI-25APR-T0.2.csv
+│           │   │   ├── KXCPI-25APR-T0.3.csv
+│           │   │   ├── KXCPI-25AUG-T0.2.csv
+│           │   │   ├── KXCPI-25AUG-T0.3.csv
+│           │   │   ├── KXCPI-25JUL-T0.1.csv
+│           │   │   ├── KXCPI-25JUL-T0.2.csv
+│           │   │   ├── KXCPI-25JUL-T0.3.csv
+│           │   │   ├── KXCPI-25JUN-T0.1.csv
+│           │   │   ├── KXCPI-25JUN-T0.2.csv
+│           │   │   ├── KXCPI-25JUN-T0.3.csv
+│           │   │   ├── KXCPI-25MAY-T0.0.csv
+│           │   │   ├── KXCPI-25MAY-T0.1.csv
+│           │   │   ├── KXCPI-25MAY-T0.2.csv
+│           │   │   ├── KXCPI-25SEP-T0.3.csv
+│           │   │   ├── KXFEDDECISION-24DEC-C25.csv
+│           │   │   ├── KXFEDDECISION-24DEC-H0.csv
+│           │   │   ├── KXFEDDECISION-25JAN-C25.csv
+│           │   │   ├── KXFEDDECISION-25JAN-H0.csv
+│           │   │   ├── KXFEDDECISION-25JUL-C25.csv
+│           │   │   ├── KXFEDDECISION-25JUL-C26.csv
+│           │   │   ├── KXFEDDECISION-25JUL-H0.csv
+│           │   │   ├── KXFEDDECISION-25JUN-C25.csv
+│           │   │   ├── KXFEDDECISION-25JUN-C26.csv
+│           │   │   ├── KXFEDDECISION-25JUN-H0.csv
+│           │   │   ├── KXFEDDECISION-25JUN-H25.csv
+│           │   │   ├── KXFEDDECISION-25MAR-C25.csv
+│           │   │   ├── KXFEDDECISION-25MAR-H0.csv
+│           │   │   ├── KXFEDDECISION-25MAY-C25.csv
+│           │   │   ├── KXFEDDECISION-25MAY-C26.csv
+│           │   │   ├── KXFEDDECISION-25MAY-H0.csv
+│           │   │   ├── KXFEDDECISION-25MAY-H25.csv
+│           │   │   ├── KXFEDDECISION-25OCT-C25.csv
+│           │   │   ├── KXFEDDECISION-25OCT-C26.csv
+│           │   │   ├── KXFEDDECISION-25OCT-H0.csv
+│           │   │   ├── KXFEDDECISION-25SEP-C25.csv
+│           │   │   ├── KXFEDDECISION-25SEP-C26.csv
+│           │   │   ├── KXFEDDECISION-25SEP-H0.csv
+│           │   │   └── KXFEDDECISION-25SEP-H25.csv
+│           │   ├── Politics
+│           │   │   ├── CLOSESTSTATE-24-AZ.csv
+│           │   │   ├── CLOSESTSTATE-24-GA.csv
+│           │   │   ├── CLOSESTSTATE-24-MI.csv
+│           │   │   ├── CLOSESTSTATE-24-NV.csv
+│           │   │   ├── CLOSESTSTATE-24-PA.csv
+│           │   │   ├── CLOSESTSTATE-24-WI.csv
+│           │   │   ├── GOVPARTYNJ-25-D.csv
+│           │   │   ├── GOVPARTYNJ-25-R.csv
+│           │   │   ├── HOUSEMOV-24-D-B1-5.csv
+│           │   │   ├── HOUSEMOV-24-D-T16.csv
+│           │   │   ├── HOUSEMOV-24-R-B1-5.csv
+│           │   │   ├── HOUSEMOV-24-R-B11-15.csv
+│           │   │   ├── HOUSEMOV-24-R-B6-10.csv
+│           │   │   ├── HOUSEMOV-24-R-T16.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-A15.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-AI.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-B.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-C.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-D.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-EM.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-I.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-M.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-M3.csv
+│           │   │   ├── KXDJTJOINTSESSION-25MAR04-UKRAINE.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-10D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-15D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-20D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-25D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-30D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-35D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-38D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-39D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-40D.csv
+│           │   │   ├── KXGOVSHUTLENGTH-26JAN01-41D.csv
+│           │   │   ├── KXMAYORNYCPARTY-25-AC.csv
+│           │   │   ├── KXMAYORNYCPARTY-25-D.csv
+│           │   │   ├── KXMAYORNYCPARTY-25-EADA.csv
+│           │   │   ├── KXMAYORNYCPARTY-25-JWAL.csv
+│           │   │   ├── KXMAYORNYCPARTY-25-R.csv
+│           │   │   ├── POPVOTEMOV-24-D-B0.5.csv
+│           │   │   ├── POPVOTEMOV-24-D-B1.5.csv
+│           │   │   ├── POPVOTEMOV-24-D-B2.5.csv
+│           │   │   ├── POPVOTEMOV-24-D-B3.5.csv
+│           │   │   ├── POPVOTEMOV-24-R-B-0.5.csv
+│           │   │   ├── POPVOTEMOV-24-R-B-1.5.csv
+│           │   │   ├── POPVOTEMOV-24-R-B-2.5.csv
+│           │   │   ├── POPVOTEMOV-24-R-B-3.5.csv
+│           │   │   ├── POPVOTEMOV-24-R-B-4.5.csv
+│           │   │   ├── POPVOTEMOV-24-R-T-6.99.csv
+│           │   │   ├── PRES-2024-DJT.csv
+│           │   │   ├── PRES-2024-KH.csv
+│           │   │   └── PRES-2024-RFK.csv
+│           │   ├── Sports
+│           │   │   ├── KXATPMATCH-25NOV04CAZNOR-NOR.csv
+│           │   │   ├── KXATPMATCH-25NOV07KORMUS-MUS.csv
+│           │   │   ├── KXATPMATCH-25NOV07NORSON-NOR.csv
+│           │   │   ├── KXATPMATCH-25NOV08DJOMUS-DJO.csv
+│           │   │   ├── KXATPMATCH-25NOV09ALCDE-ALC.csv
+│           │   │   ├── KXATPMATCH-25NOV10MUSFRI-FRI.csv
+│           │   │   ├── KXATPMATCH-25NOV10SINAUG-AUG.csv
+│           │   │   ├── KXATPMATCH-25NOV10SINAUG-SIN.csv
+│           │   │   ├── KXATPMATCH-25NOV11ALCFRI-ALC.csv
+│           │   │   ├── KXATPMATCH-25NOV11ALCFRI-FRI.csv
+│           │   │   ├── KXATPMATCH-25NOV11MUSDE-DE.csv
+│           │   │   ├── KXATPMATCH-25NOV11MUSDE-MUS.csv
+│           │   │   ├── KXATPMATCH-25OCT28ALCNOR-NOR.csv
+│           │   │   ├── KXATPMATCH-25OCT31MEDZVE-MED.csv
+│           │   │   ├── KXATPMATCH-25OCT31MEDZVE-ZVE.csv
+│           │   │   ├── KXMLBGAME-25OCT01BOSNYY-BOS.csv
+│           │   │   ├── KXMLBGAME-25OCT01BOSNYY-NYY.csv
+│           │   │   ├── KXMLBGAME-25OCT01CINLAD-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT04LADPHI-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT06LADPHI-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT07SEADET-DET.csv
+│           │   │   ├── KXMLBGAME-25OCT07TORNYY-NYY.csv
+│           │   │   ├── KXMLBGAME-25OCT07TORNYY-TOR.csv
+│           │   │   ├── KXMLBGAME-25OCT08MILCHC-MIL.csv
+│           │   │   ├── KXMLBGAME-25OCT08PHILAD-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT08PHILAD-PHI.csv
+│           │   │   ├── KXMLBGAME-25OCT08SEADET-SEA.csv
+│           │   │   ├── KXMLBGAME-25OCT08TORNYY-NYY.csv
+│           │   │   ├── KXMLBGAME-25OCT08TORNYY-TOR.csv
+│           │   │   ├── KXMLBGAME-25OCT09MILCHC-MIL.csv
+│           │   │   ├── KXMLBGAME-25OCT09PHILAD-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT14LADMIL-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT15TORSEA-SEA.csv
+│           │   │   ├── KXMLBGAME-25OCT15TORSEA-TOR.csv
+│           │   │   ├── KXMLBGAME-25OCT24LADTOR-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT25LADTOR-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT27TORLAD-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT27TORLAD-TOR.csv
+│           │   │   ├── KXMLBGAME-25OCT28TORLAD-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT28TORLAD-TOR.csv
+│           │   │   ├── KXMLBGAME-25OCT29TORLAD-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT29TORLAD-TOR.csv
+│           │   │   ├── KXMLBGAME-25OCT31LADTOR-LAD.csv
+│           │   │   ├── KXMLBGAME-25OCT31LADTOR-TOR.csv
+│           │   │   ├── KXMLBGAME-25SEP30BOSNYY-NYY.csv
+│           │   │   ├── KXNBAGAME-25NOV02MIALAL-LAL.csv
+│           │   │   ├── KXNBAGAME-25NOV02MIALAL-MIA.csv
+│           │   │   ├── KXNBAGAME-25NOV02SASPHX-SAS.csv
+│           │   │   ├── KXNBAGAME-25NOV03LALPOR-LAL.csv
+│           │   │   ├── KXNBAGAME-25NOV03MIALAC-LAC.csv
+│           │   │   ├── KXNBAGAME-25NOV03MIALAC-MIA.csv
+│           │   │   ├── KXNBAGAME-25NOV04MILTOR-MIL.csv
+│           │   │   ├── KXNBAGAME-25NOV04OKCLAC-LAC.csv
+│           │   │   ├── KXNBAGAME-25NOV04OKCLAC-OKC.csv
+│           │   │   ├── KXNBAGAME-25NOV05GSWSAC-GSW.csv
+│           │   │   ├── KXNBAGAME-25NOV05OKCPOR-OKC.csv
+│           │   │   ├── KXNBAGAME-25NOV05PHICLE-PHI.csv
+│           │   │   ├── KXNBAGAME-25NOV05SASLAL-LAL.csv
+│           │   │   ├── KXNBAGAME-25NOV05SASLAL-SAS.csv
+│           │   │   ├── KXNBAGAME-25NOV08PHXLAC-PHX.csv
+│           │   │   ├── KXNBAGAME-25NOV10ATLLAC-ATL.csv
+│           │   │   ├── KXNBAGAME-25NOV10ATLLAC-LAC.csv
+│           │   │   ├── KXNBAGAME-25OCT28LACGSW-GSW.csv
+│           │   │   ├── KXNBAGAME-25OCT28LACGSW-LAC.csv
+│           │   │   ├── KXNBAGAME-25OCT29CLEBOS-CLE.csv
+│           │   │   ├── KXNBAGAME-25OCT29LALMIN-LAL.csv
+│           │   │   ├── KXNBAGAME-25OCT29LALMIN-MIN.csv
+│           │   │   ├── KXNBAGAME-25OCT29MEMPHX-MEM.csv
+│           │   │   ├── KXNBAGAME-25OCT30GSWMIL-GSW.csv
+│           │   │   ├── KXNBAGAME-25OCT30GSWMIL-MIL.csv
+│           │   │   ├── KXNBAGAME-25OCT31BOSPHI-BOS.csv
+│           │   │   ├── KXNBAGAME-25OCT31BOSPHI-PHI.csv
+│           │   │   ├── KXNBAGAME-25OCT31DENPOR-DEN.csv
+│           │   │   ├── KXNBAGAME-25OCT31DENPOR-POR.csv
+│           │   │   ├── KXNBAGAME-25OCT31LALMEM-LAL.csv
+│           │   │   ├── KXNCAAFGAME-25NOV01CINUTAH-CIN.csv
+│           │   │   ├── KXNCAAFGAME-25NOV01GTNCST-GT.csv
+│           │   │   ├── KXNCAAFGAME-25NOV01OKLATENN-OKLA.csv
+│           │   │   ├── KXNCAAFGAME-25NOV01OKLATENN-TENN.csv
+│           │   │   ├── KXNCAAFGAME-25NOV01UGAFLA-FLA.csv
+│           │   │   ├── KXNCAAFGAME-25NOV01UGAFLA-UGA.csv
+│           │   │   ├── KXNCAAFGAME-25NOV01VANTEX-VAN.csv
+│           │   │   ├── KXNCAAFGAME-25NOV07HOUUCF-HOU.csv
+│           │   │   ├── KXNCAAFGAME-25NOV07TULNMEM-MEM.csv
+│           │   │   ├── KXNCAAFGAME-25NOV07TULNMEM-TULN.csv
+│           │   │   ├── KXNCAAFGAME-25NOV08AUBVAN-VAN.csv
+│           │   │   ├── KXNCAAFGAME-25NOV08BYUTTU-BYU.csv
+│           │   │   ├── KXNCAAFGAME-25NOV08INDPSU-IND.csv
+│           │   │   ├── KXNCAAFGAME-25NOV08INDPSU-PSU.csv
+│           │   │   ├── KXNCAAFGAME-25NOV08OREIOWA-ORE.csv
+│           │   │   ├── KXNFLGAME-25NOV02KCBUF-KC.csv
+│           │   │   ├── KXNFLGAME-25NOV03ARIDAL-DAL.csv
+│           │   │   ├── KXNFLGAME-25NOV09PITLAC-PIT.csv
+│           │   │   ├── KXNFLGAME-25NOV10PHIGB-GB.csv
+│           │   │   ├── KXNFLGAME-25NOV10PHIGB-PHI.csv
+│           │   │   ├── KXNFLGAME-25OCT02SFLA-LA.csv
+│           │   │   ├── KXNFLGAME-25OCT02SFLA-SF.csv
+│           │   │   ├── KXNFLGAME-25OCT05NEBUF-BUF.csv
+│           │   │   ├── KXNFLGAME-25OCT05NEBUF-NE.csv
+│           │   │   ├── KXNFLGAME-25OCT05TBSEA-TB.csv
+│           │   │   ├── KXNFLGAME-25OCT06KCJAC-JAC.csv
+│           │   │   ├── KXNFLGAME-25OCT06KCJAC-KC.csv
+│           │   │   ├── KXNFLGAME-25OCT09PHINYG-NYG.csv
+│           │   │   ├── KXNFLGAME-25OCT09PHINYG-PHI.csv
+│           │   │   ├── KXNFLGAME-25OCT12CINGB-CIN.csv
+│           │   │   ├── KXNFLGAME-25OCT12DETKC-DET.csv
+│           │   │   ├── KXNFLGAME-25OCT13BUFATL-BUF.csv
+│           │   │   ├── KXNFLGAME-25OCT13CHIWAS-CHI.csv
+│           │   │   ├── KXNFLGAME-25OCT16PITCIN-CIN.csv
+│           │   │   ├── KXNFLGAME-25OCT16PITCIN-PIT.csv
+│           │   │   ├── KXNFLGAME-25OCT19ATLSF-ATL.csv
+│           │   │   ├── KXNFLGAME-25OCT19ATLSF-SF.csv
+│           │   │   ├── KXNFLGAME-25OCT19NYGDEN-NYG.csv
+│           │   │   ├── KXNFLGAME-25OCT20TBDET-TB.csv
+│           │   │   ├── KXNFLGAME-25OCT26GBPIT-GB.csv
+│           │   │   ├── KXNFLGAME-25OCT26GBPIT-PIT.csv
+│           │   │   ├── KXNFLGAME-25SEP28GBDAL-DAL.csv
+│           │   │   ├── KXNFLGAME-25SEP28GBDAL-GB.csv
+│           │   │   ├── KXNFLGAME-25SEP28LACNYG-LAC.csv
+│           │   │   └── KXNFLGAME-25SEP29NYJMIA-NYJ.csv
+│           │   └── Weather
+│           │       ├── KXHIGHLAX-25NOV03-B70.5.csv
+│           │       ├── KXHIGHLAX-25OCT10-B74.5.csv
+│           │       ├── KXHIGHLAX-25OCT14-T64.csv
+│           │       ├── KXHIGHLAX-25OCT17-B74.5.csv
+│           │       ├── KXHIGHLAX-25OCT19-T78.csv
+│           │       ├── KXHIGHMIA-25NOV07-B86.5.csv
+│           │       ├── KXHIGHMIA-25NOV10-B85.5.csv
+│           │       ├── KXHIGHMIA-25OCT21-B88.5.csv
+│           │       ├── KXHIGHMIA-25OCT24-B85.5.csv
+│           │       ├── KXHIGHMIA-25OCT26-B84.5.csv
+│           │       ├── KXHIGHNY-25NOV06-B53.5.csv
+│           │       ├── KXHIGHNY-25OCT12-B61.5.csv
+│           │       ├── KXHIGHNY-25OCT13-T58.csv
+│           │       ├── KXHIGHNY-25OCT15-B65.5.csv
+│           │       ├── KXHIGHNY-25OCT17-B61.5.csv
+│           │       ├── KXHIGHNY-25OCT20-B68.5.csv
+│           │       ├── KXHIGHNY-25OCT20-T64.csv
+│           │       ├── KXHIGHNY-25OCT28-T54.csv
+│           │       ├── KXHIGHNY-25OCT29-B54.5.csv
+│           │       ├── KXHIGHNY-25OCT31-T58.csv
+│           │       ├── KXHMONTH-24DEC.csv
+│           │       ├── KXHMONTH-24NOV.csv
+│           │       ├── KXHMONTH-25FEB.csv
+│           │       ├── KXHMONTH-25JAN.csv
+│           │       ├── KXHMONTH-25JUL.csv
+│           │       ├── KXRAINNYC-25AUG21-T0.csv
+│           │       ├── KXRAINNYC-25JUL13-T0.csv
+│           │       ├── KXRAINNYC-25JUN28-T0.csv
+│           │       ├── KXRAINNYC-25OCT20-T0.csv
+│           │       └── KXRAINNYC-25OCT22-T0.csv
+│           ├── metadata.csv
+│           ├── schema_mapping.json
+│           └── zipped_data
+│               ├── culture.zip
+│               ├── economics.zip
+│               ├── politics.zip
+│               ├── sports.zip
+│               └── weather.zip
+├── final_tables
+│   ├── category_summary.csv
+│   ├── contract_summary.csv
+│   ├── lifecycle_metrics.csv
+│   └── regime_transitions.csv
+├── logs
+│   └── irp.log
+├── notebooks
+├── output
+│   ├── all_categories
+│   │   ├── figures
+│   │   │   ├── category_fingerprints.png
+│   │   │   ├── category_volume_comparison.png
+│   │   │   ├── liquidity_heatmap.png
+│   │   │   ├── liquidity_trajectory.png
+│   │   │   ├── regime_occupancy.png
+│   │   │   ├── regime_transitions.png
+│   │   │   ├── spread_tightening_curve.png
+│   │   │   ├── stacked_volume.png
+│   │   │   └── volatility_burst_map.png
+│   │   └── tables
+│   │       ├── category_summary_extended.csv
+│   │       ├── contract_summary.csv
+│   │       ├── contract_summary_extended.csv
+│   │       ├── lifecycle_binned_metrics.csv
+│   │       └── microstructure_summary.csv
+│   ├── figures
+│   │   ├── category_fingerprints.png
+│   │   ├── category_volume_comparison.png
+│   │   ├── liquidity_trajectory.png
+│   │   ├── regime_occupancy.png
+│   │   ├── regime_transitions.png
+│   │   ├── spread_tightening_curve.png
+│   │   ├── stacked_volume.png
+│   │   └── volatility_burst_map.png
+│   ├── reports
+│   └── tables
+│       ├── category_summary_extended.csv
+│       ├── cleaning_stats.csv
+│       ├── contract_summary.csv
+│       ├── contract_summary_extended.csv
+│       ├── lifecycle_binned_metrics.csv
+│       ├── microstructure_summary.csv
+│       └── regime_transitions.csv
+├── src
+│   ├── __init__.py
+│   ├── clean
+│   │   ├── __init__.py
+│   │   └── cleaner.py
+│   ├── features
+│   │   ├── __init__.py
+│   │   └── feature_engineering.py
+│   ├── ingest
+│   │   ├── __init__.py
+│   │   └── kalshi_loader.py
+│   ├── microstructure
+│   │   ├── __init__.py
+│   │   ├── analysis.py
+│   │   └── event_alignment.py
+│   ├── models
+│   │   └── __init__.py
+│   ├── plots
+│   │   ├── __init__.py
+│   │   └── plotting.py
+│   └── utils
+│       ├── __init__.py
+│       ├── config.py
+│       ├── export.py
+│       ├── logging.py
+│       ├── normalization.py
+│       ├── time_binning.py
+│       └── types.py
+└── tests
+    ├── __init__.py
+    ├── test_clean.py
+    ├── test_features.py
+    └── test_ingest.py
+
+32 directories, 341 files

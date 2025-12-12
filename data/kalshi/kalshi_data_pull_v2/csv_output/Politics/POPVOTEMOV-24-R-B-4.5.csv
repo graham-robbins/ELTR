@@ -1,0 +1,2 @@
+datetime,price_c,yes_bid_c,yes_ask_c,volume,price_o,price_h,price_l,yes_bid_o,yes_bid_h,yes_bid_l,yes_ask_o,yes_ask_h,yes_ask_l,trade_count,contract_id
+2025-01-06 19:00:00+00:00,,0,1,0,,,,0,0,0,1,1,1,,POPVOTEMOV-24-R-B-4.5

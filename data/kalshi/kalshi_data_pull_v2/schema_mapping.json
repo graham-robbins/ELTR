@@ -1,0 +1,34 @@
+{
+  "metadata_csv": {
+    "contract_id": "Unique Kalshi market ticker (from input CSV)",
+    "pm_category": "Our internal project category (from input CSV)",
+    "event_ticker": "Ticker for the parent event (from API)",
+    "title": "Human-readable market title (from API)",
+    "category": "Kalshi's API category for the market (from API)",
+    "status": "Market status (e.g., 'open', 'settled') (from API)",
+    "start_date": "Market open time (UTC) (from API)",
+    "end_date": "Market expiration time (UTC) (from API)",
+    "volume": "Total contracts traded (snapshot at time of pull) (from API)",
+    "open_interest": "Total open contracts (snapshot at time of pull) (from API)",
+    "last_price": "Last traded price (snapshot at time of pull) (from API)",
+    "resolution_rule": "The primary rule text for market settlement (from API)"
+  },
+  "timeseries_csv": {
+    "datetime": "End of the 1-minute period (UTC)",
+    "price_c": "Closing trade price (This is the 'last_price' for the interval)",
+    "yes_bid_c": "Closing 'Yes' bid price",
+    "yes_ask_c": "Closing 'Yes' ask price",
+    "volume": "Total contracts traded in the 1-min interval",
+    "price_o": "Opening trade price",
+    "price_h": "Highest trade price",
+    "price_l": "Lowest trade price",
+    "yes_bid_o": "Opening 'Yes' bid price",
+    "yes_bid_h": "Highest 'Yes' bid price",
+    "yes_bid_l": "Lowest 'Yes' bid price",
+    "yes_ask_o": "Opening 'Yes' ask price",
+    "yes_ask_h": "Highest 'Yes' ask price",
+    "yes_ask_l": "Lowest 'Yes' ask price",
+    "trade_count": "Number of distinct trades in the 1-min interval",
+    "contract_id": "Market ticker (links to metadata.csv)"
+  }
+}

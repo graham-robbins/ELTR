@@ -1,0 +1,940 @@
+2025-12-05 00:43:51,435 - irp.main - INFO - Initializing research pipeline
+2025-12-05 00:43:51,436 - irp.pipeline - INFO - ============================================================
+2025-12-05 00:43:51,436 - irp.pipeline - INFO - KALSHI PREDICTION MARKET RESEARCH PIPELINE
+2025-12-05 00:43:51,436 - irp.pipeline - INFO - ============================================================
+2025-12-05 00:43:51,436 - irp.pipeline - INFO - [INGESTION] Starting...
+2025-12-05 00:43:51,436 - irp.pipeline.ingestion - INFO - Starting data ingestion
+2025-12-05 00:43:51,437 - irp.ingest - INFO - Loading contracts from data/kalshi/kalshi_data_pull_v2/csv_output
+2025-12-05 00:43:51,437 - irp.ingest - INFO - Categories: ['Sports']
+2025-12-05 00:43:51,456 - irp.ingest - INFO - Found 120 CSV files in Sports
+2025-12-05 00:43:53,481 - irp.ingest - INFO - Loaded 120 contracts
+2025-12-05 00:43:53,481 - irp.pipeline.ingestion - INFO - Ingested 120 contracts
+2025-12-05 00:43:53,481 - irp.pipeline - INFO - [INGESTION] Complete
+2025-12-05 00:43:53,481 - irp.pipeline - INFO - [CLEANING] Starting...
+2025-12-05 00:43:53,481 - irp.pipeline.cleaning - INFO - Starting data cleaning
+2025-12-05 00:43:53,481 - irp.clean - INFO - Cleaning 120 contracts
+2025-12-05 00:43:53,764 - irp.clean - INFO - Cleaned dataset: 120 contracts (dropped 0)
+2025-12-05 00:43:53,764 - irp.pipeline.cleaning - INFO - Cleaned 120 contracts
+2025-12-05 00:43:53,767 - irp.pipeline - INFO - [CLEANING] Complete
+2025-12-05 00:43:53,767 - irp.pipeline - INFO - [FEATURES] Starting...
+2025-12-05 00:43:53,767 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 00:43:53,767 - irp.features - INFO - Engineering features for 120 contracts
+2025-12-05 00:44:11,326 - irp.features - INFO - Feature engineering complete
+2025-12-05 00:44:11,328 - irp.pipeline.features - INFO - Engineered features for 120 contracts
+2025-12-05 00:44:11,335 - irp.pipeline - INFO - [FEATURES] Complete
+2025-12-05 00:44:11,335 - irp.pipeline - INFO - [MICROSTRUCTURE] Starting...
+2025-12-05 00:44:11,335 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 00:44:11,335 - irp.microstructure - INFO - Analyzing microstructure for 120 contracts
+2025-12-05 00:44:36,712 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 00:44:36,712 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 120 contracts
+2025-12-05 00:44:36,712 - irp.pipeline - INFO - [MICROSTRUCTURE] Complete
+2025-12-05 00:44:36,712 - irp.pipeline - INFO - [VISUALIZATION] Starting...
+2025-12-05 00:44:36,712 - irp.pipeline.visualization - INFO - Starting visualization generation
+2025-12-05 00:44:36,712 - irp.plots - INFO - Generating dataset plots for 120 contracts
+2025-12-05 00:44:37,454 - irp.plots - INFO - Saved figure: output/figures/category_volume_comparison.png
+2025-12-05 00:44:37,633 - irp.plots - INFO - Saved figure: output/figures/stacked_volume.png
+2025-12-05 00:44:38,073 - irp.plots - INFO - Saved figure: output/figures/liquidity_heatmap.png
+2025-12-05 00:44:38,073 - irp.plots - INFO - Generated 3 dataset figures
+2025-12-05 00:44:38,073 - irp.pipeline.visualization - INFO - Generated 3 figures
+2025-12-05 00:44:38,073 - irp.pipeline - INFO - [VISUALIZATION] Complete
+2025-12-05 00:44:38,073 - irp.pipeline - INFO - [EXPORT] Starting...
+2025-12-05 00:44:38,073 - irp.pipeline.export - INFO - Starting data export
+2025-12-05 00:44:38,089 - irp.pipeline.export - INFO - Exported 3 files
+2025-12-05 00:44:38,089 - irp.pipeline - INFO - [EXPORT] Complete
+2025-12-05 00:44:38,089 - irp.pipeline - INFO - ============================================================
+2025-12-05 00:44:38,089 - irp.pipeline - INFO - Pipeline completed in 46.65s
+2025-12-05 00:44:38,089 - irp.pipeline - INFO - ============================================================
+2025-12-05 00:44:38,090 - irp.main - INFO - Pipeline completed successfully
+2025-12-05 01:44:51,054 - irp.main - INFO - Initializing research pipeline
+2025-12-05 01:44:51,055 - irp.pipeline - INFO - ============================================================
+2025-12-05 01:44:51,055 - irp.pipeline - INFO - KALSHI PREDICTION MARKET RESEARCH PIPELINE
+2025-12-05 01:44:51,055 - irp.pipeline - INFO - ============================================================
+2025-12-05 01:44:51,055 - irp.pipeline - INFO - [INGESTION] Starting...
+2025-12-05 01:44:51,055 - irp.pipeline.ingestion - INFO - Starting data ingestion
+2025-12-05 01:44:51,056 - irp.ingest - INFO - Loading contracts from data/kalshi/kalshi_data_pull_v2/csv_output
+2025-12-05 01:44:51,056 - irp.ingest - INFO - Categories: ['Sports', 'Politics', 'Economics', 'Weather', 'Culture']
+2025-12-05 01:44:51,097 - irp.ingest - INFO - Found 120 CSV files in Sports
+2025-12-05 01:44:51,116 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT09PHINYG-NYG.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,142 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV01CINUTAH-CIN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,172 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV01OKLATENN-TENN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,182 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT09MILCHC-MIL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,203 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25SEP28GBDAL-DAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,212 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV07TULNMEM-TULN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,233 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT02SFLA-LA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,240 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV04CAZNOR-NOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,258 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT09PHINYG-PHI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,267 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV08DJOMUS-DJO.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,272 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT31LALMEM-LAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,284 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV05PHICLE-PHI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,299 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT08PHILAD-PHI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,308 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT08SEADET-SEA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,323 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT08PHILAD-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,348 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT19ATLSF-ATL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,362 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV01GTNCST-GT.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,374 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT29TORLAD-TOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,395 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25NOV10PHIGB-GB.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,402 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT08TORNYY-NYY.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,414 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV10ATLLAC-ATL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,428 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT06KCJAC-KC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,442 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV03MIALAC-MIA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,453 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV03LALPOR-LAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,475 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25NOV02KCBUF-KC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,486 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV08BYUTTU-BYU.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,508 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25SEP28LACNYG-LAC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,516 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25OCT31MEDZVE-ZVE.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,533 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT25LADTOR-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,544 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT05TBSEA-TB.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,564 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV08INDPSU-IND.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,576 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV02MIALAL-LAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,581 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT08TORNYY-TOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,593 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT06LADPHI-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,617 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT06KCJAC-JAC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,625 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT28TORLAD-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,631 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV11ALCFRI-ALC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,640 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV10SINAUG-AUG.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,658 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25SEP29NYJMIA-NYJ.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,674 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT27TORLAD-TOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,698 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT26GBPIT-GB.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,711 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT31BOSPHI-PHI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,716 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT31BOSPHI-BOS.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,737 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV07TULNMEM-MEM.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,749 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV05SASLAL-LAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,761 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT30GSWMIL-GSW.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,775 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT07SEADET-DET.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,789 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV08PHXLAC-PHX.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,815 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV01OKLATENN-OKLA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,828 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV02MIALAL-MIA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,845 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT02SFLA-SF.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,864 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV08AUBVAN-VAN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,876 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT29LALMIN-MIN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,883 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT01BOSNYY-NYY.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,891 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV07NORSON-NOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,906 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT31LADTOR-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,928 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV01UGAFLA-FLA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,961 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT28LACGSW-GSW.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,974 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV10ATLLAC-LAC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:51,992 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV08OREIOWA-ORE.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,025 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25NOV03ARIDAL-DAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,031 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV11ALCFRI-FRI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,043 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT28LACGSW-LAC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,062 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT05NEBUF-BUF.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,069 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV10MUSFRI-FRI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,073 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT31DENPOR-POR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,084 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT04LADPHI-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,087 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV11MUSDE-MUS.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,095 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV11MUSDE-DE.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,118 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT20TBDET-TB.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,132 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT15TORSEA-SEA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,138 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV09ALCDE-ALC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,152 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT15TORSEA-TOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,157 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT30GSWMIL-MIL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,179 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT26GBPIT-PIT.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,192 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV04OKCLAC-OKC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,201 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT01BOSNYY-BOS.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,213 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT31DENPOR-DEN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,227 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT07TORNYY-NYY.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,238 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV04OKCLAC-LAC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,249 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT29LALMIN-LAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,261 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV05SASLAL-SAS.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,282 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT24LADTOR-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,295 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25NOV09PITLAC-PIT.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,300 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT14LADMIL-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,305 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT29CLEBOS-CLE.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,311 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25SEP30BOSNYY-NYY.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,322 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT12DETKC-DET.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,339 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT19ATLSF-SF.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,356 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT05NEBUF-NE.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,371 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV02SASPHX-SAS.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,380 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV10SINAUG-SIN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,394 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT29TORLAD-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,417 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT12CINGB-CIN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,430 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT13BUFATL-BUF.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,447 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT16PITCIN-CIN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,455 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25NOV07KORMUS-MUS.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,486 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV01UGAFLA-UGA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,491 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25OCT29MEMPHX-MEM.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,508 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT28TORLAD-TOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,536 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV01VANTEX-VAN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,555 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT27TORLAD-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,560 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT09PHILAD-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,564 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV05GSWSAC-GSW.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,578 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT07TORNYY-TOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,598 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25SEP28GBDAL-GB.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,605 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25OCT28ALCNOR-NOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,625 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT13CHIWAS-CHI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,650 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25NOV10PHIGB-PHI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,659 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXATPMATCH-25OCT31MEDZVE-MED.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,668 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV07HOUUCF-HOU.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,701 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT08MILCHC-MIL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,714 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT01CINLAD-LAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,730 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXMLBGAME-25OCT31LADTOR-TOR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,748 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNCAAFGAME-25NOV08INDPSU-PSU.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,771 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT19NYGDEN-NYG.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,781 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV03MIALAC-LAC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,799 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNFLGAME-25OCT16PITCIN-PIT.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,812 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV05OKCPOR-OKC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,818 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Sports/KXNBAGAME-25NOV04MILTOR-MIL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,818 - irp.ingest - INFO - Found 52 CSV files in Politics
+2025-12-05 01:44:52,977 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXMAYORNYCPARTY-25-D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:52,982 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/CLOSESTSTATE-24-MI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,007 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-38D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,066 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXMAYORNYCPARTY-25-R.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,070 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/HOUSEMOV-24-R-T16.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,143 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-35D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,177 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXMAYORNYCPARTY-25-JWAL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,180 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/CLOSESTSTATE-24-AZ.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,205 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-39D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,213 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-A15.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,244 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-15D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,246 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-R-T-6.99.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,248 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/CLOSESTSTATE-24-NV.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,262 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-C.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,280 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-B.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,284 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/CLOSESTSTATE-24-PA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,377 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXMAYORNYCPARTY-25-AC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,381 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/HOUSEMOV-24-D-B1-5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,445 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/GOVPARTYNJ-25-D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,517 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/GOVPARTYNJ-25-R.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,521 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/HOUSEMOV-24-R-B6-10.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,532 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,568 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-25D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,571 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/HOUSEMOV-24-D-T16.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,628 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXMAYORNYCPARTY-25-EADA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,639 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-AI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,641 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-D-B0.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,684 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-30D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,687 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/CLOSESTSTATE-24-GA.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,694 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-I.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,726 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-10D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,738 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-M3.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,740 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-D-B2.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,742 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-R-B-3.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,744 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/PRES-2024-RFK.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,749 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-M.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,753 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-R-B-1.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,758 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-UKRAINE.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,789 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-41D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,792 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-D-B3.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,797 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/HOUSEMOV-24-R-B1-5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,828 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-20D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,831 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-D-B1.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,833 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/HOUSEMOV-24-R-B11-15.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,850 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXDJTJOINTSESSION-25MAR04-EM.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,852 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-R-B-4.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,880 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/PRES-2024-DJT.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,883 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-R-B-0.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,885 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/CLOSESTSTATE-24-WI.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,890 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/PRES-2024-KH.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,948 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/KXGOVSHUTLENGTH-26JAN01-40D.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,951 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Politics/POPVOTEMOV-24-R-B-2.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:53,952 - irp.ingest - INFO - Found 49 CSV files in Economics
+2025-12-05 01:44:54,005 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JUN-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,067 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JUN-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,094 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25AUG-T0.3.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,119 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25AUG-T0.2.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,149 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JUN-C26.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,179 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25MAY31-3.25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,189 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JAN-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,231 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25MAY-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,270 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25MAY31-3.20.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,280 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JAN-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,333 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JUL-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,341 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25MAR-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,365 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25MAY-C26.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,397 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25JUN30-3.30.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,437 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25JUN30-3.25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,446 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-24DEC-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,460 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25SEP-H25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,469 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25MAR-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,492 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25JUN-T0.1.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,549 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JUL-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,595 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25JUN-T0.2.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,637 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25JUN30-3.20.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,675 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JUL-C26.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,699 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25JUN-T0.3.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,706 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25JUN-H25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,731 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25APR30-3.15.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,742 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25MAY-H25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,764 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25APR30-3.10.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,836 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25OCT-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,860 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25JUL-T0.2.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,884 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25APR-T0.1.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,917 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25JUL31-3.10.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,938 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25MAY-T0.0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:54,996 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25SEP-C26.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,067 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25OCT-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,090 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25MAY-T0.1.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,112 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25JUL-T0.3.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,136 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25JUL-T0.1.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,157 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25APR-T0.2.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,225 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25SEP-C25.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,275 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25OCT-C26.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,318 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25SEP-T0.3.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,339 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25MAY-T0.2.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,364 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXCPI-25APR-T0.3.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,397 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25MAY31-3.10.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,404 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-24DEC-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,438 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXAAAGASM-25JUL31-3.15.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,480 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25MAY-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,555 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Economics/KXFEDDECISION-25SEP-H0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,556 - irp.ingest - INFO - Found 30 CSV files in Weather
+2025-12-05 01:44:55,564 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHMIA-25OCT24-B85.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,573 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT13-T58.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,582 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT15-B65.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,587 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXRAINNYC-25AUG21-T0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,593 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHMONTH-25FEB.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,601 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHMIA-25NOV10-B85.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,604 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT28-T54.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,606 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHMONTH-24NOV.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,611 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT12-B61.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,620 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHMIA-25OCT21-B88.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,631 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT29-B54.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,634 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXRAINNYC-25JUN28-T0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,640 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHLAX-25NOV03-B70.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,649 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25NOV06-B53.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,679 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHMONTH-25JUL.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,684 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXRAINNYC-25JUL13-T0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,695 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHMONTH-25JAN.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,700 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT17-B61.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,720 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHLAX-25OCT10-B74.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,729 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHMIA-25NOV07-B86.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,738 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT20-B68.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,744 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHMONTH-24DEC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,752 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHLAX-25OCT17-B74.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,758 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXRAINNYC-25OCT22-T0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,765 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHLAX-25OCT14-T64.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,769 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHLAX-25OCT19-T78.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,776 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHMIA-25OCT26-B84.5.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,785 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT31-T58.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,794 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXHIGHNY-25OCT20-T64.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,799 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Weather/KXRAINNYC-25OCT20-T0.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,799 - irp.ingest - INFO - Found 21 CSV files in Culture
+2025-12-05 01:44:55,823 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSUPERBOWLHEADLINE-26-BAD.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,845 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTCAPTAINAMERICA-50.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,857 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTCAPTAINAMERICA-45.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,866 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTCAPTAINAMERICA-55.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,881 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-PR.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,905 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-P.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,925 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTMINECRAFT-45.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,951 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTMINECRAFT-50.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,973 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-CC.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:55,985 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-CB.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,013 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-V.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,058 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSUPERBOWLHEADLINE-26-TAY.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,070 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-B.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,093 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTMINECRAFT-40.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,118 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTMINECRAFT-55.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,136 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-TM.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,152 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-T.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,172 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-AP.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,193 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSBADS-25-SF.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,203 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXRTCAPTAINAMERICA-60.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,219 - irp.ingest - ERROR - Failed to load data/kalshi/kalshi_data_pull_v2/csv_output/Culture/KXSUPERBOWLHEADLINE-26-ADE.csv: 'Series' object has no attribute 'tz'
+2025-12-05 01:44:56,220 - irp.ingest - INFO - Loaded 0 contracts
+2025-12-05 01:44:56,220 - irp.pipeline.ingestion - INFO - Ingested 0 contracts
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [INGESTION] Complete
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [CLEANING] Starting...
+2025-12-05 01:44:56,220 - irp.pipeline.cleaning - INFO - Starting data cleaning
+2025-12-05 01:44:56,220 - irp.clean - INFO - Cleaning 0 contracts
+2025-12-05 01:44:56,220 - irp.clean - INFO - Cleaned dataset: 0 contracts (dropped 0)
+2025-12-05 01:44:56,220 - irp.pipeline.cleaning - INFO - Cleaned 0 contracts
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [CLEANING] Complete
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [FEATURES] Starting...
+2025-12-05 01:44:56,220 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 01:44:56,220 - irp.features - INFO - Engineering features for 0 contracts
+2025-12-05 01:44:56,220 - irp.features - INFO - Feature engineering complete
+2025-12-05 01:44:56,220 - irp.pipeline.features - INFO - Engineered features for 0 contracts
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [FEATURES] Complete
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [MICROSTRUCTURE] Starting...
+2025-12-05 01:44:56,220 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 01:44:56,220 - irp.microstructure - INFO - Analyzing microstructure for 0 contracts
+2025-12-05 01:44:56,220 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 01:44:56,220 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 0 contracts
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [MICROSTRUCTURE] Complete
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [EVENT_TRAJECTORIES] Starting...
+2025-12-05 01:44:56,220 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 01:44:56,220 - irp.event_alignment - INFO - Aligning 0 contracts to event time
+2025-12-05 01:44:56,220 - irp.event_alignment - INFO - Successfully aligned 0 contracts
+2025-12-05 01:44:56,220 - irp.event_alignment - INFO - Aligning 0 contracts to event time
+2025-12-05 01:44:56,220 - irp.event_alignment - INFO - Successfully aligned 0 contracts
+2025-12-05 01:44:56,220 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 0 metrics
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [EVENT_TRAJECTORIES] Complete
+2025-12-05 01:44:56,220 - irp.pipeline - INFO - [VISUALIZATION] Starting...
+2025-12-05 01:44:56,220 - irp.pipeline.visualization - INFO - Starting visualization generation
+2025-12-05 01:44:56,220 - irp.plots - INFO - Generating dataset plots for 0 contracts
+2025-12-05 01:44:56,538 - irp.plots - INFO - Saved figure: output/all_categories/figures/category_volume_comparison.png
+2025-12-05 01:44:56,593 - irp.plots - INFO - Saved figure: output/all_categories/figures/stacked_volume.png
+2025-12-05 01:44:56,634 - irp.plots - INFO - Saved figure: output/all_categories/figures/liquidity_heatmap.png
+2025-12-05 01:44:56,634 - irp.plots - INFO - Generating research plots...
+2025-12-05 01:44:56,721 - irp.plots - INFO - Saved figure: output/all_categories/figures/spread_tightening_curve.png
+2025-12-05 01:44:56,873 - irp.plots - INFO - Saved figure: output/all_categories/figures/liquidity_trajectory.png
+2025-12-05 01:44:56,911 - irp.plots - INFO - Saved figure: output/all_categories/figures/volatility_burst_map.png
+2025-12-05 01:44:56,948 - irp.plots - INFO - Saved figure: output/all_categories/figures/regime_occupancy.png
+2025-12-05 01:44:56,986 - irp.plots - INFO - Saved figure: output/all_categories/figures/regime_transitions.png
+2025-12-05 01:44:57,024 - irp.plots - INFO - Saved figure: output/all_categories/figures/category_fingerprints.png
+2025-12-05 01:44:57,024 - irp.plots - INFO - Generated 9 dataset figures
+2025-12-05 01:44:57,024 - irp.pipeline.visualization - INFO - Generated 9 figures
+2025-12-05 01:44:57,024 - irp.pipeline - INFO - [VISUALIZATION] Complete
+2025-12-05 01:44:57,024 - irp.pipeline - INFO - [EXPORT] Starting...
+2025-12-05 01:44:57,024 - irp.pipeline.export - INFO - Starting data export
+2025-12-05 01:44:57,026 - irp.pipeline.export - INFO - Exporting extended metrics...
+2025-12-05 01:44:57,026 - irp.export - INFO - Exporting all metrics...
+2025-12-05 01:44:57,026 - irp.export - INFO - Computing contract metrics for 0 contracts
+2025-12-05 01:44:57,026 - irp.export - INFO - Exported contract summary to output/all_categories/tables/contract_summary_extended.csv
+2025-12-05 01:44:57,026 - irp.export - INFO - Computing category metrics
+2025-12-05 01:44:57,026 - irp.export - INFO - Exported category summary to output/all_categories/tables/category_summary_extended.csv
+2025-12-05 01:44:57,026 - irp.export - INFO - Computing lifecycle-binned metrics with 50 bins
+2025-12-05 01:44:57,027 - irp.export - INFO - Exported lifecycle metrics to output/all_categories/tables/lifecycle_binned_metrics.csv
+2025-12-05 01:44:57,027 - irp.export - INFO - Computing regime transition matrix
+2025-12-05 01:44:57,027 - irp.export - INFO - Exported 4 metric files to output/all_categories/tables
+2025-12-05 01:44:57,027 - irp.pipeline.export - INFO - Exported 5 files
+2025-12-05 01:44:57,027 - irp.pipeline - INFO - [EXPORT] Complete
+2025-12-05 01:44:57,027 - irp.pipeline - INFO - ============================================================
+2025-12-05 01:44:57,027 - irp.pipeline - INFO - Pipeline completed in 5.97s
+2025-12-05 01:44:57,027 - irp.pipeline - INFO - ============================================================
+2025-12-05 01:44:57,027 - irp.main - ERROR - Pipeline failed: 'avg_spread'
+2025-12-05 01:48:51,638 - irp.main - INFO - Initializing research pipeline
+2025-12-05 01:48:51,638 - irp.pipeline - INFO - ============================================================
+2025-12-05 01:48:51,638 - irp.pipeline - INFO - KALSHI PREDICTION MARKET RESEARCH PIPELINE
+2025-12-05 01:48:51,639 - irp.pipeline - INFO - ============================================================
+2025-12-05 01:48:51,639 - irp.pipeline - INFO - [INGESTION] Starting...
+2025-12-05 01:48:51,639 - irp.pipeline.ingestion - INFO - Starting data ingestion
+2025-12-05 01:48:51,639 - irp.ingest - INFO - Loading contracts from data/kalshi/kalshi_data_pull_v2/csv_output
+2025-12-05 01:48:51,639 - irp.ingest - INFO - Categories: ['Sports', 'Politics', 'Economics', 'Weather', 'Culture']
+2025-12-05 01:48:51,656 - irp.ingest - INFO - Found 120 CSV files in Sports
+2025-12-05 01:48:52,982 - irp.ingest - INFO - Found 52 CSV files in Politics
+2025-12-05 01:48:53,996 - irp.ingest - INFO - Found 49 CSV files in Economics
+2025-12-05 01:48:55,142 - irp.ingest - INFO - Found 30 CSV files in Weather
+2025-12-05 01:48:55,296 - irp.ingest - INFO - Found 21 CSV files in Culture
+2025-12-05 01:48:55,522 - irp.ingest - INFO - Loaded 254 contracts
+2025-12-05 01:48:55,522 - irp.pipeline.ingestion - INFO - Ingested 254 contracts
+2025-12-05 01:48:55,522 - irp.pipeline - INFO - [INGESTION] Complete
+2025-12-05 01:48:55,522 - irp.pipeline - INFO - [CLEANING] Starting...
+2025-12-05 01:48:55,522 - irp.pipeline.cleaning - INFO - Starting data cleaning
+2025-12-05 01:48:55,522 - irp.clean - INFO - Cleaning 254 contracts
+2025-12-05 01:48:56,350 - irp.clean - INFO - Cleaned dataset: 254 contracts (dropped 0)
+2025-12-05 01:48:56,350 - irp.pipeline.cleaning - INFO - Cleaned 254 contracts
+2025-12-05 01:48:56,359 - irp.pipeline - INFO - [CLEANING] Complete
+2025-12-05 01:48:56,359 - irp.pipeline - INFO - [FEATURES] Starting...
+2025-12-05 01:48:56,359 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 01:48:56,359 - irp.features - INFO - Engineering features for 254 contracts
+2025-12-05 01:53:15,840 - irp.features - INFO - Feature engineering complete
+2025-12-05 01:53:15,845 - irp.pipeline.features - INFO - Engineered features for 254 contracts
+2025-12-05 01:53:15,910 - irp.pipeline - INFO - [FEATURES] Complete
+2025-12-05 01:53:15,910 - irp.pipeline - INFO - [MICROSTRUCTURE] Starting...
+2025-12-05 01:53:15,910 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 01:53:15,910 - irp.microstructure - INFO - Analyzing microstructure for 254 contracts
+2025-12-05 02:10:25,343 - irp.main - INFO - Initializing batched research pipeline
+2025-12-05 02:10:25,343 - irp.main - INFO - Batch size: 20
+2025-12-05 02:10:25,343 - irp.main - INFO - Max contracts: 40
+2025-12-05 02:10:25,347 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:10:25,347 - irp.pipeline.batched - INFO - KALSHI PREDICTION MARKET RESEARCH PIPELINE (BATCHED)
+2025-12-05 02:10:25,347 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:10:25,350 - irp.pipeline.batched - INFO - [INGESTION] Starting...
+2025-12-05 02:10:25,350 - irp.pipeline.ingestion - INFO - Starting data ingestion
+2025-12-05 02:10:25,350 - irp.ingest - INFO - Loading contracts from data/kalshi/kalshi_data_pull_v2/csv_output
+2025-12-05 02:10:25,350 - irp.ingest - INFO - Categories: ['Sports']
+2025-12-05 02:10:25,369 - irp.ingest - INFO - Found 120 CSV files in Sports
+2025-12-05 02:10:26,817 - irp.ingest - INFO - Loaded 120 contracts
+2025-12-05 02:10:26,817 - irp.pipeline.ingestion - INFO - Ingested 120 contracts
+2025-12-05 02:10:26,817 - irp.pipeline.batched - INFO - [INGESTION] Complete - 120 contracts
+2025-12-05 02:10:26,817 - irp.pipeline.batched - INFO - [CLEANING] Starting...
+2025-12-05 02:10:26,817 - irp.pipeline.cleaning - INFO - Starting data cleaning
+2025-12-05 02:10:26,817 - irp.clean - INFO - Cleaning 120 contracts
+2025-12-05 02:10:27,104 - irp.clean - INFO - Cleaned dataset: 120 contracts (dropped 0)
+2025-12-05 02:10:27,104 - irp.pipeline.cleaning - INFO - Cleaned 120 contracts
+2025-12-05 02:10:27,104 - irp.pipeline.batched - INFO - [CLEANING] Complete - 120 contracts
+2025-12-05 02:10:27,134 - irp.pipeline.batched - INFO - Limited to 40 contracts (--max-contracts)
+2025-12-05 02:10:27,134 - irp.pipeline.batched - INFO - Processing 40 contracts in 2 batches (size=20)
+2025-12-05 02:10:27,135 - irp.pipeline.batched - INFO - [BATCH 1/2] Processing 20 contracts...
+2025-12-05 02:10:27,135 - irp.pipeline.batched - INFO - [BATCH 1/2] Feature engineering...
+2025-12-05 02:10:27,135 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:10:27,135 - irp.features - INFO - Engineering features for 20 contracts
+2025-12-05 02:10:32,366 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:10:32,366 - irp.pipeline.features - INFO - Engineered features for 20 contracts
+2025-12-05 02:10:32,367 - irp.pipeline.batched - INFO - [BATCH 1/2] Microstructure analysis...
+2025-12-05 02:10:32,367 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:10:32,367 - irp.microstructure - INFO - Analyzing microstructure for 20 contracts
+2025-12-05 02:15:33,589 - irp.main - INFO - Initializing batched research pipeline
+2025-12-05 02:15:33,590 - irp.main - INFO - Batch size: 20
+2025-12-05 02:15:33,590 - irp.main - INFO - Max contracts: 40
+2025-12-05 02:15:33,593 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:15:33,593 - irp.pipeline.batched - INFO - KALSHI PREDICTION MARKET RESEARCH PIPELINE (BATCHED)
+2025-12-05 02:15:33,593 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:15:33,593 - irp.pipeline.batched - INFO - [INGESTION] Starting...
+2025-12-05 02:15:33,593 - irp.pipeline.ingestion - INFO - Starting data ingestion
+2025-12-05 02:15:33,593 - irp.ingest - INFO - Loading contracts from data/kalshi/kalshi_data_pull_v2/csv_output
+2025-12-05 02:15:33,593 - irp.ingest - INFO - Categories: ['Sports', 'Politics']
+2025-12-05 02:15:33,677 - irp.ingest - INFO - Found 120 CSV files in Sports
+2025-12-05 02:15:35,236 - irp.ingest - INFO - Found 52 CSV files in Politics
+2025-12-05 02:15:36,141 - irp.ingest - INFO - Loaded 152 contracts
+2025-12-05 02:15:36,141 - irp.pipeline.ingestion - INFO - Ingested 152 contracts
+2025-12-05 02:15:36,141 - irp.pipeline.batched - INFO - [INGESTION] Complete - 152 contracts
+2025-12-05 02:15:36,141 - irp.pipeline.batched - INFO - [CLEANING] Starting...
+2025-12-05 02:15:36,141 - irp.pipeline.cleaning - INFO - Starting data cleaning
+2025-12-05 02:15:36,141 - irp.clean - INFO - Cleaning 152 contracts
+2025-12-05 02:15:36,572 - irp.clean - INFO - Cleaned dataset: 152 contracts (dropped 0)
+2025-12-05 02:15:36,572 - irp.pipeline.cleaning - INFO - Cleaned 152 contracts
+2025-12-05 02:15:36,572 - irp.pipeline.batched - INFO - [CLEANING] Complete - 152 contracts
+2025-12-05 02:15:36,602 - irp.pipeline.batched - INFO - Limited to 40 contracts (--max-contracts)
+2025-12-05 02:15:36,602 - irp.pipeline.batched - INFO - Processing 40 contracts in 2 batches (size=20)
+2025-12-05 02:15:36,602 - irp.pipeline.batched - INFO - [BATCH 1/2] Processing 20 contracts...
+2025-12-05 02:15:36,602 - irp.pipeline.batched - INFO - [BATCH 1/2] Feature engineering...
+2025-12-05 02:15:36,602 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:15:36,602 - irp.features - INFO - Engineering features for 20 contracts
+2025-12-05 02:15:41,830 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:15:41,830 - irp.pipeline.features - INFO - Engineered features for 20 contracts
+2025-12-05 02:15:41,830 - irp.pipeline.batched - INFO - [BATCH 1/2] Microstructure analysis...
+2025-12-05 02:15:41,830 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:15:41,830 - irp.microstructure - INFO - Analyzing microstructure for 20 contracts
+2025-12-05 02:15:50,777 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:15:50,777 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 20 contracts
+2025-12-05 02:15:50,777 - irp.pipeline.batched - INFO - [BATCH 1/2] Event trajectory analysis...
+2025-12-05 02:15:50,777 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:15:50,777 - irp.event_alignment - INFO - Aligning 20 contracts to event time
+2025-12-05 02:15:50,825 - irp.event_alignment - INFO - Successfully aligned 20 contracts
+2025-12-05 02:15:51,185 - irp.event_alignment - INFO - Aligning 20 contracts to event time
+2025-12-05 02:15:51,216 - irp.event_alignment - INFO - Successfully aligned 20 contracts
+2025-12-05 02:15:51,456 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:15:51,456 - irp.pipeline.batched - INFO - [BATCH 1/2] Exporting batch metrics...
+2025-12-05 02:15:51,664 - irp.pipeline.batched - INFO - [BATCH 1/2] Completed
+2025-12-05 02:15:51,665 - irp.pipeline.batched - INFO - [BATCH 2/2] Processing 20 contracts...
+2025-12-05 02:15:51,665 - irp.pipeline.batched - INFO - [BATCH 2/2] Feature engineering...
+2025-12-05 02:15:51,666 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:15:51,666 - irp.features - INFO - Engineering features for 20 contracts
+2025-12-05 02:15:56,421 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:15:56,421 - irp.pipeline.features - INFO - Engineered features for 20 contracts
+2025-12-05 02:15:56,421 - irp.pipeline.batched - INFO - [BATCH 2/2] Microstructure analysis...
+2025-12-05 02:15:56,421 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:15:56,421 - irp.microstructure - INFO - Analyzing microstructure for 20 contracts
+2025-12-05 02:16:04,554 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:16:04,555 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 20 contracts
+2025-12-05 02:16:04,555 - irp.pipeline.batched - INFO - [BATCH 2/2] Event trajectory analysis...
+2025-12-05 02:16:04,555 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:16:04,555 - irp.event_alignment - INFO - Aligning 20 contracts to event time
+2025-12-05 02:16:04,597 - irp.event_alignment - INFO - Successfully aligned 20 contracts
+2025-12-05 02:16:04,958 - irp.event_alignment - INFO - Aligning 20 contracts to event time
+2025-12-05 02:16:04,987 - irp.event_alignment - INFO - Successfully aligned 20 contracts
+2025-12-05 02:16:05,228 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:16:05,228 - irp.pipeline.batched - INFO - [BATCH 2/2] Exporting batch metrics...
+2025-12-05 02:16:05,340 - irp.pipeline.batched - INFO - [BATCH 2/2] Completed
+2025-12-05 02:16:05,373 - irp.pipeline.batched - INFO - [VISUALIZATION] Starting...
+2025-12-05 02:16:05,373 - irp.pipeline.visualization - INFO - Starting visualization generation
+2025-12-05 02:16:05,373 - irp.plots - INFO - Generating dataset plots for 40 contracts
+2025-12-05 02:16:05,961 - irp.plots - INFO - Saved figure: output/figures/category_volume_comparison.png
+2025-12-05 02:16:06,097 - irp.plots - INFO - Saved figure: output/figures/stacked_volume.png
+2025-12-05 02:16:06,509 - irp.plots - INFO - Saved figure: output/figures/liquidity_heatmap.png
+2025-12-05 02:16:06,509 - irp.plots - INFO - Generating research plots...
+2025-12-05 02:16:06,660 - irp.plots - INFO - Saved figure: output/figures/spread_tightening_curve.png
+2025-12-05 02:16:06,907 - irp.plots - INFO - Saved figure: output/figures/liquidity_trajectory.png
+2025-12-05 02:16:07,327 - irp.plots - INFO - Saved figure: output/figures/volatility_burst_map.png
+2025-12-05 02:16:07,409 - irp.plots - INFO - Saved figure: output/figures/regime_occupancy.png
+2025-12-05 02:16:08,833 - irp.plots - INFO - Saved figure: output/figures/regime_transitions.png
+2025-12-05 02:16:08,928 - irp.plots - INFO - Saved figure: output/figures/category_fingerprints.png
+2025-12-05 02:16:08,928 - irp.plots - INFO - Generated 9 dataset figures
+2025-12-05 02:16:08,928 - irp.pipeline.visualization - INFO - Generated 9 figures
+2025-12-05 02:16:08,928 - irp.pipeline.batched - INFO - [VISUALIZATION] Complete - 9 figures
+2025-12-05 02:16:08,928 - irp.pipeline.batched - INFO - [EXPORT] Finalizing exports...
+2025-12-05 02:16:08,928 - irp.export - INFO - Computing category metrics
+2025-12-05 02:16:09,093 - irp.export - INFO - Exported category summary to output/tables/category_summary_extended.csv
+2025-12-05 02:16:09,093 - irp.export - INFO - Computing lifecycle-binned metrics with 50 bins
+2025-12-05 02:16:16,187 - irp.export - INFO - Exported lifecycle metrics to output/tables/lifecycle_binned_metrics.csv
+2025-12-05 02:16:16,190 - irp.export - INFO - Computing regime transition matrix
+2025-12-05 02:16:17,454 - irp.export - INFO - Exported regime transitions to output/tables/regime_transitions.csv
+2025-12-05 02:16:17,457 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:16:17,457 - irp.pipeline.batched - INFO - Batched pipeline completed in 43.86s
+2025-12-05 02:16:17,457 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:16:17,457 - irp.main - INFO - Pipeline completed successfully
+2025-12-05 02:19:07,843 - irp.main - INFO - Initializing batched research pipeline
+2025-12-05 02:19:07,843 - irp.main - INFO - Batch size: 15
+2025-12-05 02:19:07,843 - irp.main - INFO - Max contracts: 254
+2025-12-05 02:19:07,844 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:19:07,844 - irp.pipeline.batched - INFO - KALSHI PREDICTION MARKET RESEARCH PIPELINE (BATCHED)
+2025-12-05 02:19:07,844 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:19:07,845 - irp.pipeline.batched - INFO - [INGESTION] Starting...
+2025-12-05 02:19:07,845 - irp.pipeline.ingestion - INFO - Starting data ingestion
+2025-12-05 02:19:07,845 - irp.ingest - INFO - Loading contracts from data/kalshi/kalshi_data_pull_v2/csv_output
+2025-12-05 02:19:07,845 - irp.ingest - INFO - Categories: ['Sports', 'Politics', 'Economics', 'Weather', 'Culture']
+2025-12-05 02:19:07,864 - irp.ingest - INFO - Found 120 CSV files in Sports
+2025-12-05 02:19:09,141 - irp.ingest - INFO - Found 52 CSV files in Politics
+2025-12-05 02:19:10,026 - irp.ingest - INFO - Found 49 CSV files in Economics
+2025-12-05 02:19:11,186 - irp.ingest - INFO - Found 30 CSV files in Weather
+2025-12-05 02:19:11,326 - irp.ingest - INFO - Found 21 CSV files in Culture
+2025-12-05 02:19:11,537 - irp.ingest - INFO - Loaded 251 contracts
+2025-12-05 02:19:11,537 - irp.pipeline.ingestion - INFO - Ingested 251 contracts
+2025-12-05 02:19:11,537 - irp.pipeline.batched - INFO - [INGESTION] Complete - 251 contracts
+2025-12-05 02:19:11,537 - irp.pipeline.batched - INFO - [CLEANING] Starting...
+2025-12-05 02:19:11,537 - irp.pipeline.cleaning - INFO - Starting data cleaning
+2025-12-05 02:19:11,537 - irp.clean - INFO - Cleaning 251 contracts
+2025-12-05 02:19:12,282 - irp.clean - INFO - Cleaned dataset: 251 contracts (dropped 0)
+2025-12-05 02:19:12,282 - irp.pipeline.cleaning - INFO - Cleaned 251 contracts
+2025-12-05 02:19:12,282 - irp.pipeline.batched - INFO - [CLEANING] Complete - 251 contracts
+2025-12-05 02:19:12,319 - irp.pipeline.batched - INFO - Limited to 251 contracts (--max-contracts)
+2025-12-05 02:19:12,319 - irp.pipeline.batched - INFO - Processing 251 contracts in 17 batches (size=15)
+2025-12-05 02:19:12,319 - irp.pipeline.batched - INFO - [BATCH 1/17] Processing 15 contracts...
+2025-12-05 02:19:12,319 - irp.pipeline.batched - INFO - [BATCH 1/17] Feature engineering...
+2025-12-05 02:19:12,319 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:19:12,319 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:19:15,792 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:19:15,793 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:19:15,793 - irp.pipeline.batched - INFO - [BATCH 1/17] Microstructure analysis...
+2025-12-05 02:19:15,793 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:19:15,793 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:19:21,753 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:19:21,754 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:19:21,754 - irp.pipeline.batched - INFO - [BATCH 1/17] Event trajectory analysis...
+2025-12-05 02:19:21,754 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:19:21,754 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:21,783 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:22,135 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:22,156 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:22,389 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:19:22,389 - irp.pipeline.batched - INFO - [BATCH 1/17] Exporting batch metrics...
+2025-12-05 02:19:22,598 - irp.pipeline.batched - INFO - [BATCH 1/17] Completed
+2025-12-05 02:19:22,598 - irp.pipeline.batched - INFO - [BATCH 2/17] Processing 15 contracts...
+2025-12-05 02:19:22,598 - irp.pipeline.batched - INFO - [BATCH 2/17] Feature engineering...
+2025-12-05 02:19:22,599 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:19:22,599 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:19:26,647 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:19:26,648 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:19:26,648 - irp.pipeline.batched - INFO - [BATCH 2/17] Microstructure analysis...
+2025-12-05 02:19:26,648 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:19:26,648 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:19:33,787 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:19:33,787 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:19:33,787 - irp.pipeline.batched - INFO - [BATCH 2/17] Event trajectory analysis...
+2025-12-05 02:19:33,787 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:19:33,787 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:33,842 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:34,201 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:34,227 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:34,463 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:19:34,463 - irp.pipeline.batched - INFO - [BATCH 2/17] Exporting batch metrics...
+2025-12-05 02:19:34,553 - irp.pipeline.batched - INFO - [BATCH 2/17] Completed
+2025-12-05 02:19:34,553 - irp.pipeline.batched - INFO - [BATCH 3/17] Processing 15 contracts...
+2025-12-05 02:19:34,553 - irp.pipeline.batched - INFO - [BATCH 3/17] Feature engineering...
+2025-12-05 02:19:34,553 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:19:34,553 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:19:37,696 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:19:37,697 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:19:37,697 - irp.pipeline.batched - INFO - [BATCH 3/17] Microstructure analysis...
+2025-12-05 02:19:37,697 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:19:37,697 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:19:43,054 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:19:43,054 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:19:43,055 - irp.pipeline.batched - INFO - [BATCH 3/17] Event trajectory analysis...
+2025-12-05 02:19:43,055 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:19:43,055 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:43,083 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:43,429 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:43,450 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:43,682 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:19:43,682 - irp.pipeline.batched - INFO - [BATCH 3/17] Exporting batch metrics...
+2025-12-05 02:19:43,765 - irp.pipeline.batched - INFO - [BATCH 3/17] Completed
+2025-12-05 02:19:43,765 - irp.pipeline.batched - INFO - [BATCH 4/17] Processing 15 contracts...
+2025-12-05 02:19:43,765 - irp.pipeline.batched - INFO - [BATCH 4/17] Feature engineering...
+2025-12-05 02:19:43,765 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:19:43,765 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:19:46,824 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:19:46,825 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:19:46,825 - irp.pipeline.batched - INFO - [BATCH 4/17] Microstructure analysis...
+2025-12-05 02:19:46,825 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:19:46,825 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:19:51,903 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:19:51,903 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:19:51,903 - irp.pipeline.batched - INFO - [BATCH 4/17] Event trajectory analysis...
+2025-12-05 02:19:51,903 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:19:51,903 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:51,931 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:52,277 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:19:52,297 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:19:52,529 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:19:52,529 - irp.pipeline.batched - INFO - [BATCH 4/17] Exporting batch metrics...
+2025-12-05 02:19:52,618 - irp.pipeline.batched - INFO - [BATCH 4/17] Completed
+2025-12-05 02:19:52,619 - irp.pipeline.batched - INFO - [BATCH 5/17] Processing 15 contracts...
+2025-12-05 02:19:52,619 - irp.pipeline.batched - INFO - [BATCH 5/17] Feature engineering...
+2025-12-05 02:19:52,619 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:19:52,619 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:19:55,358 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:19:55,359 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:19:55,359 - irp.pipeline.batched - INFO - [BATCH 5/17] Microstructure analysis...
+2025-12-05 02:19:55,359 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:19:55,359 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:20:00,135 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:20:00,136 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:20:00,136 - irp.pipeline.batched - INFO - [BATCH 5/17] Event trajectory analysis...
+2025-12-05 02:20:00,136 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:20:00,136 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:00,174 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:00,523 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:00,542 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:00,776 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:20:00,776 - irp.pipeline.batched - INFO - [BATCH 5/17] Exporting batch metrics...
+2025-12-05 02:20:00,868 - irp.pipeline.batched - INFO - [BATCH 5/17] Completed
+2025-12-05 02:20:00,868 - irp.pipeline.batched - INFO - [BATCH 6/17] Processing 15 contracts...
+2025-12-05 02:20:00,868 - irp.pipeline.batched - INFO - [BATCH 6/17] Feature engineering...
+2025-12-05 02:20:00,868 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:20:00,868 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:20:03,644 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:20:03,644 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:20:03,644 - irp.pipeline.batched - INFO - [BATCH 6/17] Microstructure analysis...
+2025-12-05 02:20:03,644 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:20:03,644 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:20:08,181 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:20:08,181 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:20:08,181 - irp.pipeline.batched - INFO - [BATCH 6/17] Event trajectory analysis...
+2025-12-05 02:20:08,181 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:20:08,181 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:08,208 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:08,557 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:08,575 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:08,806 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:20:08,806 - irp.pipeline.batched - INFO - [BATCH 6/17] Exporting batch metrics...
+2025-12-05 02:20:08,892 - irp.pipeline.batched - INFO - [BATCH 6/17] Completed
+2025-12-05 02:20:08,892 - irp.pipeline.batched - INFO - [BATCH 7/17] Processing 15 contracts...
+2025-12-05 02:20:08,893 - irp.pipeline.batched - INFO - [BATCH 7/17] Feature engineering...
+2025-12-05 02:20:08,893 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:20:08,893 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:20:12,435 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:20:12,435 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:20:12,435 - irp.pipeline.batched - INFO - [BATCH 7/17] Microstructure analysis...
+2025-12-05 02:20:12,435 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:20:12,435 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:20:18,430 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:20:18,430 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:20:18,431 - irp.pipeline.batched - INFO - [BATCH 7/17] Event trajectory analysis...
+2025-12-05 02:20:18,431 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:20:18,431 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:18,460 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:18,805 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:18,827 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:19,059 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:20:19,059 - irp.pipeline.batched - INFO - [BATCH 7/17] Exporting batch metrics...
+2025-12-05 02:20:19,150 - irp.pipeline.batched - INFO - [BATCH 7/17] Completed
+2025-12-05 02:20:19,150 - irp.pipeline.batched - INFO - [BATCH 8/17] Processing 15 contracts...
+2025-12-05 02:20:19,151 - irp.pipeline.batched - INFO - [BATCH 8/17] Feature engineering...
+2025-12-05 02:20:19,151 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:20:19,151 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:20:22,543 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:20:22,543 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:20:22,543 - irp.pipeline.batched - INFO - [BATCH 8/17] Microstructure analysis...
+2025-12-05 02:20:22,543 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:20:22,543 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:20:28,291 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:20:28,292 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:20:28,292 - irp.pipeline.batched - INFO - [BATCH 8/17] Event trajectory analysis...
+2025-12-05 02:20:28,292 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:20:28,292 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:28,321 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:28,666 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:20:28,687 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:20:28,918 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:20:28,918 - irp.pipeline.batched - INFO - [BATCH 8/17] Exporting batch metrics...
+2025-12-05 02:20:29,006 - irp.pipeline.batched - INFO - [BATCH 8/17] Completed
+2025-12-05 02:20:29,006 - irp.pipeline.batched - INFO - [BATCH 9/17] Processing 15 contracts...
+2025-12-05 02:20:29,007 - irp.pipeline.batched - INFO - [BATCH 9/17] Feature engineering...
+2025-12-05 02:20:29,007 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:20:29,007 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:21:39,781 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:21:39,785 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:21:39,785 - irp.pipeline.batched - INFO - [BATCH 9/17] Microstructure analysis...
+2025-12-05 02:21:39,785 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:21:39,785 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:23:39,212 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:23:39,213 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:23:39,213 - irp.pipeline.batched - INFO - [BATCH 9/17] Event trajectory analysis...
+2025-12-05 02:23:39,213 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:23:39,213 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:23:40,151 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:23:40,932 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:23:41,618 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:23:42,129 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:23:42,129 - irp.pipeline.batched - INFO - [BATCH 9/17] Exporting batch metrics...
+2025-12-05 02:23:42,752 - irp.pipeline.batched - INFO - [BATCH 9/17] Completed
+2025-12-05 02:23:42,752 - irp.pipeline.batched - INFO - [BATCH 10/17] Processing 15 contracts...
+2025-12-05 02:23:42,752 - irp.pipeline.batched - INFO - [BATCH 10/17] Feature engineering...
+2025-12-05 02:23:42,752 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:23:42,752 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:24:03,847 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:24:03,848 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:24:03,848 - irp.pipeline.batched - INFO - [BATCH 10/17] Microstructure analysis...
+2025-12-05 02:24:03,848 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:24:03,848 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:24:39,500 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:24:39,501 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:24:39,501 - irp.pipeline.batched - INFO - [BATCH 10/17] Event trajectory analysis...
+2025-12-05 02:24:39,501 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:24:39,501 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:24:39,733 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:24:40,576 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:24:40,695 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:24:41,317 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:24:41,317 - irp.pipeline.batched - INFO - [BATCH 10/17] Exporting batch metrics...
+2025-12-05 02:24:41,539 - irp.pipeline.batched - INFO - [BATCH 10/17] Completed
+2025-12-05 02:24:41,539 - irp.pipeline.batched - INFO - [BATCH 11/17] Processing 15 contracts...
+2025-12-05 02:24:41,539 - irp.pipeline.batched - INFO - [BATCH 11/17] Feature engineering...
+2025-12-05 02:24:41,539 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:24:41,539 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:25:05,622 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:25:05,623 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:25:05,623 - irp.pipeline.batched - INFO - [BATCH 11/17] Microstructure analysis...
+2025-12-05 02:25:05,623 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:25:05,623 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:25:47,465 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:25:47,466 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:25:47,466 - irp.pipeline.batched - INFO - [BATCH 11/17] Event trajectory analysis...
+2025-12-05 02:25:47,466 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:25:47,466 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:25:47,750 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:25:49,027 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:25:49,173 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:25:50,041 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:25:50,041 - irp.pipeline.batched - INFO - [BATCH 11/17] Exporting batch metrics...
+2025-12-05 02:25:50,276 - irp.pipeline.batched - INFO - [BATCH 11/17] Completed
+2025-12-05 02:25:50,276 - irp.pipeline.batched - INFO - [BATCH 12/17] Processing 15 contracts...
+2025-12-05 02:25:50,277 - irp.pipeline.batched - INFO - [BATCH 12/17] Feature engineering...
+2025-12-05 02:25:50,277 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:25:50,277 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:26:13,348 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:26:13,349 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:26:13,349 - irp.pipeline.batched - INFO - [BATCH 12/17] Microstructure analysis...
+2025-12-05 02:26:13,349 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:26:13,349 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:26:52,714 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:26:52,715 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:26:52,715 - irp.pipeline.batched - INFO - [BATCH 12/17] Event trajectory analysis...
+2025-12-05 02:26:52,715 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:26:52,715 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:26:52,979 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:26:53,830 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:26:53,948 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:26:54,557 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:26:54,557 - irp.pipeline.batched - INFO - [BATCH 12/17] Exporting batch metrics...
+2025-12-05 02:26:54,770 - irp.pipeline.batched - INFO - [BATCH 12/17] Completed
+2025-12-05 02:26:54,770 - irp.pipeline.batched - INFO - [BATCH 13/17] Processing 15 contracts...
+2025-12-05 02:26:54,770 - irp.pipeline.batched - INFO - [BATCH 13/17] Feature engineering...
+2025-12-05 02:26:54,770 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:26:54,770 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:27:29,448 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:27:29,449 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:27:29,449 - irp.pipeline.batched - INFO - [BATCH 13/17] Microstructure analysis...
+2025-12-05 02:27:29,449 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:27:29,449 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:28:29,594 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:28:29,596 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:28:29,596 - irp.pipeline.batched - INFO - [BATCH 13/17] Event trajectory analysis...
+2025-12-05 02:28:29,596 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:28:29,596 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:28:29,966 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:28:30,603 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:28:30,789 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:28:31,235 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:28:31,235 - irp.pipeline.batched - INFO - [BATCH 13/17] Exporting batch metrics...
+2025-12-05 02:28:31,547 - irp.pipeline.batched - INFO - [BATCH 13/17] Completed
+2025-12-05 02:28:31,547 - irp.pipeline.batched - INFO - [BATCH 14/17] Processing 15 contracts...
+2025-12-05 02:28:31,547 - irp.pipeline.batched - INFO - [BATCH 14/17] Feature engineering...
+2025-12-05 02:28:31,547 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:28:31,547 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:28:42,356 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:28:42,356 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:28:42,356 - irp.pipeline.batched - INFO - [BATCH 14/17] Microstructure analysis...
+2025-12-05 02:28:42,356 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:28:42,356 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:29:01,195 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:29:01,196 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:29:01,196 - irp.pipeline.batched - INFO - [BATCH 14/17] Event trajectory analysis...
+2025-12-05 02:29:01,196 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:29:01,196 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:29:01,342 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:29:02,590 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:29:02,654 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:29:03,489 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:29:03,489 - irp.pipeline.batched - INFO - [BATCH 14/17] Exporting batch metrics...
+2025-12-05 02:29:03,665 - irp.pipeline.batched - INFO - [BATCH 14/17] Completed
+2025-12-05 02:29:03,666 - irp.pipeline.batched - INFO - [BATCH 15/17] Processing 15 contracts...
+2025-12-05 02:29:03,666 - irp.pipeline.batched - INFO - [BATCH 15/17] Feature engineering...
+2025-12-05 02:29:03,666 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:29:03,666 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:29:10,048 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:29:10,049 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:29:10,049 - irp.pipeline.batched - INFO - [BATCH 15/17] Microstructure analysis...
+2025-12-05 02:29:10,049 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:29:10,049 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:29:20,589 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:29:20,589 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:29:20,589 - irp.pipeline.batched - INFO - [BATCH 15/17] Event trajectory analysis...
+2025-12-05 02:29:20,589 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:29:20,589 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:29:20,649 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:29:21,644 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:29:21,683 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:29:22,340 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:29:22,341 - irp.pipeline.batched - INFO - [BATCH 15/17] Exporting batch metrics...
+2025-12-05 02:29:22,488 - irp.pipeline.batched - INFO - [BATCH 15/17] Completed
+2025-12-05 02:29:22,488 - irp.pipeline.batched - INFO - [BATCH 16/17] Processing 15 contracts...
+2025-12-05 02:29:22,488 - irp.pipeline.batched - INFO - [BATCH 16/17] Feature engineering...
+2025-12-05 02:29:22,488 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:29:22,488 - irp.features - INFO - Engineering features for 15 contracts
+2025-12-05 02:29:37,250 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:29:37,251 - irp.pipeline.features - INFO - Engineered features for 15 contracts
+2025-12-05 02:29:37,251 - irp.pipeline.batched - INFO - [BATCH 16/17] Microstructure analysis...
+2025-12-05 02:29:37,251 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:29:37,251 - irp.microstructure - INFO - Analyzing microstructure for 15 contracts
+2025-12-05 02:30:02,584 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:30:02,585 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 15 contracts
+2025-12-05 02:30:02,585 - irp.pipeline.batched - INFO - [BATCH 16/17] Event trajectory analysis...
+2025-12-05 02:30:02,585 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:30:02,585 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:30:02,750 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:30:04,022 - irp.event_alignment - INFO - Aligning 15 contracts to event time
+2025-12-05 02:30:04,169 - irp.event_alignment - INFO - Successfully aligned 15 contracts
+2025-12-05 02:30:05,035 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:30:05,035 - irp.pipeline.batched - INFO - [BATCH 16/17] Exporting batch metrics...
+2025-12-05 02:30:05,235 - irp.pipeline.batched - INFO - [BATCH 16/17] Completed
+2025-12-05 02:30:05,236 - irp.pipeline.batched - INFO - [BATCH 17/17] Processing 11 contracts...
+2025-12-05 02:30:05,236 - irp.pipeline.batched - INFO - [BATCH 17/17] Feature engineering...
+2025-12-05 02:30:05,236 - irp.pipeline.features - INFO - Starting feature engineering
+2025-12-05 02:30:05,236 - irp.features - INFO - Engineering features for 11 contracts
+2025-12-05 02:30:23,519 - irp.features - INFO - Feature engineering complete
+2025-12-05 02:30:23,520 - irp.pipeline.features - INFO - Engineered features for 11 contracts
+2025-12-05 02:30:23,520 - irp.pipeline.batched - INFO - [BATCH 17/17] Microstructure analysis...
+2025-12-05 02:30:23,520 - irp.pipeline.microstructure - INFO - Starting microstructure analysis
+2025-12-05 02:30:23,520 - irp.microstructure - INFO - Analyzing microstructure for 11 contracts
+2025-12-05 02:30:54,579 - irp.microstructure - INFO - Microstructure analysis complete
+2025-12-05 02:30:54,580 - irp.pipeline.microstructure - INFO - Analyzed microstructure for 11 contracts
+2025-12-05 02:30:54,580 - irp.pipeline.batched - INFO - [BATCH 17/17] Event trajectory analysis...
+2025-12-05 02:30:54,580 - irp.pipeline.event_trajectories - INFO - Starting event trajectory analysis
+2025-12-05 02:30:54,580 - irp.event_alignment - INFO - Aligning 11 contracts to event time
+2025-12-05 02:30:54,809 - irp.event_alignment - INFO - Successfully aligned 11 contracts
+2025-12-05 02:30:55,812 - irp.event_alignment - INFO - Aligning 11 contracts to event time
+2025-12-05 02:30:55,915 - irp.event_alignment - INFO - Successfully aligned 11 contracts
+2025-12-05 02:30:56,613 - irp.pipeline.event_trajectories - INFO - Computed trajectories for 9 metrics
+2025-12-05 02:30:56,614 - irp.pipeline.batched - INFO - [BATCH 17/17] Exporting batch metrics...
+2025-12-05 02:30:56,826 - irp.pipeline.batched - INFO - [BATCH 17/17] Completed
+2025-12-05 02:30:56,885 - irp.pipeline.batched - INFO - [VISUALIZATION] Starting...
+2025-12-05 02:30:56,886 - irp.pipeline.visualization - INFO - Starting visualization generation
+2025-12-05 02:30:56,886 - irp.plots - INFO - Generating dataset plots for 251 contracts
+2025-12-05 02:30:57,305 - irp.plots - INFO - Saved figure: output/figures/category_volume_comparison.png
+2025-12-05 02:30:58,200 - irp.plots - INFO - Saved figure: output/figures/stacked_volume.png
+2025-12-05 02:30:58,798 - irp.plots - INFO - Saved figure: output/figures/liquidity_heatmap.png
+2025-12-05 02:30:58,798 - irp.plots - INFO - Generating research plots...
+2025-12-05 02:31:00,666 - irp.plots - INFO - Saved figure: output/figures/spread_tightening_curve.png
+2025-12-05 02:31:02,935 - irp.plots - INFO - Saved figure: output/figures/liquidity_trajectory.png
+2025-12-05 02:31:06,379 - irp.plots - INFO - Saved figure: output/figures/volatility_burst_map.png
+2025-12-05 02:31:06,581 - irp.plots - INFO - Saved figure: output/figures/regime_occupancy.png
+2025-12-05 02:31:40,844 - irp.plots - INFO - Saved figure: output/figures/regime_transitions.png
+2025-12-05 02:31:41,285 - irp.plots - INFO - Saved figure: output/figures/category_fingerprints.png
+2025-12-05 02:31:41,285 - irp.plots - INFO - Generated 9 dataset figures
+2025-12-05 02:31:41,285 - irp.pipeline.visualization - INFO - Generated 9 figures
+2025-12-05 02:31:41,285 - irp.pipeline.batched - INFO - [VISUALIZATION] Complete - 9 figures
+2025-12-05 02:31:41,285 - irp.pipeline.batched - INFO - [EXPORT] Finalizing exports...
+2025-12-05 02:31:41,285 - irp.export - INFO - Computing category metrics
+2025-12-05 02:31:44,619 - irp.export - INFO - Exported category summary to output/tables/category_summary_extended.csv
+2025-12-05 02:31:44,620 - irp.export - INFO - Computing lifecycle-binned metrics with 50 bins
+2025-12-05 02:35:26,577 - irp.export - INFO - Exported lifecycle metrics to output/tables/lifecycle_binned_metrics.csv
+2025-12-05 02:35:26,579 - irp.export - INFO - Computing regime transition matrix
+2025-12-05 02:35:58,870 - irp.export - INFO - Exported regime transitions to output/tables/regime_transitions.csv
+2025-12-05 02:35:58,876 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:35:58,877 - irp.pipeline.batched - INFO - Batched pipeline completed in 1011.03s
+2025-12-05 02:35:58,877 - irp.pipeline.batched - INFO - ============================================================
+2025-12-05 02:35:58,912 - irp.main - INFO - Pipeline completed successfully

@@ -1,0 +1,5 @@
+datetime,price_c,yes_bid_c,yes_ask_c,volume,price_o,price_h,price_l,yes_bid_o,yes_bid_h,yes_bid_l,yes_ask_o,yes_ask_h,yes_ask_l,trade_count,contract_id
+2024-12-25 22:20:00+00:00,1.0,0,1,113,1.0,1.0,1.0,0,0,0,1,1,1,,HOUSEMOV-24-R-B11-15
+2025-01-14 23:59:00+00:00,1.0,0,1,63,1.0,1.0,1.0,0,0,0,1,1,1,,HOUSEMOV-24-R-B11-15
+2025-01-26 05:18:00+00:00,1.0,0,1,53,1.0,1.0,1.0,0,0,0,1,1,1,,HOUSEMOV-24-R-B11-15
+2025-02-01 15:01:00+00:00,,0,1,0,,,,0,0,0,1,1,1,,HOUSEMOV-24-R-B11-15

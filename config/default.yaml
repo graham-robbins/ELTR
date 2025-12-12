@@ -1,0 +1,141 @@
+# Kalshi Prediction Market Research Platform Configuration
+# Production configuration for IRP analysis system
+
+# Data paths
+data:
+  base_path: "data/kalshi/kalshi_data_pull_v2"
+  csv_output: "csv_output"
+  metadata_file: "metadata.csv"
+  schema_file: "schema_mapping.json"
+
+# Output paths
+output:
+  base_path: "output"
+  figures: "figures"
+  tables: "tables"
+  reports: "reports"
+
+# Categories for analysis
+categories:
+  - Sports
+  - Politics
+  - Economics
+  - Weather
+  - Culture
+
+# Cleaning parameters
+cleaning:
+  min_observations: 50
+  winsorize_limits: [0.01, 0.01]
+  max_spread_pct: 0.50
+  min_price: 1
+  max_price: 99
+  max_gap_minutes: 60
+  imputation_method: "forward_fill"
+  drop_zero_volume_only: false
+
+# Feature engineering parameters
+features:
+  rolling_windows:
+    short: 5
+    medium: 15
+    long: 60
+  volatility:
+    min_periods: 3
+    annualization_factor: 525600  # Minutes in a year
+  liquidity:
+    depth_levels: [1, 5, 10]
+    volume_ma_window: 20
+  spread:
+    basis_points: true
+  lifecycle:
+    compute_tsl: true  # Time since listing
+    compute_tts: true  # Time to settlement
+
+# Normalization settings for cross-contract analysis
+normalization:
+  spread: "zscore"
+  volume: "percentile"
+  depth: "minmax"
+  volatility: "zscore"
+  price: "minmax"
+  default: "zscore"
+
+# Time binning for cross-contract plots
+time_binning:
+  mode: "lifecycle"  # lifecycle, tts_hours, event_aligned
+  n_bins: 50
+  lifecycle_bins: 100
+  event_window_hours_pre: 24
+  event_window_hours_post: 4
+
+# Microstructure analysis
+microstructure:
+  event_alignment:
+    pre_event_minutes: 60
+    post_event_minutes: 30
+    interpolation_grid_minutes: 1
+    grid_hours_pre: 24
+    grid_hours_post: 4
+  surge_detection:
+    volume_threshold: 2.0
+    volatility_threshold: 2.0
+    lookback_window: 30
+  regime_detection:
+    pregame_hours: 24
+    halftime_buffer_minutes: 15
+  regime_classification:
+    frozen_volume_threshold: 0.1
+    thin_spread_threshold: 0.15
+    active_volume_zscore: 1.5
+    burst_volatility_zscore: 2.0  # Legacy (unused)
+    burst_volatility_k: 2.5  # Section 4: multiplier for volatility burst detection
+    burst_volume_multiplier: 1.5  # Section 4: multiplier for volume condition
+    resolution_lifecycle_threshold: 0.90  # Section 4: changed from 0.95 to 0.90
+    resolution_spread_threshold: 0.05  # Section 4: spread threshold for resolution drift
+    resolution_volume_quantile: 0.25  # Section 4: volume quantile threshold
+    resolution_volatility_quantile: 0.25  # Section 4: volatility quantile threshold
+
+# Plotting configuration
+plots:
+  style: "seaborn-v0_8-whitegrid"
+  figsize:
+    single: [12, 6]
+    quad: [14, 10]
+    heatmap: [16, 12]
+  dpi: 150
+  colormap: "RdYlGn"
+  category_colors:
+    Sports: "#1f77b4"
+    Politics: "#ff7f0e"
+    Economics: "#2ca02c"
+    Weather: "#d62728"
+    Culture: "#9467bd"
+  save_format: "png"
+  transparent: false
+
+# Statistical parameters
+statistics:
+  confidence_level: 0.95
+  bootstrap_resamples: 1000
+  correlation:
+    min_overlap: 20
+    method: "pearson"
+
+# Timezone settings
+timezone:
+  input: "UTC"
+  output: "America/New_York"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/irp.log"
+
+# Pipeline settings
+pipeline:
+  parallel_workers: 4
+  chunk_size: 100
+  cache_enabled: true
+  cache_dir: ".cache"
