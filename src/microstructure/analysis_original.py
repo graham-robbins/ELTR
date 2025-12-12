@@ -1,3 +1,22 @@
+# =============================================================================
+# DEPRECATED FILE - PRESERVED FOR HISTORICAL REFERENCE ONLY
+#
+# This file contains the original monolithic implementation of the
+# microstructure analysis module. It is retained for reference purposes.
+#
+# ACTIVE ORCHESTRATION: src/microstructure/analysis.py
+#
+# The functionality from this file has been refactored into modular
+# components located in:
+#   - src/microstructure/spread.py
+#   - src/microstructure/liquidity.py
+#   - src/microstructure/bursts.py
+#   - src/microstructure/regimes.py
+#   - src/microstructure/lifecycle.py
+#
+# Do not import from this file in new code.
+# =============================================================================
+
 """
 Microstructure analysis module for IRP platform.
 
