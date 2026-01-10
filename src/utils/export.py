@@ -27,6 +27,68 @@ from src.utils.normalization import normalize_series
 logger = get_logger("export")
 
 
+def sanitize_output_path(output_path: Path | str, base_dir: Path | None = None) -> Path:
+    """
+    Sanitize output path to prevent path traversal attacks.
+
+    Ensures output paths don't escape their expected directory via
+    directory traversal sequences.
+
+    Parameters
+    ----------
+    output_path : Path | str
+        User-provided output path.
+    base_dir : Path | None
+        Expected base directory for outputs. If provided, validates
+        that the resolved path is within this directory.
+
+    Returns
+    -------
+    Path
+        Sanitized output path.
+
+    Raises
+    ------
+    ValueError
+        If the output path would escape base_dir through path traversal.
+    """
+    output_path = Path(output_path)
+
+    # If a base_dir is provided, ensure the path stays within it
+    if base_dir is not None:
+        base_dir = Path(base_dir).resolve()
+
+        # Handle both absolute and relative paths
+        if output_path.is_absolute():
+            resolved = output_path.resolve()
+        else:
+            resolved = (base_dir / output_path).resolve()
+
+        # Verify the resolved path is under base_dir
+        # This is the authoritative check - it catches all traversal attempts
+        # regardless of how they're encoded (../, symlinks, etc.)
+        try:
+            resolved.relative_to(base_dir)
+        except ValueError:
+            raise ValueError(
+                f"Security error: Output path '{output_path}' would escape "
+                f"base directory '{base_dir}'"
+            )
+
+        return resolved
+
+    # Without a base_dir, check for obvious traversal patterns
+    # but allow legitimate filenames containing ".."
+    path_str = str(output_path)
+    traversal_patterns = ['/../', '\\..\\', '../', '..\\']
+    if path_str.startswith('..') or any(p in path_str for p in traversal_patterns):
+        raise ValueError(
+            f"Security error: Path traversal detected in output path: '{output_path}'"
+        )
+
+    return output_path
+
+
 @dataclass
 class ContractSummaryMetrics:
     """Container for contract-level summary metrics."""
@@ -358,6 +420,9 @@ class MetricsExporter:
 
         if output_path is None:
             output_path = self.config.output.tables_path / "contract_summary_extended.csv"
+        else:
+            # Security: Sanitize user-provided path
+            output_path = sanitize_output_path(output_path, self.config.output.tables_path)
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -437,6 +502,9 @@ class MetricsExporter:
 
         if output_path is None:
             output_path = self.config.output.tables_path / "category_summary_extended.csv"
+        else:
+            # Security: Sanitize user-provided path
+            output_path = sanitize_output_path(output_path, self.config.output.tables_path)
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -517,6 +585,9 @@ class MetricsExporter:
 
         if output_path is None:
             output_path = self.config.output.tables_path / "lifecycle_binned_metrics.csv"
+        else:
+            # Security: Sanitize user-provided path
+            output_path = sanitize_output_path(output_path, self.config.output.tables_path)
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -592,6 +663,9 @@ class MetricsExporter:
 
         if output_path is None:
             output_path = self.config.output.tables_path / "regime_transitions.csv"
+        else:
+            # Security: Sanitize user-provided path
+            output_path = sanitize_output_path(output_path, self.config.output.tables_path)
 
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)

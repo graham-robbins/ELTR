@@ -76,15 +76,15 @@ def compute_event_regime(
     df: pd.DataFrame,
     event_time: datetime | pd.Timestamp | None = None,
     pregame_hours: int = 24,
+    ingame_hours: int = 3,
 ) -> pd.DataFrame:
     """
     Classify observations into event-based regimes.
 
     Definition:
         PREGAME: within pregame_hours before event (default 24h)
-        IN_GAME: within 3 hours after event start
-        POST_EVENT: more than 3 hours after event
-        AUTHOR MUST DEFINE FORMALLY: boundary handling, timezone conversion
+        IN_GAME: within ingame_hours after event start (default 3h)
+        POST_EVENT: more than ingame_hours after event
 
     Parameters
     ----------
@@ -93,7 +93,9 @@ def compute_event_regime(
     event_time : datetime | pd.Timestamp | None
         Event timestamp.
     pregame_hours : int
-        Hours before event for pregame period.
+        Hours before event for pregame period (default 24).
+    ingame_hours : int
+        Hours after event start for in-game period (default 3).
 
     Returns
     -------
@@ -117,17 +119,32 @@ def compute_event_regime(
             event_ts = event_ts.tz_localize("UTC")
 
         df["minutes_to_event"] = (event_ts - df.index).total_seconds() / 60
-        df["regime"] = _classify_event_regime(df, pregame_hours)
+        df["regime"] = _classify_event_regime(df, pregame_hours, ingame_hours)
 
     return df
 
 
-def _classify_event_regime(df: pd.DataFrame, pregame_hours: int) -> pd.Series:
+def _classify_event_regime(
+    df: pd.DataFrame,
+    pregame_hours: int,
+    ingame_hours: int,
+) -> pd.Series:
     """
     Classify each observation into an event regime.
 
-    AUTHOR MUST DEFINE FORMALLY: exact boundary conditions,
-    handling of observations far from event
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame with minutes_to_event column.
+    pregame_hours : int
+        Hours before event for pregame classification.
+    ingame_hours : int
+        Hours after event start for in-game classification.
+
+    Returns
+    -------
+    pd.Series
+        Regime classification for each observation.
 
     Moved from
     ----------
@@ -139,10 +156,11 @@ def _classify_event_regime(df: pd.DataFrame, pregame_hours: int) -> pd.Series:
         return regimes
 
     mtoe = df["minutes_to_event"]
+    ingame_minutes = ingame_hours * 60
 
     pregame_mask = (mtoe > 0) & (mtoe <= pregame_hours * 60)
-    ingame_mask = (mtoe <= 0) & (mtoe > -180)  # First 3 hours after start
-    post_mask = mtoe <= -180
+    ingame_mask = (mtoe <= 0) & (mtoe > -ingame_minutes)
+    post_mask = mtoe <= -ingame_minutes
 
     regimes[pregame_mask] = EventRegime.PREGAME.value
     regimes[ingame_mask] = EventRegime.IN_GAME.value

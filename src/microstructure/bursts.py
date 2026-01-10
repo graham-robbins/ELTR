@@ -295,25 +295,32 @@ def classify_volatility_burst(
 # Burst intensity
 # Moved from: src/utils/export.py
 
-def compute_burst_intensity(df: pd.DataFrame) -> float:
+def compute_burst_intensity(
+    df: pd.DataFrame,
+    burst_std_multiplier: float = 2.0,
+    min_observations: int = 10,
+) -> float:
     """
     Compute volatility burst intensity.
 
     Definition:
-        Burst = observations where volatility > mean + 2*std
+        Burst = observations where volatility > mean + k*std
         Intensity = mean((volatility - mean) / std) for burst observations
-        AUTHOR MUST DEFINE FORMALLY: volatility column selection,
-        threshold (2 std), intensity interpretation
 
     Parameters
     ----------
     df : pd.DataFrame
         DataFrame with volatility data.
+    burst_std_multiplier : float
+        Number of standard deviations above mean to classify as burst (default 2.0).
+        Higher values = stricter burst definition.
+    min_observations : int
+        Minimum observations required for valid calculation (default 10).
 
     Returns
     -------
     float
-        Burst intensity metric.
+        Burst intensity metric. Returns 0.0 if no bursts, NaN if insufficient data.
 
     Moved from
     ----------
@@ -323,7 +330,7 @@ def compute_burst_intensity(df: pd.DataFrame) -> float:
         return np.nan
 
     vol = df["volatility_short"].dropna()
-    if len(vol) < 10:
+    if len(vol) < min_observations:
         return np.nan
 
     mean_vol = vol.mean()
@@ -332,7 +339,7 @@ def compute_burst_intensity(df: pd.DataFrame) -> float:
     if std_vol == 0:
         return 0.0
 
-    burst_threshold = mean_vol + 2 * std_vol
+    burst_threshold = mean_vol + burst_std_multiplier * std_vol
     bursts = vol[vol > burst_threshold]
 
     if len(bursts) == 0:
