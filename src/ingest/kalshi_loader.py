@@ -8,6 +8,7 @@ data from CSV files into canonical DataFrame format.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Iterator
 
@@ -24,6 +25,72 @@ from src.utils.types import (
     DataFrequency,
     MarketDataset,
 )
+
+
+# Security: Pattern for valid contract IDs (alphanumeric, underscore, hyphen only)
+VALID_CONTRACT_ID_PATTERN = re.compile(r'^[a-zA-Z0-9_\-]+$')
+
+
+def sanitize_contract_id(contract_id: str) -> str:
+    """
+    Validate and sanitize contract ID to prevent path traversal attacks.
+
+    Parameters
+    ----------
+    contract_id : str
+        Raw contract ID input.
+
+    Returns
+    -------
+    str
+        Validated contract ID (unchanged if valid).
+
+    Raises
+    ------
+    ValueError
+        If contract ID is empty or contains invalid characters.
+    """
+    if not contract_id:
+        raise ValueError("Contract ID cannot be empty")
+
+    # Validate first - reject invalid input rather than silently transforming
+    if not VALID_CONTRACT_ID_PATTERN.match(contract_id):
+        raise ValueError(
+            f"Invalid contract ID: '{contract_id}'. "
+            "Contract IDs must contain only alphanumeric characters, underscores, and hyphens."
+        )
+
+    return contract_id
+
+
+def sanitize_filename(filename: str) -> str:
+    """
+    Sanitize filename to prevent path traversal attacks.
+
+    Parameters
+    ----------
+    filename : str
+        Raw filename input.
+
+    Returns
+    -------
+    str
+        Sanitized filename (basename only).
+
+    Raises
+    ------
+    ValueError
+        If filename contains path traversal attempts or is invalid.
+    """
+    if not filename:
+        raise ValueError("Filename cannot be empty")
+
+    # Check for path traversal attempts in the original input
+    # Reject rather than silently sanitize to alert caller of potential attack
+    if '..' in filename or '/' in filename or '\\' in filename:
+        raise ValueError(f"Invalid filename (contains path components): '{filename}'")
+
+    return filename
 
 logger = get_logger("ingest")
 
@@ -719,19 +786,27 @@ class KalshiDataLoader:
         -------
         ContractTimeseries | None
             Contract data or None if not found.
+
+        Raises
+        ------
+        ValueError
+            If contract_id contains invalid characters (path traversal prevention).
         """
+        # Security: Sanitize contract_id to prevent path traversal
+        safe_contract_id = sanitize_contract_id(contract_id)
+
         if category is not None:
-            filepath = self.config.data.csv_path / category / f"{contract_id}.csv"
+            filepath = self.config.data.csv_path / category / f"{safe_contract_id}.csv"
             if filepath.exists():
                 return self.contract_loader.load(filepath, category)
             return None
 
         for cat in self.config.categories:
-            filepath = self.config.data.csv_path / cat / f"{contract_id}.csv"
+            filepath = self.config.data.csv_path / cat / f"{safe_contract_id}.csv"
             if filepath.exists():
                 return self.contract_loader.load(filepath, cat)
 
-        logger.warning(f"Contract not found: {contract_id}")
+        logger.warning(f"Contract not found: {safe_contract_id}")
         return None
 
     def get_available_contracts(self) -> pd.DataFrame:

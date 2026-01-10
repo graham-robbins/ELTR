@@ -201,8 +201,19 @@ class VolatilityFeatures(FeatureExtractor):
         Compute Parkinson volatility estimator.
 
         More efficient than close-to-close volatility.
+
+        Handles edge cases where low=0 or high/low ratio is invalid.
         """
-        log_hl = np.log(high / low) ** 2
+        # Guard against division by zero: replace 0 with NaN
+        safe_low = low.replace(0, np.nan)
+
+        # Compute ratio only where valid
+        ratio = high / safe_low
+
+        # Additional guard: ratio must be positive for log
+        ratio = ratio.where(ratio > 0, np.nan)
+
+        log_hl = np.log(ratio) ** 2
         factor = 1 / (4 * np.log(2))
         return np.sqrt(factor * log_hl.rolling(window=window).mean())
 

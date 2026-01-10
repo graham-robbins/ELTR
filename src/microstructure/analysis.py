@@ -32,6 +32,12 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
+try:
+    from joblib import Parallel, delayed
+    JOBLIB_AVAILABLE = True
+except ImportError:
+    JOBLIB_AVAILABLE = False
+
 from src.utils.config import IRPConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
@@ -374,12 +380,27 @@ class MicrostructureAnalyzer:
 
     Coordinates all microstructure analytics and produces
     comprehensive market analysis.
+
+    Parameters
+    ----------
+    config : IRPConfig | None
+        Platform configuration. Uses global if None.
+    n_jobs : int
+        Number of parallel workers for dataset analysis.
+        Use -1 for all available cores, 1 for sequential processing.
+        Default uses config.pipeline.parallel_workers.
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: IRPConfig | None = None, n_jobs: int | None = None):
         """Initialize microstructure analyzer."""
         self.config = config or get_config()
         micro_config = self.config.microstructure
+
+        # Set parallel workers: parameter > config > default
+        if n_jobs is not None:
+            self.n_jobs = n_jobs
+        else:
+            self.n_jobs = self.config.pipeline.parallel_workers
 
         self.surge_detector = SurgeDetector(
             volume_threshold=micro_config.surge_detection.volume_threshold,
@@ -445,18 +466,62 @@ class MicrostructureAnalyzer:
     def analyze_dataset(
         self, dataset: MarketDataset
     ) -> tuple[list[MicrostructureMetrics], pd.DataFrame]:
-        """Analyze entire dataset microstructure."""
+        """
+        Analyze entire dataset microstructure.
+
+        Uses parallel processing when joblib is available and n_jobs != 1.
+        Falls back to sequential processing otherwise. Individual contract
+        failures are logged and skipped rather than failing the entire batch.
+        """
         logger.info(f"Analyzing microstructure for {len(dataset)} contracts")
 
-        all_metrics = []
-        for contract in dataset:
-            metrics = self.analyze_contract(contract)
-            all_metrics.append(metrics)
+        contracts = list(dataset)
+
+        # Use parallel processing if available and configured
+        if JOBLIB_AVAILABLE and self.n_jobs != 1 and len(contracts) > 1:
+            logger.info(f"Using parallel processing with {self.n_jobs} workers")
+            all_metrics = Parallel(n_jobs=self.n_jobs)(
+                delayed(self._safe_analyze_contract)(contract)
+                for contract in contracts
+            )
+            # Filter out None values from failed analyses
+            all_metrics = [m for m in all_metrics if m is not None]
+        else:
+            # Sequential fallback with error handling
+            all_metrics = []
+            for contract in contracts:
+                metrics = self._safe_analyze_contract(contract)
+                if metrics is not None:
+                    all_metrics.append(metrics)
 
         summary_df = self._metrics_to_dataframe(all_metrics)
 
-        logger.info("Microstructure analysis complete")
+        logger.info(f"Microstructure analysis complete ({len(all_metrics)}/{len(contracts)} contracts)")
         return all_metrics, summary_df
+
+    def _safe_analyze_contract(
+        self, contract: ContractTimeseries
+    ) -> MicrostructureMetrics | None:
+        """
+        Safely analyze a single contract, catching and logging errors.
+
+        Parameters
+        ----------
+        contract : ContractTimeseries
+            Contract to analyze.
+
+        Returns
+        -------
+        MicrostructureMetrics | None
+            Metrics if successful, None if analysis failed.
+        """
+        try:
+            return self.analyze_contract(contract)
+        except Exception as e:
+            logger.warning(
+                f"Failed to analyze contract {contract.contract_id}: {e}"
+            )
+            return None
 
     def compute_category_aggregates(
         self, dataset: MarketDataset

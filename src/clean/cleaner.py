@@ -475,8 +475,11 @@ class DataCleaner:
         return self.winsorizer.winsorize(df, columns=return_cols)
 
     def _fix_invalid_prices(self, df: pd.DataFrame) -> tuple[pd.DataFrame, int]:
-        """Fix prices outside valid range."""
-        df = df.copy()
+        """Fix prices outside valid range.
+
+        Note: This is a private method called from clean_contract which already
+        copies the DataFrame. No additional copy is needed here.
+        """
         n_fixed = 0
 
         price_cols = [c for c in df.columns if "price" in c.lower()]

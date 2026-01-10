@@ -69,6 +69,28 @@ class CleaningConfig:
     imputation_method: str = "forward_fill"
     drop_zero_volume_only: bool = False
 
+    def __post_init__(self):
+        """Validate configuration values."""
+        if self.min_observations < 0:
+            raise ValueError(f"min_observations must be non-negative, got {self.min_observations}")
+        if not (0 <= self.winsorize_limits[0] <= 0.5 and 0 <= self.winsorize_limits[1] <= 0.5):
+            raise ValueError(f"winsorize_limits must be between 0 and 0.5, got {self.winsorize_limits}")
+        if not (0 < self.max_spread_pct <= 1):
+            raise ValueError(f"max_spread_pct must be between 0 and 1, got {self.max_spread_pct}")
+        if self.min_price < 0:
+            raise ValueError(f"min_price must be non-negative, got {self.min_price}")
+        if self.max_price <= self.min_price:
+            raise ValueError(f"max_price ({self.max_price}) must be greater than min_price ({self.min_price})")
+        if self.max_gap_minutes <= 0:
+            raise ValueError(f"max_gap_minutes must be positive, got {self.max_gap_minutes}")
+        valid_methods = {"forward_fill", "backward_fill", "linear", "midpoint", "drop"}
+        # Normalize to lowercase and validate
+        normalized_method = self.imputation_method.lower()
+        if normalized_method not in valid_methods:
+            raise ValueError(f"imputation_method must be one of {valid_methods}, got {self.imputation_method}")
+        # Store the normalized value for consistent usage
+        object.__setattr__(self, 'imputation_method', normalized_method)
+
 
 @dataclass
 class RollingWindowConfig:
@@ -76,6 +98,20 @@ class RollingWindowConfig:
     short: int = 5
     medium: int = 15
     long: int = 60
+
+    def __post_init__(self):
+        """Validate window sizes are positive and in order."""
+        if self.short <= 0:
+            raise ValueError(f"short window must be positive, got {self.short}")
+        if self.medium <= 0:
+            raise ValueError(f"medium window must be positive, got {self.medium}")
+        if self.long <= 0:
+            raise ValueError(f"long window must be positive, got {self.long}")
+        if not (self.short <= self.medium <= self.long):
+            raise ValueError(
+                f"Windows must satisfy short <= medium <= long, "
+                f"got short={self.short}, medium={self.medium}, long={self.long}"
+            )
 
 
 @dataclass
@@ -135,6 +171,24 @@ class TimeBinningConfig:
     event_window_hours_pre: int = 24
     event_window_hours_post: int = 4
 
+    def __post_init__(self):
+        """Validate binning parameters."""
+        valid_modes = {"lifecycle", "tts", "event_aligned", "calendar"}
+        # Normalize to lowercase and validate
+        normalized_mode = self.mode.lower()
+        if normalized_mode not in valid_modes:
+            raise ValueError(f"mode must be one of {valid_modes}, got {self.mode}")
+        # Store the normalized value for consistent usage
+        object.__setattr__(self, 'mode', normalized_mode)
+        if self.n_bins <= 0:
+            raise ValueError(f"n_bins must be positive, got {self.n_bins}")
+        if self.lifecycle_bins <= 0:
+            raise ValueError(f"lifecycle_bins must be positive, got {self.lifecycle_bins}")
+        if self.event_window_hours_pre <= 0:
+            raise ValueError(f"event_window_hours_pre must be positive, got {self.event_window_hours_pre}")
+        if self.event_window_hours_post <= 0:
+            raise ValueError(f"event_window_hours_post must be positive, got {self.event_window_hours_post}")
+
 
 @dataclass
 class EventAlignmentConfig:
@@ -145,6 +199,15 @@ class EventAlignmentConfig:
     grid_hours_pre: int = 24
     grid_hours_post: int = 4
 
+    def __post_init__(self):
+        """Validate alignment parameters."""
+        if self.pre_event_minutes <= 0:
+            raise ValueError(f"pre_event_minutes must be positive, got {self.pre_event_minutes}")
+        if self.post_event_minutes <= 0:
+            raise ValueError(f"post_event_minutes must be positive, got {self.post_event_minutes}")
+        if self.interpolation_grid_minutes <= 0:
+            raise ValueError(f"interpolation_grid_minutes must be positive, got {self.interpolation_grid_minutes}")
+
 
 @dataclass
 class SurgeDetectionConfig:
@@ -152,6 +215,15 @@ class SurgeDetectionConfig:
     volume_threshold: float = 2.0
     volatility_threshold: float = 2.0
     lookback_window: int = 30
+
+    def __post_init__(self):
+        """Validate surge detection parameters."""
+        if self.volume_threshold <= 0:
+            raise ValueError(f"volume_threshold must be positive, got {self.volume_threshold}")
+        if self.volatility_threshold <= 0:
+            raise ValueError(f"volatility_threshold must be positive, got {self.volatility_threshold}")
+        if self.lookback_window <= 0:
+            raise ValueError(f"lookback_window must be positive, got {self.lookback_window}")
 
 
 @dataclass
