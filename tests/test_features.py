@@ -1,15 +1,13 @@
 """
 Unit tests for feature engineering module.
-"""
 
-import sys
-from pathlib import Path
+Run tests with: pytest tests/test_features.py -v
+After installing package with: pip install -e .
+"""
 
 import numpy as np
 import pandas as pd
 import pytest
-
-sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from src.utils.config import load_config
 from src.utils.types import ContractTimeseries, MarketDataset
