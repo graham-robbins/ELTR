@@ -1,5 +1,5 @@
 """
-Data ingestion module for IRP platform.
+Data ingestion module for ELTR platform.
 
 Provides loaders for Kalshi prediction market data.
 """

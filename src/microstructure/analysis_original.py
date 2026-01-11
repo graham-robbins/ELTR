@@ -18,7 +18,7 @@
 # =============================================================================
 
 """
-Microstructure analysis module for IRP platform.
+Microstructure analysis module for ELTR platform.
 
 Provides advanced market microstructure analytics including
 liquidity surges, volatility dynamics, spread evolution,
@@ -36,7 +36,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
     AnalyticsResult,
@@ -744,13 +744,13 @@ class MicrostructureAnalyzer:
     comprehensive market analysis.
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         """
         Initialize microstructure analyzer.
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration. Uses global if None.
         """
         self.config = config or get_config()
@@ -954,7 +954,7 @@ class MicrostructureAnalyzer:
 
 
 def analyze_microstructure(
-    dataset: MarketDataset, config: IRPConfig | None = None
+    dataset: MarketDataset, config: ELTRConfig | None = None
 ) -> tuple[list[MicrostructureMetrics], pd.DataFrame]:
     """
     Convenience function for microstructure analysis.
@@ -963,7 +963,7 @@ def analyze_microstructure(
     ----------
     dataset : MarketDataset
         Dataset to analyze.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration.
 
     Returns

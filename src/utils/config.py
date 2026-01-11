@@ -1,5 +1,5 @@
 """
-Configuration management for IRP prediction market analysis platform.
+Configuration management for ELTR prediction market analysis platform.
 
 Provides centralized configuration loading, validation, and access patterns
 following production engineering standards.
@@ -310,7 +310,7 @@ class LoggingConfig:
     """Logging configuration."""
     level: str = "INFO"
     format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    file: str = "logs/irp.log"
+    file: str = "logs/eltr.log"
 
 
 @dataclass
@@ -323,9 +323,9 @@ class PipelineConfig:
 
 
 @dataclass
-class IRPConfig:
+class ELTRConfig:
     """
-    Master configuration container for IRP platform.
+    Master configuration container for ELTR platform.
 
     Aggregates all sub-configurations into a single access point.
     """
@@ -369,7 +369,7 @@ def _parse_nested_config(data: dict[str, Any], config_class: type) -> Any:
     return config_class(**parsed)
 
 
-def load_config(config_path: str | Path | None = None) -> IRPConfig:
+def load_config(config_path: str | Path | None = None) -> ELTRConfig:
     """
     Load configuration from YAML file.
 
@@ -380,7 +380,7 @@ def load_config(config_path: str | Path | None = None) -> IRPConfig:
 
     Returns
     -------
-    IRPConfig
+    ELTRConfig
         Loaded and validated configuration object.
 
     Raises
@@ -400,7 +400,7 @@ def load_config(config_path: str | Path | None = None) -> IRPConfig:
     with open(config_path) as f:
         raw_config = yaml.safe_load(f)
 
-    config = IRPConfig()
+    config = ELTRConfig()
 
     if "data" in raw_config:
         config.data = DataConfig(**raw_config["data"])
@@ -472,10 +472,10 @@ def load_config(config_path: str | Path | None = None) -> IRPConfig:
     return config
 
 
-_global_config: IRPConfig | None = None
+_global_config: ELTRConfig | None = None
 
 
-def get_config() -> IRPConfig:
+def get_config() -> ELTRConfig:
     """
     Get global configuration instance.
 
@@ -483,7 +483,7 @@ def get_config() -> IRPConfig:
 
     Returns
     -------
-    IRPConfig
+    ELTRConfig
         Global configuration object.
     """
     global _global_config
@@ -492,13 +492,13 @@ def get_config() -> IRPConfig:
     return _global_config
 
 
-def set_config(config: IRPConfig) -> None:
+def set_config(config: ELTRConfig) -> None:
     """
     Set global configuration instance.
 
     Parameters
     ----------
-    config : IRPConfig
+    config : ELTRConfig
         Configuration to set as global.
     """
     global _global_config

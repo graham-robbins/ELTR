@@ -1,7 +1,7 @@
 .
 ├── .claude
 │   └── settings.local.json
-├── IRP.py
+├── ELTR.py
 ├── code_structure.txt
 ├── config
 │   └── default.yaml

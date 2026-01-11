@@ -1,5 +1,5 @@
 """
-Data cleaning module for IRP platform.
+Data cleaning module for ELTR platform.
 
 Provides comprehensive data cleaning, validation, and imputation
 strategies for prediction market timeseries data.
@@ -16,7 +16,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
     ContractTimeseries,
@@ -299,13 +299,13 @@ class DataCleaner:
     for market data.
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         """
         Initialize data cleaner.
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration. Uses global if None.
         """
         self.config = config or get_config()
@@ -509,7 +509,7 @@ class DataCleaner:
 
 
 def clean_market_data(
-    dataset: MarketDataset, config: IRPConfig | None = None
+    dataset: MarketDataset, config: ELTRConfig | None = None
 ) -> tuple[MarketDataset, dict[str, CleaningStats]]:
     """
     Convenience function to clean market dataset.
@@ -518,7 +518,7 @@ def clean_market_data(
     ----------
     dataset : MarketDataset
         Dataset to clean.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration.
 
     Returns

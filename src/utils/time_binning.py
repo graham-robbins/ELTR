@@ -3,7 +3,7 @@ Time binning utilities for cross-contract analysis.
 
 Provides normalized time axes for comparing contracts with different
 lifespans and event times. This module is the SINGLE SOURCE OF TRUTH
-for all lifecycle computations across the IRP platform.
+for all lifecycle computations across the ELTR platform.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from typing import Literal
 import numpy as np
 import pandas as pd
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 
 logger = get_logger("time_binning")
@@ -301,7 +301,7 @@ def make_time_bins(
     mode: str = "lifecycle",
     n_bins: int = 50,
     event_time: pd.Timestamp | None = None,
-    config: IRPConfig | None = None,
+    config: ELTRConfig | None = None,
     nonlinear: bool = False,
 ) -> pd.DataFrame:
     """
@@ -317,7 +317,7 @@ def make_time_bins(
         Number of bins.
     event_time : pd.Timestamp | None
         Event time for event_aligned mode.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Configuration object.
     nonlinear : bool
         Use nonlinear bin edges (lifecycle mode only).

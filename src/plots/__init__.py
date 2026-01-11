@@ -1,5 +1,5 @@
 """
-Visualization module for IRP platform.
+Visualization module for ELTR platform.
 
 Provides plotting capabilities for prediction market analysis.
 

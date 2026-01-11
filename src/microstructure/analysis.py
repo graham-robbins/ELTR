@@ -38,7 +38,7 @@ try:
 except ImportError:
     JOBLIB_AVAILABLE = False
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
     AnalyticsResult,
@@ -383,7 +383,7 @@ class MicrostructureAnalyzer:
 
     Parameters
     ----------
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration. Uses global if None.
     n_jobs : int
         Number of parallel workers for dataset analysis.
@@ -391,7 +391,7 @@ class MicrostructureAnalyzer:
         Default uses config.pipeline.parallel_workers.
     """
 
-    def __init__(self, config: IRPConfig | None = None, n_jobs: int | None = None):
+    def __init__(self, config: ELTRConfig | None = None, n_jobs: int | None = None):
         """Initialize microstructure analyzer."""
         self.config = config or get_config()
         micro_config = self.config.microstructure
@@ -601,7 +601,7 @@ class MicrostructureAnalyzer:
 # Convenience functions
 
 def analyze_microstructure(
-    dataset: MarketDataset, config: IRPConfig | None = None
+    dataset: MarketDataset, config: ELTRConfig | None = None
 ) -> tuple[list[MicrostructureMetrics], pd.DataFrame]:
     """Convenience function for microstructure analysis."""
     analyzer = MicrostructureAnalyzer(config)
@@ -611,7 +611,7 @@ def analyze_microstructure(
 def run_full_analysis(
     df: pd.DataFrame,
     contract_id: str = "unknown",
-    config: IRPConfig | None = None,
+    config: ELTRConfig | None = None,
 ) -> dict[str, any]:
     """
     Run full microstructure analysis on a single DataFrame.

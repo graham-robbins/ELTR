@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 
 logger = get_logger("normalization")
@@ -207,7 +207,7 @@ def normalize_dataframe(
     df: pd.DataFrame,
     columns: list[str] | None = None,
     method: str | dict[str, str] = "zscore",
-    config: IRPConfig | None = None,
+    config: ELTRConfig | None = None,
     suffix: str = "_norm",
 ) -> pd.DataFrame:
     """
@@ -221,7 +221,7 @@ def normalize_dataframe(
         Columns to normalize. All numeric if None.
     method : str | dict[str, str]
         Normalization method or dict mapping column to method.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Configuration with normalization settings.
     suffix : str
         Suffix for normalized column names.
@@ -256,7 +256,7 @@ def normalize_dataframe(
     return df
 
 
-def _get_config_method(column: str, config: IRPConfig) -> str:
+def _get_config_method(column: str, config: ELTRConfig) -> str:
     """Get normalization method from config based on column name."""
     col_lower = column.lower()
 

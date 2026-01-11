@@ -1,5 +1,5 @@
 """
-Edge case tests for the IRP platform.
+Edge case tests for the ELTR platform.
 
 Tests unusual inputs, boundary conditions, and error handling.
 

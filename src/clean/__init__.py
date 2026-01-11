@@ -1,5 +1,5 @@
 """
-Data cleaning module for IRP platform.
+Data cleaning module for ELTR platform.
 
 Provides data validation, imputation, and outlier treatment.
 """

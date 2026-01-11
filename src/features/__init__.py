@@ -1,5 +1,5 @@
 """
-Feature engineering module for IRP platform.
+Feature engineering module for ELTR platform.
 
 Provides feature extraction for prediction market timeseries.
 """

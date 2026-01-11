@@ -1,5 +1,5 @@
 """
-Microstructure analysis module for IRP platform.
+Microstructure analysis module for ELTR platform.
 
 Provides market microstructure analytics and event analysis.
 

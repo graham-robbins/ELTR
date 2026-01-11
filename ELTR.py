@@ -1,14 +1,14 @@
 """
-IRP: Kalshi Prediction Market Research Platform
+ELTR: Episodic Liquidity and Trading Regimes in Prediction Markets
 
-Production-ready analytical framework for prediction market analysis.
+Production-ready analytical framework for prediction market microstructure analysis.
 Implements a pipelines-first architecture: ingestion → cleaning →
 normalization → feature extraction → analytics → visualization → export.
 
 Usage:
-    python IRP.py --event-type sports --save-figures
-    python IRP.py --categories Sports,Politics --output-dir results
-    python IRP.py --full-analysis
+    python ELTR.py --event-type sports --save-figures
+    python ELTR.py --categories Sports,Politics --output-dir results
+    python ELTR.py --full-analysis
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ pd.set_option("display.float_format", lambda x: f"{x:.4f}")
 pd.set_option("display.max_columns", None)
 pd.set_option("display.width", None)
 
-from src.utils.config import IRPConfig, load_config, get_config
+from src.utils.config import ELTRConfig, load_config, get_config
 from src.utils.logging import setup_logging, get_logger
 from src.utils.types import MarketDataset, Category
 
@@ -47,7 +47,7 @@ from src.utils.export import MetricsExporter, export_metrics
 class PipelineStage:
     """Base class for pipeline stages."""
 
-    def __init__(self, name: str, config: IRPConfig):
+    def __init__(self, name: str, config: ELTRConfig):
         self.name = name
         self.config = config
         self.logger = get_logger(f"pipeline.{name}")
@@ -60,7 +60,7 @@ class PipelineStage:
 class IngestionStage(PipelineStage):
     """Data ingestion stage."""
 
-    def __init__(self, config: IRPConfig, categories: list[Category] | None = None):
+    def __init__(self, config: ELTRConfig, categories: list[Category] | None = None):
         super().__init__("ingestion", config)
         self.categories = categories
         self.loader = KalshiDataLoader(config)
@@ -79,7 +79,7 @@ class IngestionStage(PipelineStage):
 class CleaningStage(PipelineStage):
     """Data cleaning stage."""
 
-    def __init__(self, config: IRPConfig):
+    def __init__(self, config: ELTRConfig):
         super().__init__("cleaning", config)
         self.cleaner = DataCleaner(config)
 
@@ -94,7 +94,7 @@ class CleaningStage(PipelineStage):
 class FeatureStage(PipelineStage):
     """Feature engineering stage."""
 
-    def __init__(self, config: IRPConfig):
+    def __init__(self, config: ELTRConfig):
         super().__init__("features", config)
         self.engineer = FeatureEngineer(config)
 
@@ -109,7 +109,7 @@ class FeatureStage(PipelineStage):
 class MicrostructureStage(PipelineStage):
     """Microstructure analysis stage."""
 
-    def __init__(self, config: IRPConfig):
+    def __init__(self, config: ELTRConfig):
         super().__init__("microstructure", config)
         self.analyzer = MicrostructureAnalyzer(config)
 
@@ -124,7 +124,7 @@ class MicrostructureStage(PipelineStage):
 class VisualizationStage(PipelineStage):
     """Visualization generation stage."""
 
-    def __init__(self, config: IRPConfig, output_dir: Path | None = None):
+    def __init__(self, config: ELTRConfig, output_dir: Path | None = None):
         super().__init__("visualization", config)
         self.output_dir = output_dir or config.output.figures_path
         self.plot_manager = PlotManager(config)
@@ -140,7 +140,7 @@ class VisualizationStage(PipelineStage):
 class ExportStage(PipelineStage):
     """Data export stage with extended metrics."""
 
-    def __init__(self, config: IRPConfig, output_dir: Path | None = None):
+    def __init__(self, config: ELTRConfig, output_dir: Path | None = None):
         super().__init__("export", config)
         self.output_dir = output_dir or Path(config.output.tables_path)
         self.metrics_exporter = MetricsExporter(config)
@@ -197,7 +197,7 @@ class ExportStage(PipelineStage):
 class EventTrajectoryStage(PipelineStage):
     """Event trajectory analysis stage."""
 
-    def __init__(self, config: IRPConfig):
+    def __init__(self, config: ELTRConfig):
         super().__init__("event_trajectories", config)
         self.analyzer = EventTrajectoryAnalyzer(config)
 
@@ -225,7 +225,7 @@ class BatchedResearchPipeline:
 
     def __init__(
         self,
-        config: IRPConfig | None = None,
+        config: ELTRConfig | None = None,
         categories: list[Category] | None = None,
         output_dir: Path | None = None,
         batch_size: int = 30,
@@ -236,7 +236,7 @@ class BatchedResearchPipeline:
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration.
         categories : list[Category] | None
             Categories to analyze.
@@ -582,7 +582,7 @@ class ResearchPipeline:
 
     def __init__(
         self,
-        config: IRPConfig | None = None,
+        config: ELTRConfig | None = None,
         categories: list[Category] | None = None,
         output_dir: Path | None = None,
     ):
@@ -591,7 +591,7 @@ class ResearchPipeline:
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration.
         categories : list[Category] | None
             Categories to analyze.
@@ -743,13 +743,13 @@ class ResearchPipeline:
 def create_argument_parser() -> argparse.ArgumentParser:
     """Create CLI argument parser."""
     parser = argparse.ArgumentParser(
-        description="Kalshi Prediction Market Research Platform",
+        description="ELTR: Episodic Liquidity and Trading Regimes in Prediction Markets",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-    python IRP.py --full-analysis
-    python IRP.py --categories Sports,Politics --save-figures
-    python IRP.py --event-type economics --output-dir results
+    python ELTR.py --full-analysis
+    python ELTR.py --categories Sports,Politics --save-figures
+    python ELTR.py --event-type economics --output-dir results
         """,
     )
 

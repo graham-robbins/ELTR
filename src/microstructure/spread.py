@@ -1,7 +1,7 @@
 """
 Bid-Ask Spread Computation and Analysis.
 
-This module consolidates all spread-related computations from the IRP platform.
+This module consolidates all spread-related computations from the ELTR platform.
 
 Definitions:
     Raw Spread = ask - bid

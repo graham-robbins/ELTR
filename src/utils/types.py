@@ -1,5 +1,5 @@
 """
-Type definitions and data structures for IRP platform.
+Type definitions and data structures for ELTR platform.
 
 Provides typed containers, enums, and protocol definitions for
 consistent data handling across all modules.

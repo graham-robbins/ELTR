@@ -1,5 +1,5 @@
-# Kalshi Prediction Market Research Platform Configuration
-# Production configuration for IRP analysis system
+# ELTR: Episodic Liquidity and Trading Regimes in Prediction Markets
+# Production configuration for ELTR analysis system
 
 # Data paths
 data:

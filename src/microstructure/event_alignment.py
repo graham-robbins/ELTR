@@ -1,5 +1,5 @@
 """
-Event-aligned trajectory analysis for IRP platform.
+Event-aligned trajectory analysis for ELTR platform.
 
 Provides event-time normalization and trajectory computation for
 cross-contract comparison with aligned temporal axes.
@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 from scipy import interpolate
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
     Category,
@@ -630,16 +630,16 @@ class EventTrajectoryAnalyzer:
     Main event trajectory analysis orchestrator.
 
     Coordinates alignment and aggregation to produce
-    signature trajectory plots for the IRP.
+    signature trajectory plots for ELTR.
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         """
         Initialize analyzer.
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration.
         """
         self.config = config or get_config()
@@ -699,7 +699,7 @@ class EventTrajectoryAnalyzer:
         dataset: MarketDataset,
     ) -> dict[str, AggregatedTrajectory]:
         """
-        Compute signature trajectories for IRP.
+        Compute signature trajectories for ELTR.
 
         Produces median trajectories for:
         - Midprice evolution
@@ -747,7 +747,7 @@ class EventTrajectoryAnalyzer:
 
 def compute_event_trajectories(
     dataset: MarketDataset,
-    config: IRPConfig | None = None,
+    config: ELTRConfig | None = None,
 ) -> dict[str, list[AggregatedTrajectory]]:
     """
     Convenience function for event trajectory analysis.
@@ -756,7 +756,7 @@ def compute_event_trajectories(
     ----------
     dataset : MarketDataset
         Dataset to analyze.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration.
 
     Returns

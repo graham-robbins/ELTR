@@ -1,5 +1,5 @@
 """
-Integration tests for the IRP pipeline.
+Integration tests for the ELTR pipeline.
 
 These tests verify the full pipeline flow from data processing
 through feature engineering and microstructure analysis.

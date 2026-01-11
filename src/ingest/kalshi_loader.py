@@ -15,7 +15,7 @@ from typing import Iterator
 import numpy as np
 import pandas as pd
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
     Category,
@@ -435,7 +435,7 @@ class ContractLoader:
 
     def __init__(
         self,
-        config: IRPConfig,
+        config: ELTRConfig,
         timestamp_parser: TimestampParser,
         validator: SchemaValidator | None = None,
     ):
@@ -444,7 +444,7 @@ class ContractLoader:
 
         Parameters
         ----------
-        config : IRPConfig
+        config : ELTRConfig
             Platform configuration.
         timestamp_parser : TimestampParser
             Timestamp parsing handler.
@@ -570,13 +570,13 @@ class MetadataLoader:
     information and resolution rules.
     """
 
-    def __init__(self, config: IRPConfig, validator: SchemaValidator | None = None):
+    def __init__(self, config: ELTRConfig, validator: SchemaValidator | None = None):
         """
         Initialize metadata loader.
 
         Parameters
         ----------
-        config : IRPConfig
+        config : ELTRConfig
             Platform configuration.
         validator : SchemaValidator | None
             Optional schema validator.
@@ -665,13 +665,13 @@ class KalshiDataLoader:
     a unified MarketDataset structure.
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         """
         Initialize Kalshi data loader.
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration. Uses global config if None.
         """
         self.config = config or get_config()
@@ -836,7 +836,7 @@ class KalshiDataLoader:
 
 
 def load_kalshi_data(
-    config: IRPConfig | None = None,
+    config: ELTRConfig | None = None,
     categories: list[Category] | None = None,
     min_observations: int | None = None,
 ) -> MarketDataset:
@@ -845,7 +845,7 @@ def load_kalshi_data(
 
     Parameters
     ----------
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration.
     categories : list[Category] | None
         Categories to load.

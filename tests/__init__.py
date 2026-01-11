@@ -1,3 +1,3 @@
 """
-Test suite for IRP platform.
+Test suite for ELTR platform.
 """

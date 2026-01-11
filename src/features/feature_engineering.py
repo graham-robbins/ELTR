@@ -1,5 +1,5 @@
 """
-Feature engineering module for IRP platform.
+Feature engineering module for ELTR platform.
 
 Provides comprehensive feature extraction for prediction market
 timeseries including returns, volatility, liquidity, spread metrics,
@@ -17,7 +17,7 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
     ContractTimeseries,
@@ -762,13 +762,13 @@ class FeatureEngineer:
     comprehensive feature sets.
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         """
         Initialize feature engineer.
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration. Uses global if None.
         """
         self.config = config or get_config()
@@ -923,7 +923,7 @@ class FeatureEngineer:
 
 
 def engineer_features(
-    dataset: MarketDataset, config: IRPConfig | None = None
+    dataset: MarketDataset, config: ELTRConfig | None = None
 ) -> MarketDataset:
     """
     Convenience function to engineer features for dataset.
@@ -932,7 +932,7 @@ def engineer_features(
     ----------
     dataset : MarketDataset
         Dataset to process.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration.
 
     Returns

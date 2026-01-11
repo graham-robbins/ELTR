@@ -1,5 +1,5 @@
 """
-Metrics export module for IRP platform.
+Metrics export module for ELTR platform.
 
 Provides comprehensive CSV export functionality for all
 microstructure metrics, regime statistics, and trajectory data.
@@ -14,7 +14,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import ContractTimeseries, MarketDataset
 from src.utils.time_binning import (
@@ -142,13 +142,13 @@ class MetricsExporter:
     - Event trajectory summaries
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         """
         Initialize exporter.
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration.
         """
         self.config = config or get_config()
@@ -735,7 +735,7 @@ class MetricsExporter:
 
 def export_metrics(
     dataset: MarketDataset,
-    config: IRPConfig | None = None,
+    config: ELTRConfig | None = None,
     output_dir: Path | str | None = None,
 ) -> dict[str, Path]:
     """
@@ -745,7 +745,7 @@ def export_metrics(
     ----------
     dataset : MarketDataset
         Dataset to export.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration.
     output_dir : Path | str | None
         Output directory.

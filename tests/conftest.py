@@ -1,5 +1,5 @@
 """
-Pytest configuration and shared fixtures for IRP test suite.
+Pytest configuration and shared fixtures for ELTR test suite.
 
 This file is automatically loaded by pytest and provides shared fixtures
 that can be used across all test modules.
@@ -9,12 +9,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.utils.config import load_config, IRPConfig
+from src.utils.config import load_config, ELTRConfig
 from src.utils.types import ContractTimeseries, MarketDataset
 
 
 @pytest.fixture
-def config() -> IRPConfig:
+def config() -> ELTRConfig:
     """Load default configuration for tests."""
     return load_config()
 

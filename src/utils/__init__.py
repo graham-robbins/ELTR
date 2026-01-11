@@ -1,12 +1,12 @@
 """
-Utility modules for IRP platform.
+Utility modules for ELTR platform.
 
 Provides configuration, types, logging, normalization,
 time binning, and export infrastructure.
 """
 
 from src.utils.config import (
-    IRPConfig,
+    ELTRConfig,
     load_config,
     get_config,
     set_config,
@@ -52,7 +52,7 @@ from src.utils.export import (
 
 __all__ = [
     # Config
-    "IRPConfig",
+    "ELTRConfig",
     "load_config",
     "get_config",
     "set_config",

@@ -1,5 +1,5 @@
 """
-Visualization module for IRP platform.
+Visualization module for ELTR platform.
 
 Provides comprehensive plotting capabilities for prediction market
 analysis including time series, heatmaps, trajectories, and
@@ -26,7 +26,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from src.utils.config import IRPConfig, get_config
+from src.utils.config import ELTRConfig, get_config
 from src.utils.logging import get_logger
 from src.utils.types import (
     Category,
@@ -48,7 +48,7 @@ logger = get_logger("plots")
 class BasePlotter(ABC):
     """Abstract base class for plotters."""
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         self.config = config or get_config()
         self.plot_config = self.config.plots
         self._setup_style()
@@ -1491,13 +1491,13 @@ class PlotManager:
     - event_trajectory: Event-aligned signature plots
     """
 
-    def __init__(self, config: IRPConfig | None = None):
+    def __init__(self, config: ELTRConfig | None = None):
         """
         Initialize plot manager.
 
         Parameters
         ----------
-        config : IRPConfig | None
+        config : ELTRConfig | None
             Platform configuration.
         """
         self.config = config or get_config()
@@ -1637,7 +1637,7 @@ class PlotManager:
         """
         Generate complete microstructure atlas for publication.
 
-        Creates all research-grade plots for the IRP North Star:
+        Creates all research-grade plots for ELTR:
         - Spread tightening curves
         - Liquidity trajectories
         - Volatility burst maps
@@ -1708,7 +1708,7 @@ class PlotManager:
 
 def generate_all_plots(
     dataset: MarketDataset,
-    config: IRPConfig | None = None,
+    config: ELTRConfig | None = None,
     output_dir: Path | None = None,
 ) -> list[Path]:
     """
@@ -1718,7 +1718,7 @@ def generate_all_plots(
     ----------
     dataset : MarketDataset
         Dataset to visualize.
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Platform configuration.
     output_dir : Path | None
         Output directory.

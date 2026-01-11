@@ -1,5 +1,5 @@
 """
-Logging configuration for IRP platform.
+Logging configuration for ELTR platform.
 
 Provides consistent logging setup across all modules with
 file and console handlers.
@@ -11,16 +11,16 @@ import logging
 import sys
 from pathlib import Path
 
-from src.utils.config import get_config, IRPConfig
+from src.utils.config import get_config, ELTRConfig
 
 
-def setup_logging(config: IRPConfig | None = None) -> logging.Logger:
+def setup_logging(config: ELTRConfig | None = None) -> logging.Logger:
     """
-    Configure logging for IRP platform.
+    Configure logging for ELTR platform.
 
     Parameters
     ----------
-    config : IRPConfig | None
+    config : ELTRConfig | None
         Configuration object. Uses global config if None.
 
     Returns
@@ -38,7 +38,7 @@ def setup_logging(config: IRPConfig | None = None) -> logging.Logger:
 
     level = getattr(logging, log_config.level.upper(), logging.INFO)
 
-    root_logger = logging.getLogger("irp")
+    root_logger = logging.getLogger("eltr")
     root_logger.setLevel(level)
 
     root_logger.handlers.clear()
@@ -72,4 +72,4 @@ def get_logger(name: str) -> logging.Logger:
     logging.Logger
         Module-specific logger.
     """
-    return logging.getLogger(f"irp.{name}")
+    return logging.getLogger(f"eltr.{name}")
