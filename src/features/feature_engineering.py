@@ -595,18 +595,19 @@ class LifecycleFeatures(FeatureExtractor):
 
 class MicrostructureRegimeFeatures(FeatureExtractor):
     """
-    Classifies microstructure state at each observation.
+    Classifies microstructure state at each observation (Section 3.2).
 
-    Uses RAW volatility and volume values (not normalized) per Section 4.
+    Uses RAW volatility and volume values (not normalized).
+    Priority ordering per Section 3.3, Eq. 14:
+        FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT > ACTIVE_INFORMATION > THIN > NORMAL
 
-    State machine categories:
-    - Frozen: No trading activity
-    - Thin: Wide spreads, low depth
-    - Normal: Typical trading conditions
-    - Active Information Arrival: High volume, normal volatility
-    - Volatility Burst: |mid_return| > k * rolling_volatility AND volume > threshold
-    - Resolution Drift: lifecycle_ratio > 0.9 AND spread < threshold AND
-                        volume < threshold AND volatility < threshold
+    State definitions (Section 3.2):
+    - Frozen: v_t = 0 OR v_t < θ_F * v̄_t, θ_F = 0.10 (Eq. 8)
+    - Thin: s̃_t > θ_T, θ_T = 0.15 (Eq. 9)
+    - Normal: default state when no other conditions apply (Eq. 10)
+    - Active Information: q*_t > θ_A, θ_A = 1.5 (Eq. 11)
+    - Volatility Burst: |r_t| > κσ_t AND v_t > λv̄_t, κ = 2.5, λ = 1.5 (Eq. 12)
+    - Resolution Drift: ℓ_t > 0.90 AND low spread/volume/volatility (Eq. 13)
     """
 
     def __init__(
@@ -671,8 +672,8 @@ class MicrostructureRegimeFeatures(FeatureExtractor):
                 window=self.rolling_window, min_periods=1
             ).mean()
 
-        # Volatility burst detection (Section 4):
-        # burst = (|mid_return| > k * rolling_volatility) AND (volume > rolling_volume * multiplier)
+        # Volatility burst detection (Section 3.2, Eq. 12):
+        # |r_t| > κσ_t AND v_t > λv̄_t, κ = 2.5, λ = 1.5
         if raw_rolling_volatility is not None and "pct_return" in df.columns:
             mid_return = df["pct_return"].abs()
             volatility_condition = mid_return > (self.burst_volatility_k * raw_rolling_volatility)
@@ -685,7 +686,7 @@ class MicrostructureRegimeFeatures(FeatureExtractor):
 
             states[burst_mask] = MicrostructureState.VOLATILITY_BURST.value
 
-        # Active information arrival (high volume, normal volatility)
+        # Active information arrival (Section 3.2, Eq. 11): q*_t > θ_A, θ_A = 1.5
         if raw_rolling_volume is not None and "volume" in df.columns:
             vol_std = df["volume"].rolling(window=self.rolling_window, min_periods=1).std()
             vol_zscore = np.where(
@@ -698,9 +699,8 @@ class MicrostructureRegimeFeatures(FeatureExtractor):
             active_info_mask = active_volume_mask & (states == MicrostructureState.NORMAL.value)
             states[active_info_mask] = MicrostructureState.ACTIVE_INFORMATION.value
 
-        # Resolution drift (Section 4):
-        # Only assign when lifecycle_ratio > 0.9 AND spread < threshold AND
-        # volume < threshold AND volatility < threshold
+        # Resolution drift (Section 3.2, Eq. 13):
+        # ℓ_t > 0.90 AND spread < 5th pctl AND volume < 25th pctl AND volatility < 25th pctl
         if "lifecycle_ratio" in df.columns:
             lifecycle_mask = df["lifecycle_ratio"] > self.resolution_lifecycle_threshold
 
@@ -722,15 +722,17 @@ class MicrostructureRegimeFeatures(FeatureExtractor):
                 volatility_ok = raw_rolling_volatility < vol_threshold
 
             resolution_mask = lifecycle_mask & spread_ok & volume_ok & volatility_ok
+            # Priority: only assign if not already VOLATILITY_BURST (Section 3.3)
+            resolution_mask = resolution_mask & (states != MicrostructureState.VOLATILITY_BURST.value)
             states[resolution_mask] = MicrostructureState.RESOLUTION_DRIFT.value
 
-        # Thin market: wide spreads
+        # Thin market (Section 3.2, Eq. 9): s̃_t > θ_T, θ_T = 0.15
         if "spread_pct" in df.columns:
             thin_mask = df["spread_pct"] > self.thin_spread_threshold
             thin_mask = thin_mask & (states == MicrostructureState.NORMAL.value)
             states[thin_mask] = MicrostructureState.THIN.value
 
-        # Frozen market: no/minimal volume
+        # Frozen market (Section 3.2, Eq. 8): v_t = 0 OR v_t < θ_F * v̄_t, θ_F = 0.10
         if "volume" in df.columns:
             vol_ma = df["volume"].rolling(window=self.rolling_window, min_periods=1).mean()
             frozen_mask = df["volume"] < (vol_ma * self.frozen_volume_threshold)

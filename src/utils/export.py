@@ -297,7 +297,7 @@ class MetricsExporter:
         """
         Compute regime entropy and proportions.
 
-        Entropy is normalized by log(num_states) per Section 9,
+        Entropy is normalized by log(num_states) per Section 3.5, Eq. 19-20,
         yielding a value in [0, 1] where 1 = maximum entropy (uniform distribution).
         """
         if "microstructure_state" not in df.columns:
@@ -317,7 +317,7 @@ class MetricsExporter:
             key = str(k).replace("MicrostructureState.", "")
             props_clean[key] = float(v)
 
-        # Compute entropy (Section 9: normalize by log(num_states))
+        # Compute entropy (Section 3.5, Eq. 19-20: normalize by log(num_states))
         probs = np.array(list(props_clean.values()))
         probs = probs[probs > 0]
         num_states = len(probs)

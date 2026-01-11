@@ -15,29 +15,33 @@ Definitions:
         times are localized to UTC. Event time is typically contract
         settlement or underlying event occurrence.
 
-    Microstructure States (classification hierarchy, highest priority first):
-        FROZEN: volume < 0.1 * rolling_mean OR volume = 0
-            Indicates no meaningful trading activity.
-        VOLATILITY_BURST: |return| > 2.5 * rolling_volatility AND
-                          volume > 1.5 * rolling_volume (see bursts.py)
-        RESOLUTION_DRIFT: lifecycle_ratio > 0.9 AND spread, volume, and
-                          volatility all below 25th percentile
-            Late-stage low-activity period as market converges.
-        ACTIVE_INFORMATION: volume_zscore > 1.5
-            Elevated trading activity suggesting information arrival.
-        THIN: spread_pct > 15%
-            Wide spreads indicating poor liquidity.
-        NORMAL: default state when no other conditions met
+    Microstructure States (Section 3.2, classification hierarchy per Section 3.3):
+        FROZEN: v_t = 0 OR v_t < θ_F * v̄_t, θ_F = 0.10 (Eq. 8)
+            No meaningful trading activity; price discovery stalled.
+        VOLATILITY_BURST: |r_t| > κσ_t AND v_t > λv̄_t, κ = 2.5, λ = 1.5 (Eq. 12)
+            Sharp price movement with elevated volume; information shock.
+        RESOLUTION_DRIFT: ℓ_t > 0.90 AND spread < 5th pctl AND volume < 25th pctl
+                          AND volatility < 25th pctl (Eq. 13)
+            Late-stage quiet trading as uncertainty collapses near resolution.
+        ACTIVE_INFORMATION: q*_t > θ_A, θ_A = 1.5 (Eq. 11)
+            Elevated trading activity consistent with information arrival.
+        THIN: s̃_t > θ_T, θ_T = 0.15 (Eq. 9)
+            Wide spreads; liquidity scarce, execution costly.
+        NORMAL: default state when no other conditions apply (Eq. 10)
 
-    Transition Matrix:
-        P[i,j] = count(state_i -> state_j) / sum(transitions from state_i)
-        Row-stochastic matrix. Self-transitions are included. Computed at
-        observation-level granularity. Assumes approximate stationarity
-        within analysis window.
+    Priority Ordering (Section 3.3, Eq. 14):
+        FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT > ACTIVE_INFORMATION > THIN > NORMAL
+
+    Transition Matrix (Section 3.4, Eq. 16-17):
+        P[i,j] = P(S_{t+1} = j | S_t = i)
+        Row-stochastic matrix. Self-transitions included. Computed at
+        observation-level granularity.
 
 References:
-    - Section 4: Microstructure state classification
-    - Section 9: Regime entropy (normalized by log(num_states))
+    - Section 3.2: Microstructure state definitions
+    - Section 3.3: Priority ordering (Eq. 14)
+    - Section 3.4: Markov transition matrix (Eq. 16-17)
+    - Section 3.5: Regime entropy (Eq. 18-20)
 """
 
 from __future__ import annotations
@@ -59,12 +63,12 @@ logger = get_logger("microstructure.regimes")
 
 class MicrostructureState(Enum):
     """
-    Microstructure regime state classification.
+    Microstructure regime state classification (Section 3.2).
 
-    States are assigned with the following priority (highest first):
+    States are assigned with the following priority (Section 3.3, Eq. 14):
     FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT > ACTIVE_INFORMATION > THIN > NORMAL
 
-    See module docstring for threshold definitions.
+    See module docstring for threshold definitions and equation references.
     """
     FROZEN = auto()
     THIN = auto()
@@ -192,15 +196,15 @@ def compute_microstructure_regime(
     rolling_window: int = 20,
 ) -> pd.DataFrame:
     """
-    Classify microstructure state for each observation.
+    Classify microstructure state for each observation (Section 3.2).
 
     Definition:
-        State machine classification using RAW (non-normalized) values.
-        Classification hierarchy: FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT >
-                                  ACTIVE_INFORMATION > THIN > NORMAL
+        Rule-based classification using RAW (non-normalized) values.
+        Priority ordering per Section 3.3, Eq. 14:
+            FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT > ACTIVE_INFORMATION > THIN > NORMAL
 
-        FROZEN is checked last but has highest priority (overwrites all).
-        See module docstring and parameter defaults for threshold values.
+        FROZEN is evaluated last but has highest priority (overwrites all).
+        See module docstring for threshold definitions and equation references.
 
     Parameters
     ----------
@@ -253,7 +257,7 @@ def compute_microstructure_regime(
             window=rolling_window, min_periods=1
         ).mean()
 
-    # Volatility burst detection (Section 4)
+    # Volatility burst detection (Section 3.2, Eq. 12)
     if raw_rolling_volatility is not None and "pct_return" in df.columns:
         mid_return = df["pct_return"].abs()
         volatility_condition = mid_return > (burst_volatility_k * raw_rolling_volatility)
@@ -266,7 +270,7 @@ def compute_microstructure_regime(
 
         states[burst_mask] = MicrostructureState.VOLATILITY_BURST.value
 
-    # Active information arrival
+    # Active information arrival (Section 3.2, Eq. 11)
     if raw_rolling_volume is not None and "volume" in df.columns:
         vol_std = df["volume"].rolling(window=rolling_window, min_periods=1).std()
         vol_zscore = np.where(
@@ -278,7 +282,7 @@ def compute_microstructure_regime(
         active_info_mask = active_volume_mask & (states == MicrostructureState.NORMAL.value)
         states[active_info_mask] = MicrostructureState.ACTIVE_INFORMATION.value
 
-    # Resolution drift (Section 4)
+    # Resolution drift (Section 3.2, Eq. 13)
     if "lifecycle_ratio" in df.columns:
         lifecycle_mask = df["lifecycle_ratio"] > resolution_lifecycle_threshold
 
@@ -299,15 +303,17 @@ def compute_microstructure_regime(
             volatility_ok = raw_rolling_volatility < vol_threshold
 
         resolution_mask = lifecycle_mask & spread_ok & volume_ok & volatility_ok
+        # Priority: only assign if not already VOLATILITY_BURST (Section 3.3)
+        resolution_mask = resolution_mask & (states != MicrostructureState.VOLATILITY_BURST.value)
         states[resolution_mask] = MicrostructureState.RESOLUTION_DRIFT.value
 
-    # Thin market
+    # Thin market (Section 3.2, Eq. 9)
     if "spread_pct" in df.columns:
         thin_mask = df["spread_pct"] > thin_spread_threshold
         thin_mask = thin_mask & (states == MicrostructureState.NORMAL.value)
         states[thin_mask] = MicrostructureState.THIN.value
 
-    # Frozen market
+    # Frozen market (Section 3.2, Eq. 8)
     if "volume" in df.columns:
         vol_ma = df["volume"].rolling(window=rolling_window, min_periods=1).mean()
         frozen_mask = df["volume"] < (vol_ma * frozen_volume_threshold)

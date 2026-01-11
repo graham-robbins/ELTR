@@ -240,12 +240,12 @@ class RegimeClassificationConfig:
     thin_spread_threshold: float = 0.15
     active_volume_zscore: float = 1.5
     burst_volatility_zscore: float = 2.0  # Legacy (unused)
-    burst_volatility_k: float = 2.5  # Section 4: multiplier for volatility burst detection
-    burst_volume_multiplier: float = 1.5  # Section 4: multiplier for volume condition
-    resolution_lifecycle_threshold: float = 0.90  # Section 4: changed from 0.95 to 0.90
-    resolution_spread_threshold: float = 0.05  # Section 4: spread threshold for resolution drift
-    resolution_volume_quantile: float = 0.25  # Section 4: volume quantile threshold
-    resolution_volatility_quantile: float = 0.25  # Section 4: volatility quantile threshold
+    burst_volatility_k: float = 2.5  # Section 3.2, Eq. 12: κ multiplier for volatility burst
+    burst_volume_multiplier: float = 1.5  # Section 3.2, Eq. 12: λ multiplier for volume condition
+    resolution_lifecycle_threshold: float = 0.90  # Section 3.2, Eq. 13: ℓ* threshold
+    resolution_spread_threshold: float = 0.05  # Section 3.2, Eq. 13: 5th percentile for spreads
+    resolution_volume_quantile: float = 0.25  # Section 3.2, Eq. 13: 25th percentile for volume
+    resolution_volatility_quantile: float = 0.25  # Section 3.2, Eq. 13: 25th percentile for volatility
 
 
 @dataclass

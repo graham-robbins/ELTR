@@ -36,7 +36,7 @@ Definitions:
         normalized magnitude of burst observations.
 
 References:
-    - Section 4: Volatility burst classification in regime detection
+    - Section 3.2, Eq. 12: Volatility burst classification in regime detection
 """
 
 from __future__ import annotations
