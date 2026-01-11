@@ -8,24 +8,32 @@ Definitions:
     Volume Surge:
         z_score = (volume - rolling_mean) / rolling_std
         surge = z_score > threshold (default 2.0)
-        AUTHOR MUST DEFINE FORMALLY: rolling window (30), min periods (5),
-        threshold justification
+
+        Uses 30-period rolling window with min_periods=5. Threshold of 2.0
+        corresponds to approximately 2 standard deviations, capturing
+        statistically unusual volume events (~2.3% of observations under
+        normality assumption).
 
     Volatility Surge:
         z_score = (|return| - rolling_mean_volatility) / rolling_std
         surge = z_score > threshold
-        AUTHOR MUST DEFINE FORMALLY: return type (log, pct, abs),
-        threshold value and justification
+
+        Uses absolute returns (abs_return, pct_return, or log_return in
+        priority order). Same z-score framework as volume surges.
 
     Volatility Burst (joint condition):
         |mid_return| > k * rolling_volatility AND volume > m * rolling_volume
-        AUTHOR MUST DEFINE FORMALLY: k (default 2.5), m (default 1.5),
-        rolling window (default 20), joint condition rationale
+
+        Joint condition (k=2.5, m=1.5) requires both high volatility AND
+        elevated volume, filtering out noise-driven price moves. This
+        captures information-driven events where price moves are accompanied
+        by trading activity.
 
     Burst Intensity:
         intensity = mean((volatility - mean) / std) for burst observations
-        AUTHOR MUST DEFINE FORMALLY: aggregation method, normalization,
-        threshold for burst identification (mean + 2*std)
+
+        Burst threshold = mean + 2*std. Intensity measures the average
+        normalized magnitude of burst observations.
 
 References:
     - Section 4: Volatility burst classification in regime detection
@@ -51,8 +59,9 @@ class SurgeEvent:
     """
     Container for detected surge events.
 
-    AUTHOR MUST DEFINE FORMALLY: surge event criteria,
-    magnitude interpretation, baseline computation
+    A surge is detected when a metric's z-score exceeds the threshold.
+    Magnitude is the z-score value. Baseline is the rolling mean at
+    the time of detection.
     """
     contract_id: str
     timestamp: pd.Timestamp
@@ -77,8 +86,10 @@ def detect_volume_surges(
     Definition:
         Volume Surge = observations where volume z-score > threshold
         z_score = (volume - rolling_mean) / rolling_std
-        AUTHOR MUST DEFINE FORMALLY: threshold selection, window size,
-        minimum periods, handling of zero/low volume periods
+
+        Uses 30-period rolling window with min_periods=5. Zero volume
+        periods are included in rolling calculations. Default threshold
+        of 2.0 captures approximately 2-sigma events.
 
     Parameters
     ----------
@@ -135,8 +146,10 @@ def detect_volatility_surges(
 
     Definition:
         Volatility Surge = observations where |return| z-score > threshold
-        AUTHOR MUST DEFINE FORMALLY: return type selection (abs_return, pct_return, log_return),
-        threshold justification, relationship to realized volatility
+
+        Uses absolute returns, checking for abs_return, pct_return, or
+        log_return columns in priority order. Same z-score framework as
+        volume surges with default 2.0 threshold for ~2-sigma events.
 
     Parameters
     ----------
@@ -200,8 +213,9 @@ def compute_surge_ratio(
 
     Definition:
         Surge Ratio = metric / rolling_mean
-        Indicates deviation from baseline.
-        AUTHOR MUST DEFINE FORMALLY: interpretation, threshold for "surge"
+
+        Values > 1 indicate above-average activity. Common surge
+        thresholds are 1.5x (moderate) or 2x (significant) the baseline.
 
     Parameters
     ----------
@@ -244,9 +258,12 @@ def classify_volatility_burst(
     Definition:
         Volatility Burst = |mid_return| > k * rolling_volatility
                            AND volume > m * rolling_volume
-        AUTHOR MUST DEFINE FORMALLY: k (default 2.5), m (default 1.5),
-        rolling window selection, joint condition rationale,
-        relationship to information arrival
+
+        The joint condition (k=2.5, m=1.5) requires both elevated volatility
+        and volume, filtering noise-driven price moves. Uses 20-period rolling
+        window (min_periods=3 for volatility, 1 for volume). This captures
+        information-driven events where significant price moves are accompanied
+        by trading activity.
 
     Parameters
     ----------

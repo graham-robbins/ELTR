@@ -6,32 +6,32 @@ All other modules must use these functions for lifecycle normalization.
 
 Definitions:
     Time Since Listing (TSL) = current_time - listing_time
-        AUTHOR MUST DEFINE FORMALLY: units (hours), timezone handling,
-        listing time source
+        Units: hours. Timezone-naive times are localized to match the
+        DataFrame index timezone. Listing time defaults to first observation.
 
     Time To Settlement (TTS) = settlement_time - current_time
-        AUTHOR MUST DEFINE FORMALLY: units (hours), handling of negative values,
-        settlement time source (event time vs contract settlement)
+        Units: hours. Negative values indicate post-settlement observations.
+        Settlement time defaults to event_time if provided, otherwise
+        last observation.
 
     Lifecycle Ratio = TSL / (TSL + TTS) = TSL / total_duration
-        Range: [0, 1] where 0 = listing, 1 = settlement
-        AUTHOR MUST DEFINE FORMALLY: edge cases at boundaries,
-        clipping behavior, interpretation
+        Range: [0, 1] where 0 = listing, 1 = settlement.
+        Clipped to [0, 1] to handle observations outside expected range.
 
     Lifecycle Phases (nonlinear bins):
-        EARLY: [0.00, 0.05)
-        RAMP_UP: [0.05, 0.20)
-        MIDDLE: [0.20, 0.80)
-        LATE: [0.80, 0.95)
-        RESOLUTION: [0.95, 1.00]
-        AUTHOR MUST DEFINE FORMALLY: bin edge justification,
-        phase naming rationale, empirical basis
+        EARLY: [0.00, 0.05) - Initial market formation
+        RAMP_UP: [0.05, 0.20) - Liquidity building
+        MIDDLE: [0.20, 0.80) - Stable trading period
+        LATE: [0.80, 0.95) - Pre-resolution activity
+        RESOLUTION: [0.95, 1.00] - Final convergence
+
+        Nonlinear edges concentrate resolution on the early and late
+        phases where microstructure dynamics are most interesting.
 
     Binned Trajectory:
-        Aggregation of metric values within lifecycle bins
-        Percentile bands: p10, p25, p50, p75, p90
-        AUTHOR MUST DEFINE FORMALLY: aggregation method,
-        smoothing window (3), percentile selection
+        Aggregates values within lifecycle bins using quantile statistics.
+        Percentile bands [10, 25, 50, 75, 90] capture distribution shape.
+        Rolling median smoothing (window=3) reduces bin-to-bin noise.
 
 References:
     - Section 10: Nonlinear lifecycle bin edges
@@ -79,8 +79,10 @@ def compute_lifecycle_features(
         tts_hours = (settlement_time - current_time) / 3600
         lifecycle_ratio = tsl_hours / total_duration, clipped to [0, 1]
         lifecycle_phase = categorical phase from nonlinear bins
-        AUTHOR MUST DEFINE FORMALLY: timezone handling, inference rules
-        when times are not provided
+
+        Timezone-naive inputs are localized to match the DataFrame index.
+        If listing_time is None, uses first observation. If settlement_time
+        is None, uses event_time if provided, otherwise last observation.
 
     Parameters
     ----------
@@ -168,10 +170,12 @@ def make_lifecycle_bins(
     Assign observations to lifecycle bins.
 
     Definition:
-        Linear bins: equal-width bins from 0 to 1
+        Linear bins: equal-width bins from 0 to 1 (default, n_bins=50)
         Nonlinear bins: predefined edges [0.0, 0.05, 0.20, 0.80, 0.95, 1.0]
-        AUTHOR MUST DEFINE FORMALLY: bin selection rationale,
-        nonlinear edge justification
+
+        Nonlinear bins concentrate resolution on early and late phases
+        where microstructure dynamics are most interesting. Linear bins
+        are suitable for trajectory aggregation with uniform resolution.
 
     Parameters
     ----------
@@ -274,11 +278,13 @@ def compute_binned_trajectory(
     Compute trajectory with percentile bands across lifecycle bins.
 
     Definition:
-        Aggregates values within lifecycle bins.
+        Aggregates values within lifecycle bins using quantile statistics.
         Computes percentile distributions: p10, p25, p50, p75, p90
         Applies rolling median smoothing (Section 14)
-        AUTHOR MUST DEFINE FORMALLY: aggregation method,
-        smoothing rationale, percentile selection
+
+        Percentile bands [10, 25, 50, 75, 90] capture full distribution shape.
+        Rolling median smoothing (window=3, centered) reduces bin-to-bin
+        noise while preserving trajectory trends.
 
     Parameters
     ----------
