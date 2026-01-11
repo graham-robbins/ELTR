@@ -8,28 +8,32 @@ transition matrix computation.
 Definitions:
     Event Regimes:
         PREGAME: within pregame_hours of event (default 24h)
-        IN_GAME: within 3 hours after event start
-        POST_EVENT: more than 3 hours after event
-        AUTHOR MUST DEFINE FORMALLY: exact boundary conditions,
-        timezone handling, event time source
+        IN_GAME: within ingame_hours after event start (default 3h)
+        POST_EVENT: more than ingame_hours after event
 
-    Microstructure States:
-        FROZEN: volume < threshold * moving_average
-            AUTHOR MUST DEFINE FORMALLY: threshold value (default 0.1)
-        THIN: spread_pct > 15%
-            AUTHOR MUST DEFINE FORMALLY: threshold justification
-        NORMAL: default state when no other conditions met
+        Boundaries are defined by minutes_to_event. Timezone-naive event
+        times are localized to UTC. Event time is typically contract
+        settlement or underlying event occurrence.
+
+    Microstructure States (classification hierarchy, highest priority first):
+        FROZEN: volume < 0.1 * rolling_mean OR volume = 0
+            Indicates no meaningful trading activity.
+        VOLATILITY_BURST: |return| > 2.5 * rolling_volatility AND
+                          volume > 1.5 * rolling_volume (see bursts.py)
+        RESOLUTION_DRIFT: lifecycle_ratio > 0.9 AND spread, volume, and
+                          volatility all below 25th percentile
+            Late-stage low-activity period as market converges.
         ACTIVE_INFORMATION: volume_zscore > 1.5
-            AUTHOR MUST DEFINE FORMALLY: threshold justification
-        VOLATILITY_BURST: see bursts.py definition
-        RESOLUTION_DRIFT: lifecycle_ratio > 0.9 AND low spread AND
-                          low volume AND low volatility
-            AUTHOR MUST DEFINE FORMALLY: all threshold values
+            Elevated trading activity suggesting information arrival.
+        THIN: spread_pct > 15%
+            Wide spreads indicating poor liquidity.
+        NORMAL: default state when no other conditions met
 
     Transition Matrix:
         P[i,j] = count(state_i -> state_j) / sum(transitions from state_i)
-        AUTHOR MUST DEFINE FORMALLY: handling of self-transitions,
-        time granularity, stationarity assumptions, ergodicity
+        Row-stochastic matrix. Self-transitions are included. Computed at
+        observation-level granularity. Assumes approximate stationarity
+        within analysis window.
 
 References:
     - Section 4: Microstructure state classification
@@ -57,8 +61,10 @@ class MicrostructureState(Enum):
     """
     Microstructure regime state classification.
 
-    AUTHOR MUST DEFINE FORMALLY: state definitions, transition rules,
-    classification hierarchy (which state takes precedence)
+    States are assigned with the following priority (highest first):
+    FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT > ACTIVE_INFORMATION > THIN > NORMAL
+
+    See module docstring for threshold definitions.
     """
     FROZEN = auto()
     THIN = auto()
@@ -192,8 +198,9 @@ def compute_microstructure_regime(
         State machine classification using RAW (non-normalized) values.
         Classification hierarchy: FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT >
                                   ACTIVE_INFORMATION > THIN > NORMAL
-        AUTHOR MUST DEFINE FORMALLY: classification priority order,
-        all threshold values and their justification
+
+        FROZEN is checked last but has highest priority (overwrites all).
+        See module docstring and parameter defaults for threshold values.
 
     Parameters
     ----------
@@ -336,9 +343,10 @@ def compute_transition_matrix(
     Definition:
         P[i,j] = count(state_i -> state_j) / sum(transitions from state_i)
         Row-stochastic matrix where rows sum to 1.
-        AUTHOR MUST DEFINE FORMALLY: handling of self-transitions,
-        time granularity assumptions, stationarity assumptions,
-        ergodicity properties
+
+        Self-transitions (i=j) are included. Transitions are counted at
+        observation-level granularity (consecutive state pairs). Assumes
+        approximate time-homogeneity within the analysis period.
 
     Parameters
     ----------
@@ -401,8 +409,10 @@ def compute_regime_entropy(df: pd.DataFrame) -> float:
     Definition:
         Entropy = -sum(p_i * log2(p_i)) / log2(num_states)
         Normalized to [0, 1] where 1 = uniform distribution
-        AUTHOR MUST DEFINE FORMALLY: entropy normalization rationale,
-        interpretation, relationship to market predictability
+
+        Normalization enables comparison across contracts with different
+        numbers of observed states. Higher entropy indicates more diverse
+        regime distribution; lower entropy indicates dominance by few states.
 
     Parameters
     ----------

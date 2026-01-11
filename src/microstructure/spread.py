@@ -5,26 +5,24 @@ This module consolidates all spread-related computations from the IRP platform.
 
 Definitions:
     Raw Spread = ask - bid
-        AUTHOR MUST DEFINE FORMALLY: exact handling of missing/zero values,
-        treatment of crossed quotes (bid > ask)
+        Missing values propagate as NaN. Crossed quotes (bid > ask) are not
+        special-cased and will produce negative spreads.
 
     Midpoint = (bid + ask) / 2
-        AUTHOR MUST DEFINE FORMALLY: treatment when bid > ask (crossed quotes)
+        Crossed quotes produce valid midpoints between bid and ask.
 
     Percentage Spread = (ask - bid) / midpoint
-        AUTHOR MUST DEFINE FORMALLY: units (decimal vs percentage),
-        edge case handling when midpoint = 0
+        Returns decimal values (e.g., 0.05 for 5%). Returns NaN when midpoint <= 0.
 
     Basis Points Spread = spread_pct * 10000
-        AUTHOR MUST DEFINE FORMALLY: confirm standard BPS definition
+        Standard basis points conversion (1 bp = 0.01%).
 
     Effective Spread = 2 * |trade_price - midpoint|
-        AUTHOR MUST DEFINE FORMALLY: trade price source (last trade vs VWAP),
-        time alignment between trade and quote
+        Uses last trade price aligned with contemporaneous quote.
 
-    Spread Collapse Slope = regression coefficient of log(spread) over lifecycle
-        AUTHOR MUST DEFINE FORMALLY: regression method (OLS vs Theil-Sen),
-        log transform justification, minimum observation threshold
+    Spread Collapse Slope = OLS coefficient of log(spread) over lifecycle
+        Log transform captures proportional spread tightening. Requires minimum
+        10 observations. Downsampled to 200 points for computational efficiency.
 
 References:
     - Section 5: Spread collapse slope computation
@@ -56,9 +54,11 @@ def compute_spread_features(
     Definition:
         spread = ask - bid
         midpoint = (bid + ask) / 2
-        spread_pct = spread / midpoint
+        spread_pct = spread / midpoint (NaN when midpoint <= 0)
         spread_bps = spread_pct * 10000
-        AUTHOR MUST DEFINE FORMALLY: handling of zero/negative spreads
+
+        Zero or negative spreads are preserved; filtering should be done
+        downstream if needed.
 
     Parameters
     ----------
@@ -126,7 +126,9 @@ def compute_effective_spread(
 
     Definition:
         Effective Spread = 2 * |trade_price - midpoint|
-        AUTHOR MUST DEFINE FORMALLY: trade price source and time alignment
+
+        Uses last trade price (price_c/price/close) aligned with
+        contemporaneous bid-ask quote.
 
     Parameters
     ----------
@@ -171,8 +173,10 @@ def compute_spread_collapse_slope(
 
     Definition:
         Spread Collapse Slope = OLS coefficient of log(spread) ~ lifecycle_ratio
-        AUTHOR MUST DEFINE FORMALLY: regression method, log transform justification,
-        downsampling approach (N=200), minimum observation threshold (10)
+
+        Uses simple OLS regression. Log transform captures proportional changes
+        in spread. Downsampled to N=200 points for speed. Requires minimum 10
+        valid observations with spread > 0.
 
     Parameters
     ----------
@@ -229,8 +233,10 @@ def compute_spread_curve(
 
     Definition:
         Spread curve = resampled spread statistics over time
-        tightening = first - last (within window)
-        AUTHOR MUST DEFINE FORMALLY: aggregation method, window selection
+        tightening = first - last (within each resampled window)
+
+        Aggregates spread by time window (default 5 minutes) and computes
+        mean, std, min, max, first, last, and tightening metrics.
 
     Parameters
     ----------
@@ -274,7 +280,9 @@ def compute_spread_percentiles(
 
     Definition:
         Spread percentiles = distribution quantiles of spread
-        AUTHOR MUST DEFINE FORMALLY: percentile selection justification
+
+        Default percentiles [10, 25, 50, 75, 90] capture the full
+        distribution shape for statistical summary.
 
     Parameters
     ----------
@@ -312,8 +320,8 @@ def compute_spread_regime_stats(df: pd.DataFrame) -> pd.DataFrame:
     Compute spread statistics by regime.
 
     Definition:
-        Regime-conditional spread statistics
-        AUTHOR MUST DEFINE FORMALLY: regime definitions (see regimes.py)
+        Regime-conditional spread statistics (mean, std, median, count)
+        grouped by microstructure state. See regimes.py for state definitions.
 
     Parameters
     ----------
