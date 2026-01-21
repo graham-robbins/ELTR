@@ -19,7 +19,12 @@ from src.features.feature_engineering import (
     VolatilityFeatures,
     LiquidityFeatures,
     SpreadFeatures,
+    LifecycleFeatures,
+    MicrostructureRegimeFeatures,
+    MicrostructureState,
 )
+from src.utils.time_binning import compute_lifecycle_features
+from src.microstructure.regimes import compute_microstructure_regime
 from src.ingest.kalshi_loader import sanitize_contract_id, sanitize_filename
 
 
@@ -315,6 +320,214 @@ class TestMarketDatasetEdgeCases:
         dataset = MarketDataset()
         panel = dataset.to_panel()
         assert len(panel) == 0
+
+
+class TestPostResolutionFiltering:
+    """Tests for post-resolution observation filtering."""
+
+    def test_exclude_post_resolution_default(self):
+        """Test that post-resolution observations are excluded by default."""
+        df = pd.DataFrame({
+            "price_c": [50.0] * 10,
+            "volume": [100] * 10,
+        }, index=pd.date_range("2024-01-01", periods=10, freq="h", tz="UTC"))
+
+        # Settlement at hour 5, so hours 6-9 are post-resolution
+        settlement_time = df.index[5]
+
+        result = compute_lifecycle_features(
+            df,
+            settlement_time=settlement_time,
+            exclude_post_resolution=True,  # Default
+        )
+
+        # Should only have observations up to and including settlement
+        assert len(result) <= 6
+        assert (result["tts_hours"] >= 0).all()
+
+    def test_exclude_post_resolution_disabled(self):
+        """Test that post-resolution observations are kept when disabled."""
+        df = pd.DataFrame({
+            "price_c": [50.0] * 10,
+            "volume": [100] * 10,
+        }, index=pd.date_range("2024-01-01", periods=10, freq="h", tz="UTC"))
+
+        # Settlement at hour 5
+        settlement_time = df.index[5]
+
+        result = compute_lifecycle_features(
+            df,
+            settlement_time=settlement_time,
+            exclude_post_resolution=False,  # Keep all data
+        )
+
+        # Should keep all observations
+        assert len(result) == 10
+        # Should have some negative tts_hours (post-resolution)
+        assert (result["tts_hours"] < 0).any()
+
+    def test_no_filtering_when_all_pre_resolution(self):
+        """Test no filtering when all observations are pre-resolution."""
+        df = pd.DataFrame({
+            "price_c": [50.0] * 10,
+            "volume": [100] * 10,
+        }, index=pd.date_range("2024-01-01", periods=10, freq="h", tz="UTC"))
+
+        # Settlement at last observation (default behavior)
+        result = compute_lifecycle_features(df)
+
+        # All observations should be kept
+        assert len(result) == 10
+        assert (result["tts_hours"] >= 0).all()
+
+    def test_lifecycle_features_empty_after_filtering(self):
+        """Test handling when all observations would be filtered."""
+        df = pd.DataFrame({
+            "price_c": [50.0] * 5,
+            "volume": [100] * 5,
+        }, index=pd.date_range("2024-01-01 10:00", periods=5, freq="h", tz="UTC"))
+
+        # Settlement before all observations
+        settlement_time = pd.Timestamp("2024-01-01 05:00", tz="UTC")
+
+        result = compute_lifecycle_features(
+            df,
+            settlement_time=settlement_time,
+            exclude_post_resolution=True,
+        )
+
+        # Should result in empty DataFrame
+        assert len(result) == 0
+
+
+class TestZeroReturnFrozenState:
+    """Tests for zero-return FROZEN state condition."""
+
+    def test_frozen_on_zero_return(self):
+        """Test that zero pct_return triggers FROZEN state."""
+        df = pd.DataFrame({
+            "price_c": [50.0, 50.0, 50.0, 50.0, 50.0],
+            "volume": [100, 100, 100, 100, 100],
+            "pct_return": [0.01, 0.0, 0.0, 0.0, 0.01],
+            "spread_pct": [0.02, 0.02, 0.02, 0.02, 0.02],
+        }, index=pd.date_range("2024-01-01", periods=5, freq="min", tz="UTC"))
+
+        result = compute_microstructure_regime(df)
+
+        # Rows with zero return should be FROZEN
+        assert result.iloc[1]["microstructure_state"] == MicrostructureState.FROZEN.value
+        assert result.iloc[2]["microstructure_state"] == MicrostructureState.FROZEN.value
+        assert result.iloc[3]["microstructure_state"] == MicrostructureState.FROZEN.value
+
+    def test_frozen_zero_return_overrides_other_states(self):
+        """Test that zero return FROZEN has highest priority."""
+        df = pd.DataFrame({
+            "price_c": [50.0] * 10,
+            "volume": [1000] * 10,  # High volume (not low volume frozen)
+            "pct_return": [0.0] * 10,  # All zero returns
+            "spread_pct": [0.20] * 10,  # Wide spread (would be THIN)
+        }, index=pd.date_range("2024-01-01", periods=10, freq="min", tz="UTC"))
+
+        result = compute_microstructure_regime(df)
+
+        # All should be FROZEN because zero return has highest priority
+        assert (result["microstructure_state"] == MicrostructureState.FROZEN.value).all()
+
+    def test_non_zero_return_not_frozen(self):
+        """Test that non-zero return does not trigger FROZEN state."""
+        df = pd.DataFrame({
+            "price_c": [50.0, 51.0, 52.0, 53.0, 54.0],
+            "volume": [100, 100, 100, 100, 100],
+            "pct_return": [0.02, 0.02, 0.02, 0.02, 0.02],
+            "spread_pct": [0.02, 0.02, 0.02, 0.02, 0.02],
+        }, index=pd.date_range("2024-01-01", periods=5, freq="min", tz="UTC"))
+
+        result = compute_microstructure_regime(df)
+
+        # No rows should be FROZEN (normal return and volume)
+        # They should be NORMAL since no other conditions are met
+        assert not (result["microstructure_state"] == MicrostructureState.FROZEN.value).any()
+
+
+class TestMicrostructureRegimeEdgeCases:
+    """Edge case tests for microstructure regime classification."""
+
+    def test_regime_empty_dataframe(self, empty_df):
+        """Test regime classification on empty DataFrame."""
+        result = compute_microstructure_regime(empty_df)
+        assert len(result) == 0
+
+    def test_regime_single_row(self, single_row_df):
+        """Test regime classification on single-row DataFrame."""
+        single_row_df["pct_return"] = np.nan
+        single_row_df["spread_pct"] = 0.02
+
+        result = compute_microstructure_regime(single_row_df)
+
+        assert len(result) == 1
+        assert "microstructure_state" in result.columns
+
+    def test_regime_all_nan_returns(self):
+        """Test regime classification when all returns are NaN."""
+        df = pd.DataFrame({
+            "price_c": [50.0] * 5,
+            "volume": [100] * 5,
+            "pct_return": [np.nan] * 5,
+            "spread_pct": [0.02] * 5,
+        }, index=pd.date_range("2024-01-01", periods=5, freq="min", tz="UTC"))
+
+        result = compute_microstructure_regime(df)
+
+        # Should not crash, states should be assigned
+        assert len(result) == 5
+        assert "microstructure_state" in result.columns
+
+    def test_regime_mixed_zero_and_nan_returns(self):
+        """Test regime with mix of zero and NaN returns."""
+        df = pd.DataFrame({
+            "price_c": [50.0] * 6,
+            "volume": [100] * 6,
+            "pct_return": [0.01, 0.0, np.nan, 0.0, 0.01, np.nan],
+            "spread_pct": [0.02] * 6,
+        }, index=pd.date_range("2024-01-01", periods=6, freq="min", tz="UTC"))
+
+        result = compute_microstructure_regime(df)
+
+        # Zero return rows should be FROZEN
+        assert result.iloc[1]["microstructure_state"] == MicrostructureState.FROZEN.value
+        assert result.iloc[3]["microstructure_state"] == MicrostructureState.FROZEN.value
+        # Non-zero, non-NaN rows should not be FROZEN
+        assert result.iloc[0]["microstructure_state"] != MicrostructureState.FROZEN.value
+        assert result.iloc[4]["microstructure_state"] != MicrostructureState.FROZEN.value
+
+
+class TestLifecycleEdgeCases:
+    """Edge case tests for lifecycle feature computation."""
+
+    def test_lifecycle_empty_dataframe(self, empty_df):
+        """Test lifecycle computation on empty DataFrame."""
+        result = compute_lifecycle_features(empty_df)
+        assert len(result) == 0
+
+    def test_lifecycle_single_row(self, single_row_df):
+        """Test lifecycle computation on single-row DataFrame."""
+        result = compute_lifecycle_features(single_row_df)
+
+        # Single row: lifecycle_ratio should be 0 or 1
+        assert len(result) == 1
+        assert "lifecycle_ratio" in result.columns
+
+    def test_lifecycle_features_extractor_empty_df(self, empty_df):
+        """Test LifecycleFeatures extractor on empty DataFrame."""
+        extractor = LifecycleFeatures()
+        result = extractor.extract(empty_df)
+        assert len(result) == 0
+
+    def test_lifecycle_features_extractor_single_row(self, single_row_df):
+        """Test LifecycleFeatures extractor on single-row DataFrame."""
+        extractor = LifecycleFeatures()
+        result = extractor.extract(single_row_df)
+        assert len(result) == 1
 
 
 if __name__ == "__main__":

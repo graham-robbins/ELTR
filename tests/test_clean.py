@@ -81,19 +81,26 @@ class TestWinsorizer:
         assert result["returns"].max() < 0.5
 
     def test_winsorize_preserves_normal_values(self):
-        """Test that normal values are preserved."""
+        """Test that most values are preserved and only tails are modified."""
         winsorizer = Winsorizer(limits=(0.01, 0.01))
+        np.random.seed(42)  # Deterministic for reproducibility
         df = pd.DataFrame({
             "returns": np.random.normal(0, 0.01, 100).tolist(),
         })
 
         result, n_modified = winsorizer.winsorize(df, columns=["returns"])
 
-        np.testing.assert_array_almost_equal(
-            result["returns"].iloc[10:90],
-            df["returns"].iloc[10:90],
-            decimal=5,
-        )
+        # With 1% limits on each tail, at most ~2 values should be modified
+        assert n_modified <= 4, f"Too many values modified: {n_modified}"
+
+        # Values not at the extremes should be unchanged
+        original_sorted = df["returns"].sort_values()
+        result_sorted = result["returns"].sort_values()
+
+        # Middle 96% of values should be identical (excluding ~2 on each end)
+        middle_original = original_sorted.iloc[2:-2].values
+        middle_result = result_sorted.iloc[2:-2].values
+        np.testing.assert_array_almost_equal(middle_original, middle_result, decimal=10)
 
 
 class TestPriceValidator:

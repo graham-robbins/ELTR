@@ -19,6 +19,9 @@ from src.features.feature_engineering import (
     SpreadFeatures,
     DepthFeatures,
     RegimeFeatures,
+    LifecycleFeatures,
+    MicrostructureRegimeFeatures,
+    MicrostructureState,
 )
 
 
@@ -299,6 +302,175 @@ class TestRegimeFeatures:
 
         assert "is_market_hours" in result.columns
         assert result["is_market_hours"].isin([0, 1]).all()
+
+
+class TestLifecycleFeatures:
+    """Tests for LifecycleFeatures extractor."""
+
+    def test_lifecycle_features_basic(self):
+        """Test basic lifecycle feature extraction."""
+        extractor = LifecycleFeatures()
+        df = create_sample_df(20)
+
+        result = extractor.extract(df)
+
+        assert "tsl_hours" in result.columns
+        assert "tts_hours" in result.columns
+        assert "lifecycle_ratio" in result.columns
+        assert "lifecycle_phase" in result.columns
+
+    def test_lifecycle_ratio_bounds(self):
+        """Test lifecycle ratio is bounded between 0 and 1."""
+        extractor = LifecycleFeatures()
+        df = create_sample_df(50)
+
+        result = extractor.extract(df)
+
+        valid_ratio = result["lifecycle_ratio"].dropna()
+        assert (valid_ratio >= 0).all()
+        assert (valid_ratio <= 1).all()
+
+    def test_lifecycle_phases_valid(self):
+        """Test lifecycle phases are valid categories."""
+        extractor = LifecycleFeatures()
+        df = create_sample_df(50)
+
+        result = extractor.extract(df)
+
+        valid_phases = ["early", "ramp_up", "middle", "late", "resolution"]
+        phases = result["lifecycle_phase"].dropna().unique()
+        for phase in phases:
+            assert phase in valid_phases
+
+    def test_post_resolution_filtering_default(self):
+        """Test that post-resolution observations are filtered by default."""
+        # Create data that spans beyond settlement
+        np.random.seed(42)
+        n_rows = 100
+        prices = 50 + np.cumsum(np.random.normal(0, 1, n_rows))
+        prices = np.clip(prices, 1, 99)
+
+        df = pd.DataFrame({
+            "price_c": prices,
+            "volume": np.random.randint(10, 1000, n_rows),
+            "yes_bid_c": prices - 1,
+            "yes_ask_c": prices + 1,
+        }, index=pd.date_range("2024-01-01", periods=n_rows, freq="min", tz="UTC"))
+
+        # Set settlement to be at the midpoint
+        settlement_time = df.index[50]
+        extractor = LifecycleFeatures(settlement_time=settlement_time)
+
+        result = extractor.extract(df)
+
+        # Should have filtered out observations after settlement
+        assert len(result) <= 51  # At most first 51 rows (0-50)
+        assert (result["tts_hours"] >= 0).all()
+
+
+class TestMicrostructureRegimeFeatures:
+    """Tests for MicrostructureRegimeFeatures extractor."""
+
+    def test_microstructure_state_column(self):
+        """Test microstructure state column is created."""
+        extractor = MicrostructureRegimeFeatures()
+        df = create_sample_df(50)
+        # Add required columns
+        df = ReturnFeatures().extract(df)
+        df = SpreadFeatures().extract(df)
+
+        result = extractor.extract(df)
+
+        assert "microstructure_state" in result.columns
+        assert "microstructure_state_name" in result.columns
+        assert "regime_transition" in result.columns
+
+    def test_frozen_state_zero_volume(self):
+        """Test that zero volume triggers FROZEN state."""
+        extractor = MicrostructureRegimeFeatures()
+
+        # Create data with zero volume
+        df = pd.DataFrame({
+            "price_c": [50.0, 50.5, 51.0, 51.5, 52.0],
+            "volume": [100, 0, 100, 100, 100],  # Zero volume at index 1
+            "pct_return": [0.01, 0.01, 0.01, 0.01, 0.01],
+            "spread_pct": [0.02, 0.02, 0.02, 0.02, 0.02],
+        }, index=pd.date_range("2024-01-01", periods=5, freq="min", tz="UTC"))
+
+        result = extractor.extract(df)
+
+        # Row with zero volume should be FROZEN
+        assert result.iloc[1]["microstructure_state"] == MicrostructureState.FROZEN.value
+
+    def test_frozen_state_zero_return(self):
+        """Test that zero return triggers FROZEN state."""
+        extractor = MicrostructureRegimeFeatures()
+
+        # Create data with zero return
+        df = pd.DataFrame({
+            "price_c": [50.0, 50.0, 50.0, 50.0, 50.0],  # No price change
+            "volume": [100, 100, 100, 100, 100],
+            "pct_return": [0.0, 0.0, 0.0, 0.0, 0.0],  # All zero returns
+            "spread_pct": [0.02, 0.02, 0.02, 0.02, 0.02],
+        }, index=pd.date_range("2024-01-01", periods=5, freq="min", tz="UTC"))
+
+        result = extractor.extract(df)
+
+        # All rows should be FROZEN due to zero returns
+        assert (result["microstructure_state"] == MicrostructureState.FROZEN.value).all()
+
+    def test_frozen_state_low_volume(self):
+        """Test that low volume relative to moving average triggers FROZEN state."""
+        extractor = MicrostructureRegimeFeatures(
+            frozen_volume_threshold=0.1,
+            rolling_window=5,
+        )
+
+        # Create data where last row has very low volume
+        df = pd.DataFrame({
+            "price_c": [50.0] * 10,
+            "volume": [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 5],
+            "pct_return": [0.01] * 10,
+            "spread_pct": [0.02] * 10,
+        }, index=pd.date_range("2024-01-01", periods=10, freq="min", tz="UTC"))
+
+        result = extractor.extract(df)
+
+        # Last row should be FROZEN due to low volume
+        assert result.iloc[-1]["microstructure_state"] == MicrostructureState.FROZEN.value
+
+    def test_thin_state(self):
+        """Test that wide spread triggers THIN state."""
+        extractor = MicrostructureRegimeFeatures(
+            thin_spread_threshold=0.10,
+        )
+
+        # Create data with wide spread
+        df = pd.DataFrame({
+            "price_c": [50.0] * 10,
+            "volume": [100] * 10,
+            "pct_return": [0.01] * 10,
+            "spread_pct": [0.05, 0.05, 0.05, 0.05, 0.05, 0.20, 0.20, 0.20, 0.05, 0.05],
+        }, index=pd.date_range("2024-01-01", periods=10, freq="min", tz="UTC"))
+
+        result = extractor.extract(df)
+
+        # Rows with wide spread should be THIN
+        assert result.iloc[5]["microstructure_state"] == MicrostructureState.THIN.value
+
+    def test_state_names_mapping(self):
+        """Test that state names are correctly mapped."""
+        extractor = MicrostructureRegimeFeatures()
+        df = create_sample_df(50)
+        df = ReturnFeatures().extract(df)
+        df = SpreadFeatures().extract(df)
+
+        result = extractor.extract(df)
+
+        valid_names = ["frozen", "thin", "normal", "active_info", "volatility_burst", "resolution_drift", "unknown"]
+        state_names = result["microstructure_state_name"].dropna().unique()
+        for name in state_names:
+            assert name in valid_names
 
 
 class TestFeatureEngineer:
