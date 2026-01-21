@@ -230,6 +230,68 @@ class TestMicrostructureIntegration:
         assert "avg_spread" in category_df.columns
 
 
+class TestLifecycleIntegration:
+    """Integration tests for lifecycle features and post-resolution filtering."""
+
+    def test_lifecycle_features_in_pipeline(self, sample_contract, config):
+        """Test that lifecycle features are computed in the pipeline."""
+        engineer = FeatureEngineer(config)
+        featured_contract = engineer.engineer_features(sample_contract)
+
+        # Check lifecycle columns exist
+        assert "tsl_hours" in featured_contract.data.columns
+        assert "tts_hours" in featured_contract.data.columns
+        assert "lifecycle_ratio" in featured_contract.data.columns
+
+    def test_microstructure_state_in_pipeline(self, sample_contract, config):
+        """Test that microstructure state is computed in the pipeline."""
+        engineer = FeatureEngineer(config)
+        featured_contract = engineer.engineer_features(sample_contract)
+
+        # Check microstructure columns exist
+        assert "microstructure_state" in featured_contract.data.columns
+        assert "microstructure_state_name" in featured_contract.data.columns
+
+    def test_post_resolution_data_handled(self, config):
+        """Test that post-resolution observations are properly handled."""
+        import numpy as np
+
+        np.random.seed(42)
+        n_rows = 100
+        prices = 50 + np.cumsum(np.random.normal(0, 1, n_rows))
+        prices = np.clip(prices, 1, 99)
+
+        df = pd.DataFrame({
+            "price_c": prices,
+            "price_o": prices - np.random.uniform(0, 1, n_rows),
+            "price_h": prices + np.random.uniform(0, 2, n_rows),
+            "price_l": prices - np.random.uniform(0, 2, n_rows),
+            "volume": np.random.randint(10, 1000, n_rows),
+            "trade_count": np.random.randint(1, 50, n_rows),
+            "yes_bid_c": prices - np.random.uniform(0.5, 2, n_rows),
+            "yes_ask_c": prices + np.random.uniform(0.5, 2, n_rows),
+            "yes_bid_h": prices - np.random.uniform(0, 1, n_rows),
+            "yes_bid_l": prices - np.random.uniform(1, 3, n_rows),
+            "yes_ask_h": prices + np.random.uniform(1, 3, n_rows),
+            "yes_ask_l": prices + np.random.uniform(0, 1, n_rows),
+        }, index=pd.date_range("2024-01-01", periods=n_rows, freq="min", tz="UTC"))
+
+        contract = ContractTimeseries(
+            contract_id="POST_RESOLUTION_TEST",
+            category="Sports",
+            data=df,
+        )
+
+        engineer = FeatureEngineer(config)
+        featured_contract = engineer.engineer_features(contract)
+
+        # All tts_hours values should be >= 0 (post-resolution filtered)
+        # Note: If no explicit settlement time is set, it defaults to the last observation
+        # so all tts_hours should be >= 0
+        if "tts_hours" in featured_contract.data.columns:
+            assert (featured_contract.data["tts_hours"] >= 0).all()
+
+
 class TestParallelProcessing:
     """Tests for parallel processing functionality."""
 

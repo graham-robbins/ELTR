@@ -16,7 +16,7 @@ Definitions:
         settlement or underlying event occurrence.
 
     Microstructure States (Section 3.2, classification hierarchy per Section 3.3):
-        FROZEN: v_t = 0 OR v_t < θ_F * v̄_t, θ_F = 0.10 (Eq. 8)
+        FROZEN: r_t = 0 OR v_t = 0 OR v_t < θ_F * v̄_t, θ_F = 0.10 (Eq. 8)
             No meaningful trading activity; price discovery stalled.
         VOLATILITY_BURST: |r_t| > κσ_t AND v_t > λv̄_t, κ = 2.5, λ = 1.5 (Eq. 12)
             Sharp price movement with elevated volume; information shock.
@@ -204,6 +204,7 @@ def compute_microstructure_regime(
             FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT > ACTIVE_INFORMATION > THIN > NORMAL
 
         FROZEN is evaluated last but has highest priority (overwrites all).
+        FROZEN condition (Eq. 8): r_t = 0 OR v_t = 0 OR v_t < θ_F * v̄_t
         See module docstring for threshold definitions and equation references.
 
     Parameters
@@ -313,12 +314,18 @@ def compute_microstructure_regime(
         thin_mask = thin_mask & (states == MicrostructureState.NORMAL.value)
         states[thin_mask] = MicrostructureState.THIN.value
 
-    # Frozen market (Section 3.2, Eq. 8)
+    # Frozen market (Section 3.2, Eq. 8): r_t = 0 OR v_t = 0 OR v_t < θ_F * v̄_t
+    frozen_mask = pd.Series(False, index=df.index)
+
     if "volume" in df.columns:
         vol_ma = df["volume"].rolling(window=rolling_window, min_periods=1).mean()
-        frozen_mask = df["volume"] < (vol_ma * frozen_volume_threshold)
+        frozen_mask = frozen_mask | (df["volume"] < (vol_ma * frozen_volume_threshold))
         frozen_mask = frozen_mask | (df["volume"] == 0)
-        states[frozen_mask] = MicrostructureState.FROZEN.value
+
+    if "pct_return" in df.columns:
+        frozen_mask = frozen_mask | (df["pct_return"] == 0)
+
+    states[frozen_mask] = MicrostructureState.FROZEN.value
 
     df["microstructure_state"] = states
     df["microstructure_state_name"] = df["microstructure_state"].map({

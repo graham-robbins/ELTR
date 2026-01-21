@@ -37,6 +37,7 @@ def compute_lifecycle_features(
     listing_time: pd.Timestamp | None = None,
     settlement_time: pd.Timestamp | None = None,
     event_time: pd.Timestamp | None = None,
+    exclude_post_resolution: bool = True,
 ) -> pd.DataFrame:
     """
     Compute contract lifecycle normalization features.
@@ -54,6 +55,10 @@ def compute_lifecycle_features(
         Contract settlement time. Infers from data if None.
     event_time : pd.Timestamp | None
         Event time (for sports/econ events). Used as settlement if provided.
+    exclude_post_resolution : bool
+        If True (default), exclude observations where tts_hours < 0
+        (post-resolution). Per Section 2.3: "Observations after resolution
+        are excluded from the analysis." Set to False for debugging.
 
     Returns
     -------
@@ -101,6 +106,18 @@ def compute_lifecycle_features(
         labels=["early", "ramp_up", "middle", "late", "resolution"],
         include_lowest=True,
     )
+
+    # Section 2.3: "Observations after resolution are excluded from the analysis"
+    # Filter out post-resolution observations (tts_hours < 0) unless disabled for debugging
+    if exclude_post_resolution:
+        pre_filter_count = len(df)
+        df = df[df["tts_hours"] >= 0]
+        post_filter_count = len(df)
+        if pre_filter_count > post_filter_count:
+            logger.debug(
+                f"Excluded {pre_filter_count - post_filter_count} post-resolution "
+                f"observations (tts_hours < 0)"
+            )
 
     return df
 

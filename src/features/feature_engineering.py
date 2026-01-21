@@ -9,9 +9,7 @@ regime classification, and contract lifecycle normalization.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from datetime import datetime, time
-from enum import Enum, auto
+from datetime import datetime
 from typing import Callable
 
 import numpy as np
@@ -29,19 +27,17 @@ from src.utils.time_binning import (
     compute_lifecycle_features as _compute_lifecycle_features,
     resample_to_1min,
 )
+from src.microstructure.regimes import (
+    compute_microstructure_regime as _compute_microstructure_regime,
+    MicrostructureState,
+)
 
 logger = get_logger("features")
 
 
-class MicrostructureState(Enum):
-    """Microstructure regime state classification."""
-    FROZEN = auto()
-    THIN = auto()
-    NORMAL = auto()
-    ACTIVE_INFORMATION = auto()
-    VOLATILITY_BURST = auto()
-    RESOLUTION_DRIFT = auto()
-    UNKNOWN = auto()
+# Re-export MicrostructureState from regimes module for backwards compatibility
+# The canonical definition is in src/microstructure/regimes.py
+__all__ = ["MicrostructureState", "FeatureExtractor", "FeatureEngineer", "engineer_features"]
 
 
 class FeatureExtractor(ABC):
@@ -597,17 +593,11 @@ class MicrostructureRegimeFeatures(FeatureExtractor):
     """
     Classifies microstructure state at each observation (Section 3.2).
 
-    Uses RAW volatility and volume values (not normalized).
+    Delegates to compute_microstructure_regime() in regimes.py
+    which is the SINGLE SOURCE OF TRUTH for microstructure state classification.
+
     Priority ordering per Section 3.3, Eq. 14:
         FROZEN > VOLATILITY_BURST > RESOLUTION_DRIFT > ACTIVE_INFORMATION > THIN > NORMAL
-
-    State definitions (Section 3.2):
-    - Frozen: v_t = 0 OR v_t < θ_F * v̄_t, θ_F = 0.10 (Eq. 8)
-    - Thin: s̃_t > θ_T, θ_T = 0.15 (Eq. 9)
-    - Normal: default state when no other conditions apply (Eq. 10)
-    - Active Information: q*_t > θ_A, θ_A = 1.5 (Eq. 11)
-    - Volatility Burst: |r_t| > κσ_t AND v_t > λv̄_t, κ = 2.5, λ = 1.5 (Eq. 12)
-    - Resolution Drift: ℓ_t > 0.90 AND low spread/volume/volatility (Eq. 13)
     """
 
     def __init__(
@@ -642,7 +632,8 @@ class MicrostructureRegimeFeatures(FeatureExtractor):
         """
         Classify microstructure state for each observation.
 
-        Uses RAW volatility and volume values (not normalized).
+        Delegates to regimes.compute_microstructure_regime() for
+        consistent microstructure classification across the platform.
 
         Parameters
         ----------
@@ -654,106 +645,19 @@ class MicrostructureRegimeFeatures(FeatureExtractor):
         pd.DataFrame
             DataFrame with microstructure_state column.
         """
-        df = df.copy()
-
-        states = pd.Series(MicrostructureState.NORMAL.value, index=df.index)
-
-        # Compute raw rolling metrics for regime classification
-        raw_rolling_volatility = None
-        raw_rolling_volume = None
-
-        if "pct_return" in df.columns:
-            raw_rolling_volatility = df["pct_return"].abs().rolling(
-                window=self.rolling_window, min_periods=3
-            ).mean()
-
-        if "volume" in df.columns:
-            raw_rolling_volume = df["volume"].rolling(
-                window=self.rolling_window, min_periods=1
-            ).mean()
-
-        # Volatility burst detection (Section 3.2, Eq. 12):
-        # |r_t| > κσ_t AND v_t > λv̄_t, κ = 2.5, λ = 1.5
-        if raw_rolling_volatility is not None and "pct_return" in df.columns:
-            mid_return = df["pct_return"].abs()
-            volatility_condition = mid_return > (self.burst_volatility_k * raw_rolling_volatility)
-
-            if raw_rolling_volume is not None:
-                volume_condition = df["volume"] > (raw_rolling_volume * self.burst_volume_multiplier)
-                burst_mask = volatility_condition & volume_condition
-            else:
-                burst_mask = volatility_condition
-
-            states[burst_mask] = MicrostructureState.VOLATILITY_BURST.value
-
-        # Active information arrival (Section 3.2, Eq. 11): q*_t > θ_A, θ_A = 1.5
-        if raw_rolling_volume is not None and "volume" in df.columns:
-            vol_std = df["volume"].rolling(window=self.rolling_window, min_periods=1).std()
-            vol_zscore = np.where(
-                vol_std > 0,
-                (df["volume"] - raw_rolling_volume) / vol_std,
-                0,
-            )
-            active_volume_mask = vol_zscore > self.active_volume_zscore
-            # Only mark as active info if not already a volatility burst
-            active_info_mask = active_volume_mask & (states == MicrostructureState.NORMAL.value)
-            states[active_info_mask] = MicrostructureState.ACTIVE_INFORMATION.value
-
-        # Resolution drift (Section 3.2, Eq. 13):
-        # ℓ_t > 0.90 AND spread < 5th pctl AND volume < 25th pctl AND volatility < 25th pctl
-        if "lifecycle_ratio" in df.columns:
-            lifecycle_mask = df["lifecycle_ratio"] > self.resolution_lifecycle_threshold
-
-            # Compute thresholds from contract-level quantiles
-            spread_ok = pd.Series(True, index=df.index)
-            volume_ok = pd.Series(True, index=df.index)
-            volatility_ok = pd.Series(True, index=df.index)
-
-            if "spread_pct" in df.columns:
-                spread_threshold = df["spread_pct"].quantile(self.resolution_spread_threshold)
-                spread_ok = df["spread_pct"] < max(spread_threshold, 0.05)
-
-            if "volume" in df.columns:
-                volume_threshold = df["volume"].quantile(self.resolution_volume_quantile)
-                volume_ok = df["volume"] < volume_threshold
-
-            if raw_rolling_volatility is not None:
-                vol_threshold = raw_rolling_volatility.quantile(self.resolution_volatility_quantile)
-                volatility_ok = raw_rolling_volatility < vol_threshold
-
-            resolution_mask = lifecycle_mask & spread_ok & volume_ok & volatility_ok
-            # Priority: only assign if not already VOLATILITY_BURST (Section 3.3)
-            resolution_mask = resolution_mask & (states != MicrostructureState.VOLATILITY_BURST.value)
-            states[resolution_mask] = MicrostructureState.RESOLUTION_DRIFT.value
-
-        # Thin market (Section 3.2, Eq. 9): s̃_t > θ_T, θ_T = 0.15
-        if "spread_pct" in df.columns:
-            thin_mask = df["spread_pct"] > self.thin_spread_threshold
-            thin_mask = thin_mask & (states == MicrostructureState.NORMAL.value)
-            states[thin_mask] = MicrostructureState.THIN.value
-
-        # Frozen market (Section 3.2, Eq. 8): v_t = 0 OR v_t < θ_F * v̄_t, θ_F = 0.10
-        if "volume" in df.columns:
-            vol_ma = df["volume"].rolling(window=self.rolling_window, min_periods=1).mean()
-            frozen_mask = df["volume"] < (vol_ma * self.frozen_volume_threshold)
-            frozen_mask = frozen_mask | (df["volume"] == 0)
-            states[frozen_mask] = MicrostructureState.FROZEN.value
-
-        df["microstructure_state"] = states
-
-        df["microstructure_state_name"] = df["microstructure_state"].map({
-            MicrostructureState.FROZEN.value: "frozen",
-            MicrostructureState.THIN.value: "thin",
-            MicrostructureState.NORMAL.value: "normal",
-            MicrostructureState.ACTIVE_INFORMATION.value: "active_info",
-            MicrostructureState.VOLATILITY_BURST.value: "volatility_burst",
-            MicrostructureState.RESOLUTION_DRIFT.value: "resolution_drift",
-            MicrostructureState.UNKNOWN.value: "unknown",
-        })
-
-        df["regime_transition"] = (df["microstructure_state"] != df["microstructure_state"].shift(1)).astype(int)
-
-        return df
+        return _compute_microstructure_regime(
+            df,
+            frozen_volume_threshold=self.frozen_volume_threshold,
+            thin_spread_threshold=self.thin_spread_threshold,
+            active_volume_zscore=self.active_volume_zscore,
+            burst_volatility_k=self.burst_volatility_k,
+            burst_volume_multiplier=self.burst_volume_multiplier,
+            resolution_lifecycle_threshold=self.resolution_lifecycle_threshold,
+            resolution_spread_threshold=self.resolution_spread_threshold,
+            resolution_volume_quantile=self.resolution_volume_quantile,
+            resolution_volatility_quantile=self.resolution_volatility_quantile,
+            rolling_window=self.rolling_window,
+        )
 
 
 class FeatureEngineer:
