@@ -567,10 +567,12 @@ class MetricsExporter:
                             )
 
                         df["lifecycle_bin"] = make_lifecycle_bins(df, n_bins=n_bins)
-                        bin_data = df[df["lifecycle_bin"] == bin_idx][metric]
+                        bin_data = df[df["lifecycle_bin"] == bin_idx][metric].dropna()
                         if len(bin_data) > 0:
                             values.append(bin_data.median())
 
+                    # Always set metric columns - use NaN for missing data
+                    # This ensures all bins are present and missing regions are explicit
                     if values:
                         row[f"{metric}_median"] = np.median(values)
                         row[f"{metric}_mean"] = np.mean(values)
@@ -578,6 +580,14 @@ class MetricsExporter:
                         row[f"{metric}_p25"] = np.percentile(values, 25)
                         row[f"{metric}_p75"] = np.percentile(values, 75)
                         row[f"{metric}_n"] = len(values)
+                    else:
+                        # Explicit NaN for bins with no data - preserves all bins
+                        row[f"{metric}_median"] = np.nan
+                        row[f"{metric}_mean"] = np.nan
+                        row[f"{metric}_std"] = np.nan
+                        row[f"{metric}_p25"] = np.nan
+                        row[f"{metric}_p75"] = np.nan
+                        row[f"{metric}_n"] = 0
 
                 all_rows.append(row)
 

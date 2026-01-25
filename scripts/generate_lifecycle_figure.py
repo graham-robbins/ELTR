@@ -45,14 +45,11 @@ def generate_lifecycle_figure(
     # Sort by lifecycle position
     agg_data = agg_data.sort_values("lifecycle_ratio")
 
-    # For log scale, we need to handle zeros carefully
-    # Instead of replacing with floor values (which creates misleading flat lines),
-    # we mask out zero values so they don't appear in the plot
+    # Keep original data - do NOT mask zeros
+    # Zeros represent genuine empirical observations (Frozen/inactive markets)
+    # We use symlog scale to handle both zeros and positive values
     volume_data = agg_data["volume_p75"].copy()
-    volume_data = volume_data.replace(0, np.nan)  # Replace zeros with NaN to break line
-
     volatility_data = agg_data["volatility_short_p75"].copy()
-    volatility_data = volatility_data.replace(0, np.nan)  # Replace zeros with NaN to break line
 
     # Create figure with 3 vertically stacked panels
     fig, axes = plt.subplots(3, 1, figsize=(7, 7.5), sharex=True)
@@ -78,7 +75,7 @@ def generate_lifecycle_figure(
     ax1.spines["top"].set_visible(False)
     ax1.spines["right"].set_visible(False)
 
-    # Panel B: Volume (p75, log scale)
+    # Panel B: Volume (p75, symlog scale to handle zeros)
     ax2 = axes[1]
     ax2.plot(
         agg_data["lifecycle_ratio"],
@@ -86,21 +83,26 @@ def generate_lifecycle_figure(
         color=volume_color,
         linewidth=1.5,
     )
-    ax2.set_yscale("log")
+    # Use symlog to handle both zeros and positive values
+    # linthresh defines the linear range around zero before log scaling kicks in
+    valid_volume = volume_data.dropna()
+    if len(valid_volume) > 0 and valid_volume.max() > 0:
+        # Set linthresh to a small fraction of the positive values
+        positive_vals = valid_volume[valid_volume > 0]
+        if len(positive_vals) > 0:
+            linthresh = positive_vals.min() * 0.1
+        else:
+            linthresh = 1.0
+        ax2.set_yscale("symlog", linthresh=max(linthresh, 0.1))
+        ax2.set_ylim(0, valid_volume.max() * 1.5)
     ax2.set_ylabel("Volume (p75)", fontsize=10)
     ax2.text(0.02, 0.92, "(B) Volume", transform=ax2.transAxes,
              fontsize=10, fontweight="bold", va="top")
     ax2.grid(False)
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_visible(False)
-    # Set y-axis limits based on actual non-zero data range
-    valid_volume = volume_data.dropna()
-    if len(valid_volume) > 0:
-        vol_min = valid_volume[valid_volume > 0].min()
-        vol_max = valid_volume.max()
-        ax2.set_ylim(vol_min * 0.5, vol_max * 2)
 
-    # Panel C: Volatility (p75, log scale)
+    # Panel C: Volatility (p75, symlog scale to handle zeros)
     ax3 = axes[2]
     ax3.plot(
         agg_data["lifecycle_ratio"],
@@ -108,7 +110,16 @@ def generate_lifecycle_figure(
         color=volatility_color,
         linewidth=1.5,
     )
-    ax3.set_yscale("log")
+    # Use symlog to handle both zeros and positive values
+    valid_volatility = volatility_data.dropna()
+    if len(valid_volatility) > 0 and valid_volatility.max() > 0:
+        positive_vals = valid_volatility[valid_volatility > 0]
+        if len(positive_vals) > 0:
+            linthresh = positive_vals.min() * 0.1
+        else:
+            linthresh = 0.001
+        ax3.set_yscale("symlog", linthresh=max(linthresh, 0.0001))
+        ax3.set_ylim(0, valid_volatility.max() * 1.5)
     ax3.set_ylabel("Volatility (p75)", fontsize=10)
     ax3.set_xlabel(r"Lifecycle Position ($\ell$)", fontsize=10)
     ax3.text(0.02, 0.92, "(C) Volatility", transform=ax3.transAxes,
@@ -116,12 +127,6 @@ def generate_lifecycle_figure(
     ax3.grid(False)
     ax3.spines["top"].set_visible(False)
     ax3.spines["right"].set_visible(False)
-    # Set y-axis limits based on actual non-zero data range
-    valid_volatility = volatility_data.dropna()
-    if len(valid_volatility) > 0:
-        vol_min = valid_volatility[valid_volatility > 0].min()
-        vol_max = valid_volatility.max()
-        ax3.set_ylim(vol_min * 0.5, vol_max * 2)
 
     # Set x-axis limits
     for ax in axes:
