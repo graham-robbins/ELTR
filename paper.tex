@@ -17,6 +17,7 @@
 \usepackage{titlesec}
 \usepackage{enumitem}
 \usepackage{xcolor}
+\usepackage{colortbl}
 \usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
 \usepackage{parskip}
 
@@ -67,7 +68,7 @@ A detailed contract-level case study illustrates how discrete information shocks
 % ------------------------------------------------------------
 \section{Introduction}
 
-Prediction markets aggregate dispersed beliefs about uncertain future events into prices that are commonly interpreted as probabilistic forecasts. A large literature evaluates these markets by their accuracy and efficiency at resolution. In contrast, comparatively little attention has been paid to the lifecycle dynamics through which information is incorporated into prices before contracts settle.
+Prediction markets aggregate dispersed beliefs about uncertain future events into prices that are commonly interpreted as probabilistic forecasts (Taillard and Zeng, 2025). A large literature evaluates these markets by their accuracy and efficiency at resolution. In contrast, comparatively little attention has been paid to the lifecycle dynamics through which information is incorporated into prices before contracts settle.
 
 Prediction markets differ from traditional financial markets along several fundamental dimensions. Contracts have finite horizons, resolution rules are discrete, and trading activity is highly uneven over time. Liquidity is not continuously supplied but emerges intermittently in response to information arrival and coordination among traders. These features suggest that lifecycle behavior may be characterized by discrete regime shifts rather than smooth adjustment. Understanding such dynamics is essential for interpreting prices, assessing liquidity provision, and evaluating the limits of information aggregation in event-based markets.
 
@@ -84,17 +85,57 @@ Taken together, these results characterize prediction markets as episodic inform
 
 \subsection{Prediction Market Design}
 
-Kalshi is a centralized prediction market platform offering event-based contracts that settle to binary outcomes. Each contract resolves to either \$1 or \$0, depending on whether a clearly specified event occurs. Contract prices therefore admit a natural probabilistic interpretation under risk neutrality, though this study does not impose assumptions of full informational efficiency or rational expectations.
+Kalshi is a centralized prediction market platform offering event-based contracts that settle to binary outcomes. Each contract resolves to either \$1 or \$0, depending on whether a clearly specified event occurs. Contract prices therefore admit a natural probabilistic interpretation under risk neutrality: if a contract pays \$1 when event $E$ occurs and \$0 otherwise, the expected payoff to a risk-neutral trader is $\Pr(E) \cdot 1 + (1 - \Pr(E)) \cdot 0 = \Pr(E)$. Under risk neutrality, a trader is willing to pay up to their subjective probability $\Pr(E)$ for the contract, so equilibrium prices directly reflect beliefs (Taillard and Zeng, 2025). This study does not impose assumptions of full informational efficiency or rational expectations.
 
 Contracts span multiple domains, including sports, politics, economics, weather, and culture. Each contract has a fixed resolution time and a publicly defined settlement rule. Trading occurs continuously until resolution, after which the contract settles and trading ceases.
 
 Unlike traditional financial assets, prediction market contracts have finite horizons and do not roll over. Liquidity is therefore endogenous to both the remaining time until resolution and the arrival of event-specific information. As a consequence, trading activity is highly uneven across time and across contracts, with long periods of inactivity punctuated by brief episodes of concentrated trading.
 
-Kalshi operates a continuous limit order book. At any point in time, traders may submit limit orders to buy or sell contracts at specified prices or execute against standing orders. The platform enforces discrete price grids and minimum tick sizes, which introduce mechanical lower bounds on bid--ask spreads and influence observed liquidity, particularly during periods of low trading activity.
+Kalshi operates a continuous limit order book (CLOB), a trading mechanism in which buy and sell orders are collected and matched in real time. In a CLOB, traders submit \emph{limit orders} specifying a price and quantity at which they are willing to buy or sell. These orders queue in the book until matched against incoming orders on the opposite side. A trade occurs when a buyer's price meets or exceeds a seller's price (or vice versa). The \emph{best bid} is the highest standing buy order, and the \emph{best ask} is the lowest standing sell order.
+
+Figure~\ref{fig:orderbook_example} illustrates a representative order book snapshot from a Kalshi contract. On the left, buy orders are ranked by price (highest at top); on the right, sell orders are ranked (lowest at top). The spread between the best bid and best ask represents the cost of immediate execution.
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{cc}
+\begin{tabular}{@{}rr@{}}
+\multicolumn{2}{c}{\textbf{Bids (Buy Orders)}} \\
+\toprule
+Quantity & Price \\
+\midrule
+15 & \$0.58 \\
+\rowcolor{green!15} 25 & \$0.57 $\leftarrow$ \textit{Best Bid} \\
+40 & \$0.56 \\
+30 & \$0.55 \\
+20 & \$0.54 \\
+\bottomrule
+\end{tabular}
+&
+\begin{tabular}{@{}ll@{}}
+\multicolumn{2}{c}{\textbf{Asks (Sell Orders)}} \\
+\toprule
+Price & Quantity \\
+\midrule
+\rowcolor{red!15} \$0.59 $\leftarrow$ \textit{Best Ask} & 20 \\
+\$0.60 & 35 \\
+\$0.61 & 45 \\
+\$0.62 & 25 \\
+\$0.63 & 15 \\
+\bottomrule
+\end{tabular}
+\end{tabular}
+
+\vspace{0.5em}
+\small Spread = \$0.59 $-$ \$0.57 = \$0.02
+\caption{Example order book snapshot from a Kalshi prediction market contract. Buy orders (bids) appear on the left, sell orders (asks) on the right. The best bid is the highest buy price; the best ask is the lowest sell price. The spread represents the cost of immediate execution.}
+\label{fig:orderbook_example}
+\end{figure}
+
+The platform enforces discrete price grids and minimum tick sizes, which introduce mechanical lower bounds on bid--ask spreads and influence observed liquidity, particularly during periods of low trading activity.
 
 \subsection{Data}
 
-We use high-frequency order book data from Kalshi prediction market contracts spanning multiple event categories. The dataset contains time-stamped observations of best bid and ask prices, quoted depth, executed volume, and contract-level metadata. Observations are sampled at regular intraday intervals over each contract's active trading period, from listing until resolution.
+We use high-frequency order book data from Kalshi prediction market contracts spanning 251 contracts across five event categories. The dataset contains time-stamped observations of best bid and ask prices, quoted depth, executed volume, and contract-level metadata including contract identifier, event ticker, category, listing time, resolution time, and settlement rule. Observations are sampled at one-minute intervals over each contract's active trading period, from listing until resolution.
 
 The sample includes contracts that fully resolve within the observation window and for which complete order book histories are available. Contracts with missing resolution times, incomplete quote histories, or extremely sparse trading activity are excluded to ensure consistent measurement of microstructure dynamics across lifecycle stages.
 
@@ -131,15 +172,15 @@ For each contract, let $t_{\text{list}}$ denote the listing time and $t_{\text{r
 \begin{equation}
 \ell_t \;\equiv\; \frac{t - t_{\text{list}}}{t_{\text{res}} - t_{\text{list}}}, \qquad \ell_t \in [0,1].
 \end{equation}
-By construction, $\ell_t = 0$ corresponds to contract listing and $\ell_t = 1$ corresponds to resolution. Observations after resolution are excluded from the analysis.
+By construction, $\ell_t = 0$ corresponds to contract listing and $\ell_t = 1$ corresponds to resolution. Observations after resolution are excluded from the analysis.\footnote{Post-resolution observations reflect settlement mechanics rather than price discovery. Once a contract resolves, prices converge mechanically to the realized outcome (\$0 or \$1), and any remaining trading activity represents administrative settlement rather than informational updating.}
 
 This normalization preserves the temporal ordering of market activity within each contract while rendering observations comparable across contracts with widely differing horizons. In effect, $\ell_t$ serves as a common time index that aligns contracts by informational maturity rather than by calendar date. This allows us to aggregate microstructure variables, such as bid--ask spreads, trading volume, and short-horizon price volatility, across contracts and categories as functions of lifecycle position.
 
-For empirical analysis, we discretize the lifecycle into bins defined by fixed percentiles of contract duration and apply these bins consistently throughout the paper. Unless otherwise noted, lifecycle bins are constructed uniformly across contracts and categories. This discretization facilitates nonparametric visualization and comparison of liquidity, trading intensity, and regime behavior as contracts approach resolution.
+For empirical analysis, we discretize the lifecycle into bins defined by fixed percentiles of contract duration and apply these bins consistently throughout the paper. Unless otherwise noted, lifecycle bins are constructed uniformly across contracts and categories. This discretization facilitates visualization and comparison of liquidity, trading intensity, and regime behavior as contracts approach resolution.
 
 \subsection{Constructed Microstructure Measures}
 
-From the high-frequency order book data, we construct a set of standard microstructure measures that summarize liquidity conditions, trading activity, and short-horizon price adjustment. These include bid--ask spreads, traded volume, measures of short-horizon price volatility, and depth-based proxies for liquidity. All measures are computed at the observation frequency and are aligned with the lifecycle normalization described above.
+From the high-frequency order book data, we construct a set of standard microstructure measures that summarize liquidity conditions, trading activity, and short-horizon price adjustment. These include bid--ask spreads, traded volume, short-horizon price volatility (measured as the absolute value of one-minute midprice returns), and depth-based proxies for liquidity. All measures are computed at the observation frequency and are aligned with the lifecycle normalization described above.
 
 In addition to baseline liquidity and activity measures, we construct indicators designed to capture abrupt changes in market conditions. These include measures of volatility bursts, characterized by unusually large price movements relative to recent history, and metrics capturing rapid spread dislocations. Such measures are intended to identify episodes of concentrated information arrival or sudden shifts in trading behavior that are not well summarized by averages.
 
@@ -160,7 +201,7 @@ Throughout the analysis, an \emph{observation} refers to a time-stamped snapshot
 
 For each contract and each observation $t$, we construct a set of observable variables summarizing prices, liquidity, trading activity, and short-horizon price movements. Throughout, an observation refers to a time-stamped snapshot at the sampling frequency (one minute in our baseline).
 
-\paragraph{Prices.} Let $b_t$ and $a_t$ denote the best bid and best ask prices (in dollars). We define the \emph{midprice} as
+\paragraph{Prices.} Let $b_t$ and $a_t$ denote the best bid and best ask prices (in dollars). As defined in Section~2.1, the best bid is the highest price at which a standing buy order exists, and the best ask is the lowest price at which a standing sell order exists. We define the \emph{midprice} as
 \begin{equation}
 m_t \;\equiv\; \frac{a_t + b_t}{2}.
 \end{equation}
@@ -170,7 +211,7 @@ Because Kalshi contracts settle to $\{0, 1\}$, prices are naturally bounded. Thi
 \begin{equation}
 s_t \;\equiv\; a_t - b_t, \qquad \tilde{s}_t \;\equiv\; \frac{a_t - b_t}{m_t}.
 \end{equation}
-The normalized spread $\tilde{s}_t$ facilitates comparison across contracts with different price levels. Intuitively, it measures the cost of crossing the market relative to the current price.
+The normalized spread $\tilde{s}_t$ facilitates comparison across contracts with different price levels. Intuitively, it measures the \emph{cost of immediacy}---the price a trader pays to execute immediately rather than wait for a counterparty. To ``cross the market'' means to buy at the ask or sell at the bid, accepting the posted price rather than placing a limit order. The round-trip cost of buying and immediately selling is $2 \tilde{s}_t$.
 
 \paragraph{Trading volume.} Let $v_t$ denote executed trading volume (number of contracts traded) within observation interval $t$.
 
@@ -191,9 +232,9 @@ We intentionally use $\hat{\sigma}_t$, based on absolute returns rather than squ
 \begin{equation}
 z^v_t \;\equiv\; \frac{v_t - \bar{v}_t}{\hat{s}^v_t},
 \end{equation}
-where $\hat{s}^v_t$ is the rolling standard deviation of volume over the same window $W$, computed with a small-sample safeguard. Intuitively, $z^v_t$ measures how many standard deviations current trading volume lies above its recent baseline.
+where $\hat{s}^v_t$ is the rolling standard deviation of volume over the same window $W$, computed with a minimum floor of 1 to avoid division by zero in periods of constant volume. Intuitively, $z^v_t$ measures how many standard deviations current trading volume lies above its recent baseline.
 
-\paragraph{Lifecycle position.} Finally, let $\ell_t \in [0,1]$ denote the normalized lifecycle ratio defined in Section~2.3, with $\ell_t = 0$ at contract listing and $\ell_t = 1$ at resolution. This variable allows us to distinguish early-stage inactivity from late-stage mechanical convergence.
+\paragraph{Lifecycle position.} Finally, let $\ell_t \in [0,1]$ denote the normalized lifecycle ratio defined in Section~2.3, with $\ell_t = 0$ at contract listing and $\ell_t = 1$ at resolution. This variable allows us to distinguish early-stage inactivity from late-stage activity driven by mechanical convergence toward the realized outcome.
 
 \subsection{Microstructure States}
 
@@ -591,5 +632,13 @@ Together, these case illustrations reinforce the central findings of the paper. 
 
 
 
+
+% ------------------------------------------------------------
+% REFERENCES
+% ------------------------------------------------------------
+\section*{References}
+
+\noindent
+Taillard, J. and Zeng, L. (2025). The Market Value of Fed Independence: High-Frequency Evidence from a Natural Experiment. Working Paper. Available at SSRN: \url{https://ssrn.com/abstract=5436816}.
 
 \end{document}
