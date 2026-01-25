@@ -145,7 +145,8 @@ The final sample comprises contracts from five categories: sports, politics, eco
 \centering
 \caption{Summary Statistics by Contract Category}
 \label{tab:summary}
-\small
+\footnotesize
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
 Category & Contracts & Observations & Spread (¢) & Spread (\%) & Volume & Volatility & Duration (hrs) \\
@@ -156,7 +157,8 @@ Politics  & 32  & 3{,}600{,}136 & 1.91 & 21.0 & 66.60    & 0.00272 & 829.3 \\
 Weather   & 29  & 337{,}805   & 6.63 & 64.5 & 69.06    & 0.03634 & 38.0 \\
 Culture   & 21  & 1{,}255{,}569 & 8.78 & 30.7 & 12.74    & 0.00849 & 1{,}127.1 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 
