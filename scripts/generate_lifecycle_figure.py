@@ -45,20 +45,14 @@ def generate_lifecycle_figure(
     # Sort by lifecycle position
     agg_data = agg_data.sort_values("lifecycle_ratio")
 
-    # Handle zeros and NaN for log scale - replace with small positive value
-    # for volume and volatility to show the pattern
-    volume_floor = 1e-5
-    volatility_floor = 1e-6
-
-    # Replace zeros with floor values for log scale
+    # For log scale, we need to handle zeros carefully
+    # Instead of replacing with floor values (which creates misleading flat lines),
+    # we mask out zero values so they don't appear in the plot
     volume_data = agg_data["volume_p75"].copy()
-    volume_data = volume_data.replace(0, volume_floor).fillna(volume_floor)
-    # Ensure minimum value for log scale
-    volume_data = volume_data.clip(lower=volume_floor)
+    volume_data = volume_data.replace(0, np.nan)  # Replace zeros with NaN to break line
 
     volatility_data = agg_data["volatility_short_p75"].copy()
-    volatility_data = volatility_data.replace(0, volatility_floor).fillna(volatility_floor)
-    volatility_data = volatility_data.clip(lower=volatility_floor)
+    volatility_data = volatility_data.replace(0, np.nan)  # Replace zeros with NaN to break line
 
     # Create figure with 3 vertically stacked panels
     fig, axes = plt.subplots(3, 1, figsize=(7, 7.5), sharex=True)
@@ -99,6 +93,12 @@ def generate_lifecycle_figure(
     ax2.grid(False)
     ax2.spines["top"].set_visible(False)
     ax2.spines["right"].set_visible(False)
+    # Set y-axis limits based on actual non-zero data range
+    valid_volume = volume_data.dropna()
+    if len(valid_volume) > 0:
+        vol_min = valid_volume[valid_volume > 0].min()
+        vol_max = valid_volume.max()
+        ax2.set_ylim(vol_min * 0.5, vol_max * 2)
 
     # Panel C: Volatility (p75, log scale)
     ax3 = axes[2]
@@ -116,6 +116,12 @@ def generate_lifecycle_figure(
     ax3.grid(False)
     ax3.spines["top"].set_visible(False)
     ax3.spines["right"].set_visible(False)
+    # Set y-axis limits based on actual non-zero data range
+    valid_volatility = volatility_data.dropna()
+    if len(valid_volatility) > 0:
+        vol_min = valid_volatility[valid_volatility > 0].min()
+        vol_max = valid_volatility.max()
+        ax3.set_ylim(vol_min * 0.5, vol_max * 2)
 
     # Set x-axis limits
     for ax in axes:
