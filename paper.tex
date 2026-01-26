@@ -45,7 +45,7 @@
 \begin{center}
     {\LARGE\bfseries Episodic Liquidity and Trading Regimes in Prediction Markets}\\[1.5em]
     {\large Graham Robbins}\\[0.3em]
-    {Supervisor: Jerome Taillard}\\[2em]
+    {Advisor: Jerome Taillard}\\[2em]
 \end{center}
 
 % ------------------------------------------------------------
@@ -55,9 +55,9 @@
 \noindent
 Prediction markets are commonly evaluated by their forecasting accuracy at resolution, yet comparatively little is known about how trading activity and liquidity evolve over a contract's lifecycle. Using high-frequency order book data from Kalshi prediction markets spanning sports, politics, economics, and weather, this paper studies the lifecycle microstructure dynamics through which information is incorporated into prices.
 
-We introduce a rule-based microstructure classification that partitions market activity into frozen, thin, normal, active information, volatility burst, and resolution drift regimes. Normalizing time by contract lifecycle, we document systematic spread compression and increasing concentration of trading activity as contracts approach resolution. Modeling regime dynamics as a Markov process, we show that prediction markets are frozen by default: inactive states are highly persistent, while information-driven regimes are brief and rapidly revert to inactivity.
+We introduce a rule-based microstructure classification that partitions market activity into frozen, thin, baseline, active information, volatility burst, and resolution drift regimes. Normalizing time by contract lifecycle, we document systematic spread compression and increasing concentration of trading activity as contracts approach resolution. Modeling regime dynamics as a Markov process, we show that prediction markets are frozen by default: inactive states are highly persistent, while information-driven regimes are brief and rapidly revert to inactivity.
 
-A detailed contract-level case study illustrates how discrete information shocks propagate through microstructure states prior to contract resolution. Taken together, our findings characterize prediction markets as episodic information-processing mechanisms rather than continuously aggregating markets, highlighting structural frictions that limit sustained price discovery.
+Taken together, our findings characterize prediction markets as episodic information-processing mechanisms rather than continuously aggregating markets, highlighting structural frictions that limit sustained price discovery.
 \end{abstract}
 
 \newpage
@@ -67,13 +67,13 @@ A detailed contract-level case study illustrates how discrete information shocks
 % ------------------------------------------------------------
 \section{Introduction}
 
-Prediction markets aggregate dispersed beliefs about uncertain future events into prices that are commonly interpreted as probabilistic forecasts. A large literature evaluates these markets by their accuracy and efficiency at resolution. In contrast, comparatively little attention has been paid to the lifecycle dynamics through which information is incorporated into prices before contracts settle.
+Prediction markets aggregate dispersed beliefs about uncertain future events into prices that are commonly interpreted as probabilistic forecasts. A large literature evaluates these markets by their accuracy at resolution and their ability to reflect available information in equilibrium. Recent high-frequency evidence further demonstrates that prediction market prices can respond sharply to discrete institutional and informational shocks, consistent with rapid belief updating when salient news arrives (Taillard and Zeng, 2025). However, comparatively little is known about how trading activity, liquidity, and price adjustment evolve over the full lifecycle of a contract prior to resolution. In particular, existing work largely abstracts from the temporal structure through which information is incorporated, implicitly treating belief aggregation as a continuous process rather than one potentially constrained by participation, liquidity, and coordination frictions.
 
-Prediction markets differ from traditional financial markets along several fundamental dimensions. Contracts have finite horizons, resolution rules are discrete, and trading activity is highly uneven over time. Liquidity is not continuously supplied but emerges intermittently in response to information arrival and coordination among traders. These features suggest that lifecycle behavior may be characterized by discrete regime shifts rather than smooth adjustment. Understanding such dynamics is essential for interpreting prices, assessing liquidity provision, and evaluating the limits of information aggregation in event-based markets.
+Prediction markets differ from traditional financial markets along several fundamental dimensions. Contracts have finite horizons, resolution rules are discrete, and trading activity is highly uneven over time. Liquidity is not continuously supplied; instead, it emerges intermittently in response to information arrival, trader attention, and coordination among market participants, as documented in recent high-frequency evidence from event-based markets (Ng et al., 2025). These features imply that contract lifecycles are more naturally characterized by discrete regime shifts than by smooth, continuous adjustment. Understanding such dynamics is essential for interpreting prices, assessing liquidity provision, and evaluating the practical limits of information aggregation in event-driven markets. In this setting, extended periods of inactivity may simply reflect the absence of price-relevant news rather than market failure or inefficiency.
 
-This paper studies the microstructure of Kalshi prediction markets using high-frequency order book data across multiple event categories. We focus on three empirical questions. First, how do spreads, volume, and volatility evolve as contracts progress from listing to resolution? Second, can observed trading behavior be meaningfully segmented into a small number of economically interpretable microstructure states? Third, how persistent are these states, and how do markets transition between them over time?
+This paper studies the microstructure of Kalshi prediction markets using high-frequency order book data across multiple event categories (see Appendix~B for an illustrative example of the order book interface). We focus on three empirical questions. First, how do spreads, volume, and volatility evolve as contracts progress from listing to resolution? Second, can observed trading behavior be meaningfully segmented into a small number of economically interpretable microstructure states? Third, how persistent are these states, and how do markets transition between them over time?
 
-To address these questions, we introduce a rule-based microstructure state classification framework and normalize time by contract lifecycle to enable comparison across heterogeneous contracts. We document systematic spread compression and increasing concentration of trading activity near resolution, but also show that markets are inactive for most of their lifetimes. Modeling regime dynamics as a Markov process, we find that frozen states are highly persistent, while information-driven regimes are brief and rapidly revert to inactivity. A detailed contract-level case study illustrates how discrete information shocks propagate through microstructure states prior to resolution.
+To address these questions, we introduce a rule-based microstructure state classification framework and normalize time by contract lifecycle to enable comparison across heterogeneous contracts. We document systematic spread compression and increasing concentration of trading activity near resolution, but also show that markets are inactive for most of their lifetimes. Modeling regime dynamics as a Markov process, we find that frozen states are highly persistent, while information-driven regimes are brief and rapidly revert to inactivity.
 
 Taken together, these results characterize prediction markets as episodic information-processing mechanisms rather than continuously aggregating markets.
 
@@ -90,7 +90,7 @@ Contracts span multiple domains, including sports, politics, economics, weather,
 
 Unlike traditional financial assets, prediction market contracts have finite horizons and do not roll over. Liquidity is therefore endogenous to both the remaining time until resolution and the arrival of event-specific information. As a consequence, trading activity is highly uneven across time and across contracts, with long periods of inactivity punctuated by brief episodes of concentrated trading.
 
-Kalshi operates a continuous limit order book. At any point in time, traders may submit limit orders to buy or sell contracts at specified prices or execute against standing orders. The platform enforces discrete price grids and minimum tick sizes, which introduce mechanical lower bounds on bid--ask spreads and influence observed liquidity, particularly during periods of low trading activity.
+Kalshi operates a continuous limit order book. At any point in time, traders may submit limit orders to buy or sell contracts at specified prices or execute against standing orders. The platform enforces discrete price grids and minimum tick sizes, which introduce mechanical lower bounds on bid--ask spreads and influence observed liquidity, particularly during periods of low trading activity. Appendix~B provides an illustrative example of the order book interface.
 
 \subsection{Data}
 
@@ -105,6 +105,7 @@ The final sample comprises contracts from five categories: sports, politics, eco
 \caption{Summary Statistics by Contract Category}
 \label{tab:summary}
 \small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
 Category & Contracts & Observations & Spread (¢) & Spread (\%) & Volume & Volatility & Duration (hrs) \\
@@ -115,13 +116,14 @@ Politics  & 32  & 3{,}600{,}136 & 1.91 & 21.0 & 66.60    & 0.00272 & 829.3 \\
 Weather   & 29  & 337{,}805   & 6.63 & 64.5 & 69.06    & 0.03634 & 38.0 \\
 Culture   & 21  & 1{,}255{,}569 & 8.78 & 30.7 & 12.74    & 0.00849 & 1{,}127.1 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 
 
 \noindent
-Table~\ref{tab:summary} reports summary statistics by contract category. The sample includes 251 contracts spanning sports, economics, politics, weather, and culture, comprising over 9.5 million order book observations. Trading activity and liquidity conditions vary substantially across categories. Sports contracts account for the largest share of observations and exhibit the highest average trading volume, while economics and culture contracts tend to have much longer durations and lower per-minute activity. Bid--ask spreads are widest, in relative terms, for weather and economics contracts, reflecting both mechanical price bounds and lower liquidity. Median contract duration ranges from under two days for weather contracts to over 1,000 hours for economics and culture contracts. These differences motivate lifecycle normalization and category-level comparisons in the analysis that follows.
+Table~\ref{tab:summary} reports summary statistics by contract category. The sample includes 251 contracts spanning sports, economics, politics, weather, and culture, comprising over 9.5 million order book observations. Trading activity and liquidity conditions vary substantially across categories. Politics contracts account for the largest share of observations, while sports contracts exhibit the highest average trading volume. Economics and culture contracts tend to have much longer durations and lower per-minute activity. Bid--ask spreads are widest, in relative terms, for weather and economics contracts, reflecting both mechanical price bounds and lower liquidity. Median contract duration ranges from under two days for weather contracts to over 1,000 hours for economics and culture contracts. These differences motivate lifecycle normalization and category-level comparisons in the analysis that follows.
 
 \subsection{Lifecycle Normalization}
 
@@ -170,7 +172,7 @@ Because Kalshi contracts settle to $\{0, 1\}$, prices are naturally bounded. Thi
 \begin{equation}
 s_t \;\equiv\; a_t - b_t, \qquad \tilde{s}_t \;\equiv\; \frac{a_t - b_t}{m_t}.
 \end{equation}
-The normalized spread $\tilde{s}_t$ facilitates comparison across contracts with different price levels. Intuitively, it measures the cost of crossing the market---executing a marketable order against standing quotes---relative to the current price.
+The normalized spread $\tilde{s}_t$ facilitates comparison across contracts with different price levels. Intuitively, it measures the cost of \emph{crossing the market}, that is, the transaction cost incurred when a trader submits a marketable order that executes immediately against the best standing quote on the opposite side of the order book, relative to the current price.
 
 \paragraph{Trading volume.} Let $v_t$ denote executed trading volume (number of contracts traded) within observation interval $t$.
 
@@ -180,7 +182,7 @@ r_t \;\equiv\; \frac{m_t - m_{t-1}}{m_{t-1}},
 \end{equation}
 and use its absolute value $|r_t|$ as a simple measure of instantaneous price movement.
 
-Because prediction markets often remain inactive for extended periods, we evaluate ``unusual'' price movements relative to a local baseline. Specifically, we compute rolling benchmarks over a window of length $W$ (baseline $W = 20$ observations, chosen to balance responsiveness to regime shifts against robustness to transient noise):
+Because prediction markets often remain inactive for extended periods, we evaluate ``unusual'' price movements relative to a local baseline. Specifically, we compute rolling benchmarks over a window of length $W$ (baseline $W = 20$ observations). This window length is chosen to balance two considerations: a shorter window would be overly sensitive to transient fluctuations, while a longer window would be slow to adapt to genuine regime changes. At one-minute sampling frequency, $W = 20$ corresponds to approximately 20 minutes of market history, which is short enough to capture intraday regime shifts yet long enough to provide stable baseline estimates:
 \begin{equation}
 \bar{v}_t \;\equiv\; \frac{1}{W} \sum_{k=0}^{W-1} v_{t-k}, \qquad
 \hat{\sigma}_t \;\equiv\; \frac{1}{W} \sum_{k=0}^{W-1} |r_{t-k}|.
@@ -199,7 +201,7 @@ where $\hat{s}^v_t$ is the rolling standard deviation of volume over the same wi
 
 Each observation is assigned to one of six mutually exclusive microstructure states:
 \begin{equation}
-S_t \in \{\text{Frozen}, \text{Thin}, \text{Normal}, \text{Active Information}, \text{Volatility Burst}, \text{Resolution Drift}\}.
+S_t \in \{\text{Frozen}, \text{Thin}, \text{Baseline}, \text{Active Information}, \text{Volatility Burst}, \text{Resolution Drift}\}.
 \end{equation}
 An auxiliary ``Unknown'' label is used only for missing data; it is rare and excluded from the analysis.
 
@@ -208,7 +210,7 @@ The states are designed to capture distinct economic trading conditions:
 \begin{itemize}[itemsep=3pt]
     \item \textbf{Frozen}: Essentially no trading; price discovery is stalled.
     \item \textbf{Thin}: Some trading occurs, but liquidity is scarce and execution is costly.
-    \item \textbf{Normal}: Baseline conditions with moderate activity and liquidity.
+    \item \textbf{Baseline}: The residual state representing non-extreme, non-information-driven trading conditions with moderate spreads, volume, and no unusual price movements.
     \item \textbf{Active Information}: Unusually high trading activity consistent with information arrival or rapid belief updating.
     \item \textbf{Volatility Burst}: Sharp price movements accompanied by elevated trading volume, indicative of sudden information shocks.
     \item \textbf{Resolution Drift}: Late-stage quiet trading driven by mechanical convergence as uncertainty collapses near resolution.
@@ -230,7 +232,7 @@ An observation $t$ is classified as Frozen if executed volume is negligible rela
 \begin{equation}
 S_t = \text{Frozen} \quad \text{if} \quad v_t = 0 \;\; \text{or} \;\; v_t < \theta_F \bar{v}_t,
 \end{equation}
-where $\theta_F \in (0,1)$ is a fixed threshold (baseline $\theta_F = 0.10$, set conservatively so that only near-zero activity triggers the Frozen classification).
+where $\theta_F \in (0,1)$ is a fixed threshold (baseline $\theta_F = 0.10$). This threshold is set conservatively: a value of 0.10 means that an observation is classified as Frozen only when current volume falls below 10\% of its recent rolling average, ensuring that only near-complete inactivity triggers the Frozen classification rather than modest temporary slowdowns in trading.
 
 \statepart{Rationale}
 A relative volume criterion ensures that ``Frozen'' is comparable across contracts with vastly different typical activity levels.
@@ -255,20 +257,22 @@ A 15\% relative spread is extreme in conventional financial markets but empirica
 
 \bigskip
 
-% --- State 3: Normal ---
-\statename{State 3: Normal}
+% --- State 3: Baseline ---
+\statename{State 3: Baseline}
 
 \statepart{Economic meaning}
 Baseline trading conditions: moderate spreads, moderate volume, and no extreme price movements.
 
 \statepart{Definition}
-Normal is the residual state:
+Baseline is the residual state:
 \begin{equation}
-S_t = \text{Normal} \quad \text{if no other state conditions apply.}
+S_t = \text{Baseline} \quad \text{if no other state conditions apply.}
 \end{equation}
 
 \statepart{Rationale}
-Defining Normal as a residual avoids imposing arbitrary numerical bands and ensures that it represents ``nothing unusual is happening.''
+Defining Baseline as a residual avoids imposing arbitrary numerical bands and ensures that it represents ``nothing unusual is happening.''
+
+Baseline is a residual state representing non-extreme, non-information-driven trading conditions. Its empirical rarity reflects a core finding of the paper: prediction markets are inactive by default. Unlike continuous financial markets, stable baseline trading conditions are not prevalent.
 
 \bigskip
 
@@ -279,7 +283,7 @@ Defining Normal as a residual avoids imposing arbitrary numerical bands and ensu
 Trading activity increases sharply relative to recent history, consistent with information arrival or rapid belief updating, but without necessarily generating extreme price jumps.
 
 \statepart{Definition}
-Conditional on being otherwise classified as Normal, an observation $t$ is classified as Active Information if
+Conditional on being otherwise classified as Baseline, an observation $t$ is classified as Active Information if
 \begin{equation}
 S_t = \text{Active Information} \quad \text{if} \quad z^v_t > \theta_A,
 \end{equation}
@@ -287,6 +291,8 @@ with baseline $\theta_A = 1.5$.
 
 \statepart{Interpretation}
 Volume exceeds its recent mean by more than 1.5 standard deviations, indicating unusually intense trading.
+
+Active Information is intended to capture high-intensity trading episodes characterized by elevated participation without discontinuous repricing; observations exhibiting sharp price jumps are classified separately as Volatility Bursts.
 
 \bigskip
 
@@ -324,16 +330,16 @@ with $\ell^\star = 0.90$. Thresholds $\tilde{s}^\star$, $v^\star$, and $\sigma^\
 \statepart{Interpretation}
 This state captures a ``quiet endgame'': not dead markets, but markets whose remaining uncertainty is small and whose price discovery becomes mechanically constrained.
 
-\subsection{Priority Ordering and Deterministic Assignment}
+\subsection{Priority Ordering and Assignment}
 
-Because multiple state conditions can hold simultaneously---for example, an observation may satisfy both the Volatility Burst criteria (elevated volume and large price movement) and the Thin criteria (wide spread)---we impose a strict priority ordering so that each observation is assigned exactly one microstructure state. This ensures that the state classification is mutually exclusive and deterministic: the first satisfied condition in the priority ordering determines the assigned state.
+Because multiple state conditions can hold simultaneously (for example, an observation may satisfy both the Volatility Burst criteria (elevated volume and large price movement) and the Thin criteria (wide spread)), we impose a strict priority ordering so that each observation is assigned exactly one microstructure state. This ensures that the state classification is mutually exclusive and rule-based: the first satisfied condition in the priority ordering determines the assigned state.
 
 The priority ordering is:
 \begin{equation}
-\text{Frozen} \;\succ\; \text{Volatility Burst} \;\succ\; \text{Resolution Drift} \;\succ\; \text{Active Information} \;\succ\; \text{Thin} \;\succ\; \text{Normal}.
+\text{Frozen} \;\succ\; \text{Volatility Burst} \;\succ\; \text{Resolution Drift} \;\succ\; \text{Active Information} \;\succ\; \text{Thin} \;\succ\; \text{Baseline}.
 \end{equation}
 
-Assignment is implemented as a deterministic, rule-based mapping
+Assignment is implemented as a rule-based mapping
 \begin{equation}
 S_t \;=\; f\!\left(v_t, \tilde{s}_t, r_t, \hat{\sigma}_t, \bar{v}_t, z^v_t, \ell_t\right),
 \end{equation}
@@ -346,7 +352,7 @@ where $f(\cdot)$ applies the state definitions sequentially according to the pri
 
     \item \textbf{Volatility Burst} is ranked above Active Information because extreme repricing accompanied by elevated volume is qualitatively distinct from high trading activity without sharp price movements. Separating these states allows us to distinguish sudden information shocks from gradual belief updating.
 
-    \item \textbf{Resolution Drift} is placed above Thin and Normal to prevent late-stage mechanical quietness near resolution from being misclassified as generic illiquidity or baseline conditions.
+    \item \textbf{Resolution Drift} is placed above Thin and Baseline to prevent late-stage mechanical quietness near resolution from being misclassified as generic illiquidity or non-information-driven conditions.
 
     \item \textbf{Thin} is evaluated after information-driven states because bid--ask spreads may widen temporarily during news events; labeling such observations as ``Thin'' would conflate illiquidity with information processing.
 \end{itemize}
@@ -405,7 +411,7 @@ First, classification thresholds are fixed ex ante. With the exception of the Re
 
 Second, rolling baselines play a central role in the construction of information-related states. Absolute trading volume and volatility levels differ by orders of magnitude across contracts; identifying information-driven episodes, therefore, requires measuring activity relative to a contract's own recent history. Rolling benchmarks convert heterogeneous raw series into comparable ``surprise'' indicators that are meaningful across markets with vastly different levels of baseline activity.
 
-Across a wide range of specifications varying both the rolling window length $W$ and the threshold values used in classification, the qualitative regime patterns---particularly the dominance of frozen states and the transience of information-driven regimes---remain stable.
+Across a wide range of specifications varying both the rolling window length $W$ and the threshold values used in classification, the qualitative regime patterns (particularly the dominance of frozen states and the transience of information-driven regimes) remain stable.
 
 
 % ------------------------------------------------------------
@@ -424,18 +430,18 @@ All results are reported in lifecycle-normalized time, enabling aggregation and 
 
 We begin by examining how core microstructure variables evolve as contracts progress from listing to resolution.
 
-Figure~\ref{fig:lifecycle_microstructure} plots bid--ask spreads, executed trading volume, and short-horizon price volatility as functions of lifecycle position~$\ell$, aggregated across all contracts using lifecycle-normalized time. Bid--ask spreads are summarized using the median, while volume and volatility are summarized using the 75th percentile (p75) to characterize trading intensity conditional on activity. Panel-specific figures for sports contracts are shown in Appendix~A.
+Figure~\ref{fig:lifecycle_microstructure} plots bid--ask spreads, executed trading volume, and short-horizon price volatility as functions of lifecycle position~$\ell$, aggregated across all contracts using lifecycle-normalized time. Bid--ask spreads are summarized using the median, while volume and volatility are summarized using the 75th percentile (p75) to characterize trading intensity conditional on activity. Category-level disaggregation is provided in Appendix~C.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{F01_lifecycle_spread_volume_volatility.png}
+\includegraphics[width=0.805\textwidth]{F01_lifecycle_spread_volume_volatility.png}
 \caption{Lifecycle evolution of bid--ask spreads, trading volume, and short-horizon volatility. The figure plots median bid--ask spreads (Panel~A), 75th-percentile trading volume (Panel~B), and 75th-percentile volatility (Panel~C) as functions of lifecycle position~$\ell$. All variables are aggregated across contracts using lifecycle-normalized time.}
 \label{fig:lifecycle_microstructure}
 \end{figure}
 
 Two systematic patterns emerge.
 
-First, bid--ask spreads compress monotonically over the contract lifecycle. Early in the lifecycle, spreads are wide and highly variable, reflecting sparse participation and limited coordination among traders. As~$\ell$ increases, spreads decline steadily, reaching their narrowest levels near resolution. This pattern holds across all contract categories, although both the level and rate of compression vary substantially. Sports contracts, in particular, exhibit relatively rapid early compression followed by a long period of stable liquidity.
+First, bid--ask spreads compress monotonically over the contract lifecycle. Early in the lifecycle, spreads are wide and highly variable, reflecting sparse participation and limited coordination among traders. As~$\ell$ increases, spreads decline steadily, reaching their narrowest levels near resolution. This pattern holds across all contract categories, although both the level and rate of compression vary substantially.
 
 Second, trading activity is strongly concentrated in time. For much of the contract lifecycle, even relatively active contracts exhibit low levels of trading. Trading intensity increases sharply only in late-stage intervals, concentrating into narrow windows that frequently coincide with discrete information arrivals or the approach of resolution.
 
@@ -450,18 +456,18 @@ Taken together, these results indicate that prediction markets do not continuous
 
 We next examine how time is allocated across the six microstructure states defined in Section~3.
 
-Figure~\ref{fig:state_distribution_lifecycle} reports the fraction of observations classified into each state as a function of lifecycle position~$\ell$, aggregated across all contracts. A corresponding figure for sports contracts alone is shown in Appendix~A.
+Figure~\ref{fig:state_distribution_lifecycle} reports the fraction of observations classified into each state as a function of lifecycle position~$\ell$, aggregated across all contracts. Category-level state distributions are reported in Appendix~C.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{F02_state_distribution_over_lifecycle(2).png}
+\includegraphics[width=0.92\textwidth]{F02_state_distribution_over_lifecycle(2).png}
 \caption{Distribution of microstructure states over the lifecycle. The figure plots the fraction of observations classified into each microstructure state as a function of lifecycle position~$\ell$, aggregated across all contracts. Fractions sum to one within each lifecycle bin.}
 \label{fig:state_distribution_lifecycle}
 \end{figure}
 
 The dominant feature across the lifecycle is the prevalence of the Frozen state. For the majority of a contract's lifetime, markets exhibit negligible trading activity and effectively stalled price discovery.
 
-The Thin and Normal states occupy more modest shares of the lifecycle, appearing primarily in early and mid-stage intervals. These regimes reflect limited but nonzero trading under relatively poor liquidity conditions, consistent with gradual participation buildup prior to major information events.
+The Thin and Baseline states occupy more modest shares of the lifecycle, appearing primarily in early and mid-stage intervals. These regimes reflect limited but nonzero trading under relatively poor liquidity conditions, consistent with gradual participation buildup prior to major information events.
 
 Information-driven regimes are rare and sharply localized in time. Active Information and Volatility Burst states occur infrequently and are concentrated in narrow lifecycle windows. Their incidence increases modestly as contracts approach resolution but remains small in absolute terms, indicating that periods of intensive information processing are brief rather than persistent.
 
@@ -480,14 +486,14 @@ Figure~\ref{fig:transition_matrix} reports the estimated transition matrix poole
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.75\textwidth]{F03_regime_transition_matrix.png}
+\includegraphics[width=0.8625\textwidth]{F03_regime_transition_matrix.png}
 \caption{Regime transition matrix. Each row corresponds to the current state and each column to the subsequent state. Entries report empirical transition probabilities pooled across contracts.}
 \label{fig:transition_matrix}
 \end{figure}
 
 The most salient feature of the matrix is the strong persistence of inactive regimes. Observations classified as Frozen exhibit a very high probability of remaining Frozen in the subsequent interval, indicating that inactivity is not transient noise but a highly persistent market condition over much of the contract lifecycle. Thin trading also displays substantial persistence, though with a greater likelihood of reverting to Frozen states than transitioning toward more active regimes.
 
-Transitions into information-driven regimes are rare and typically short-lived. When markets enter Active Information or Volatility Burst states, self-transition probabilities are low, and observations revert quickly, most often back to Frozen or Thin states, rather than progressing smoothly into sustained Normal trading conditions. This pattern reinforces the episodic nature of information incorporation documented in Sections~4.1 and~4.2.
+Transitions into information-driven regimes are rare and typically short-lived. When markets enter Active Information or Volatility Burst states, self-transition probabilities are low, and observations revert quickly, most often back to Frozen or Thin states, rather than progressing smoothly into sustained Baseline trading conditions. This pattern reinforces the episodic nature of information incorporation documented in Sections~4.1 and~4.2.
 
 Resolution Drift exhibits a distinct transition profile. Once entered, this regime displays moderate persistence, consistent with mechanical constraints imposed by diminishing outcome uncertainty as contracts approach settlement. Importantly, Resolution Drift is rarely entered from information-driven regimes, underscoring its economic distinction from both early-stage inactivity and transient information shocks.
 
@@ -509,7 +515,7 @@ Figure~\ref{fig:entropy_distribution} plots the distribution of regime entropy a
 \label{fig:entropy_distribution}
 \end{figure}
 
-The distribution is heavily right-skewed: most contracts exhibit low entropy, indicating that they spend the vast majority of their lifetimes in a small subset of regimes—most commonly the Frozen state. For these contracts, trading activity is rare and microstructure conditions are largely static.
+The distribution is heavily right-skewed: most contracts exhibit low entropy, indicating that they spend the vast majority of their lifetimes in a small subset of regimes, most commonly the Frozen state. For these contracts, trading activity is rare and microstructure conditions are largely static.
 
 A smaller subset of contracts displays substantially higher entropy. These contracts experience more frequent transitions between inactive and information-driven regimes, reflecting repeated episodes of trading activity and price adjustment rather than prolonged stagnation.
 
@@ -525,3 +531,196 @@ Importantly, regime entropy is not mechanically related to contract duration. Lo
 The empirical results paint a consistent picture. Prediction markets exhibit strong lifecycle regularities in liquidity and trading activity, but these patterns are driven by discrete regime shifts rather than smooth adjustment. Markets are inactive for most of their lifetimes, punctuated by brief episodes of information-driven trading and followed by mechanical convergence near resolution.
 
 These findings motivate a reinterpretation of prediction market prices: not as continuously updated forecasts, but as the outcomes of episodic information processing constrained by liquidity frictions.
+
+\newpage
+\begin{thebibliography}{9}
+
+\bibitem{taillard_zeng_2025}
+Taillard, J., and Zeng, L. (2025).
+\textit{The Market Value of Fed Independence: High-Frequency Evidence from a Natural Experiment}.
+SSRN No. 5436816.
+
+\bibitem{ng_et_al_2025}
+Ng, K., Peng, L., Tao, Y., and Zhou, X. (2025).
+\textit{Information Incorporation in Prediction Markets: Evidence from High-Frequency Order Book Data}.
+SSRN No. 5331995.
+
+\end{thebibliography}
+
+\newpage
+
+% ============================================================
+% APPENDIX
+% ============================================================
+
+\appendix
+\section{Interpretation of Mathematical Definitions and Measures}
+
+This appendix provides intuitive interpretations of all mathematical quantities used in the paper. The objective is to clarify what each object measures, why it is defined as it is, and how it supports the empirical analysis. The appendix is intentionally explanatory rather than formal, and is designed to facilitate verbal discussion of the methodology.
+
+\subsection{Prices and Midprice}
+
+Let $b_t$ and $a_t$ denote the best bid and best ask prices at time $t$. These represent the highest price a buyer is willing to pay and the lowest price a seller is willing to accept, respectively. They define the most immediate trading opportunity in the market.
+
+The midprice is defined as
+\[
+m_t = \frac{a_t + b_t}{2}.
+\]
+The midprice serves as a proxy for the market's current valuation while smoothing mechanical bid--ask bounce. In prediction markets, where trades may be sparse and last-trade prices may be stale, the midprice provides a more stable and economically meaningful summary of prevailing beliefs.
+
+Conceptually, $m_t$ represents the most recent belief expressed by the market, conditional on available liquidity.
+
+\subsection{Bid--Ask Spreads}
+
+Liquidity is summarized using both an absolute and a relative bid--ask spread.
+
+The absolute spread is defined as
+\[
+s_t = a_t - b_t,
+\]
+which measures the raw cost of immediate execution in price units.
+
+Because prediction market prices are bounded between 0 and 1, absolute spreads are not directly comparable across price levels. We therefore define a normalized spread,
+\[
+\tilde{s}_t = \frac{a_t - b_t}{m_t},
+\]
+which measures the cost of immediacy relative to the current price.
+
+The normalized spread captures liquidity scarcity and execution frictions in a scale-free manner, allowing comparison across contracts with different price levels and outcome probabilities.
+
+\subsection{Trading Volume}
+
+Let $v_t$ denote the executed trading volume during observation interval $t$, measured as the number of contracts traded.
+
+Volume captures the intensity of market participation and serves as a primary indicator of whether information is actively being processed. In prediction markets, long stretches of zero or near-zero volume indicate the absence of belief updating rather than belief convergence.
+
+\subsection{Returns and Short-Horizon Volatility}
+
+Short-horizon price movements are measured using midprice returns,
+\[
+r_t = \frac{m_t - m_{t-1}}{m_{t-1}}.
+\]
+We focus on absolute returns $|r_t|$ as a measure of instantaneous price movement rather than squared returns. This choice is robust to outliers and aligns with the bounded nature of prediction market prices.
+
+To identify unusually large price movements, we construct a rolling volatility benchmark,
+\[
+\hat{\sigma}_t = \frac{1}{W} \sum_{k=0}^{W-1} |r_{t-k}|,
+\]
+where $W$ denotes the rolling window length. This benchmark captures the typical magnitude of recent price changes and allows volatility to be evaluated relative to local market conditions.
+
+\subsection{Rolling Volume Benchmarks and Volume Surprise}
+
+Because baseline trading activity differs substantially across contracts, raw volume levels are not informative in isolation. We therefore construct rolling volume benchmarks,
+\[
+\bar{v}_t = \frac{1}{W} \sum_{k=0}^{W-1} v_{t-k},
+\]
+and corresponding rolling standard deviations $\hat{s}^v_t$.
+
+Volume surprise is defined as
+\[
+z^v_t = \frac{v_t - \bar{v}_t}{\hat{s}^v_t}.
+\]
+This standardized measure captures whether current trading activity is unusually high relative to a contract's recent history. Volume surprise serves as a key indicator of information arrival or coordinated participation.
+
+\subsection{Lifecycle Normalization}
+
+Contracts vary widely in calendar duration. To make trading behavior comparable across heterogeneous contracts, we normalize time by lifecycle position.
+
+Let $t_{\text{list}}$ denote the listing time and $t_{\text{res}}$ the resolution time. Lifecycle position is defined as
+\[
+\ell_t = \frac{t - t_{\text{list}}}{t_{\text{res}} - t_{\text{list}}}, \quad \ell_t \in [0,1].
+\]
+Lifecycle normalization aligns contracts by informational maturity rather than clock time. Early values of $\ell_t$ correspond to periods of high uncertainty and low attention, while values near one correspond to imminent resolution.
+
+\subsection{Microstructure States}
+
+Each observation is assigned to one of six discrete microstructure states:
+\[
+S_t \in \{\text{Frozen}, \text{Thin}, \text{Baseline}, \text{Active Information}, \text{Volatility Burst}, \text{Resolution Drift}\}.
+\]
+States are defined using observable liquidity, volume, volatility, and lifecycle measures. The classification is descriptive rather than structural and does not attempt to infer latent beliefs or strategic behavior.
+
+\subsection{Regime Transitions}
+
+Given a sequence of states $\{S_t\}$, regime dynamics are summarized using a first-order Markov transition matrix,
+\[
+P_{ij} = \Pr(S_{t+1} = j \mid S_t = i).
+\]
+The transition matrix provides a compact description of regime persistence and switching behavior. High diagonal entries indicate persistent regimes, while off-diagonal entries characterize how markets move between inactivity, information processing, and resolution-driven states.
+
+This representation is used as a descriptive summary rather than a structural model of trader behavior.
+
+\subsection{Regime Entropy}
+
+To quantify the diversity of trading conditions experienced by a contract, we compute normalized Shannon entropy. Let $p_k$ denote the fraction of time a contract spends in state $k$. Entropy is defined as
+\[
+H = -\sum_{k} p_k \log_2 p_k.
+\]
+To ensure comparability across contracts, entropy is normalized by its maximum possible value,
+\[
+H_{\text{norm}} = \frac{H}{\log_2(|S_{\text{obs}}|)} \in [0,1],
+\]
+where $|S_{\text{obs}}|$ is the number of states actually observed.
+
+Low entropy indicates persistent inactivity, while high entropy reflects frequent transitions between regimes and richer microstructure dynamics.
+
+\subsection{Interpretive Summary}
+
+Together, these measures allow us to characterize prediction markets as episodic information-processing systems. Prices often remain unchanged not because beliefs are stable, but because information is not actively being incorporated. Information enters prices through short-lived regime shifts rather than continuous updating.
+
+\newpage
+\section{Kalshi Order Book Structure}
+
+Figure~\ref{fig:kalshi_orderbook} provides an example of Kalshi's order book interface for a live sports contract. The display shows a binary contract on the outcome of a Miami--Phoenix matchup, with the ``Yes'' side (Miami wins) trading at a midpoint of 62 cents, implying a 62\% probability under risk-neutral interpretation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{F05_kalshi_orderbook_example.png}
+\caption{Kalshi order book example. The interface displays a continuous limit order book for a binary sports contract. Ask prices (sell offers) appear in the upper portion, with the best ask at 62\textcent{} and additional depth at 63\textcent, 64\textcent, and 65\textcent. Bid prices (buy offers) appear below, with the best bid at 61\textcent{} and depth extending down to 58\textcent. Each row reports the price, number of contracts available, and total dollar value at that price level. The spread between best bid and best ask is 1\textcent{} in this snapshot.}
+\label{fig:kalshi_orderbook}
+\end{figure}
+
+The order book operates as a standard continuous double auction. Traders may submit limit orders specifying a price and quantity, which rest in the book until matched or canceled, or they may submit marketable orders that execute immediately against standing quotes. The ``Yes'' and ``No'' sides of each contract are complements: buying ``Yes'' at 62\textcent{} is economically equivalent to selling ``No'' at 38\textcent, since contract payoffs sum to \$1. The displayed depth, measured in both contract counts and dollar values, reflects the cumulative liquidity available at each price level. In this example, approximately 18,400 contracts are offered at the best ask of 62\textcent, while only 200 contracts are bid at the best bid of 61\textcent, illustrating asymmetric depth that is common in prediction markets.
+
+\newpage
+\section{Category-Level Disaggregation}
+
+This appendix reports category-level versions of the pooled empirical results presented in Section~4. The analysis disaggregates lifecycle dynamics and microstructure state distributions by contract category, including sports, politics, economics, weather, and culture. The purpose of this appendix is to verify that the pooled patterns documented in the main text are not driven by a single category and to clarify how lifecycle and regime behavior varies across market types. No additional analysis or alternative specifications are introduced.
+
+\subsection{Lifecycle Evolution of Liquidity, Volume, and Volatility by Category}
+
+Category-level analysis of lifecycle-normalized liquidity, trading activity, and short-horizon volatility reveals patterns consistent with those documented in the pooled results. All quantities are computed using the same definitions, lifecycle normalization, and aggregation procedures described in Sections~2 and~4.
+
+Median bid--ask spreads decline over the lifecycle across all contract categories, though absolute spread levels vary substantially. Sports and politics contracts exhibit tighter spreads throughout, while weather and economics contracts display wider spreads, particularly in early lifecycle stages. Despite these level differences, all categories exhibit declining spreads as contracts approach resolution.
+
+Trading volume concentrates in late lifecycle intervals across all categories. Extended periods of low or zero volume characterize early and mid-lifecycle stages, with sharp increases occurring only as resolution approaches. The timing and magnitude of late-stage volume increases differ across categories---sports contracts exhibit more gradual buildup, while weather contracts show particularly concentrated bursts---but the concentration of activity near resolution is common across market types.
+
+Short-horizon price volatility follows a similar pattern. Volatility remains low for most of the lifecycle across all categories and increases during brief intervals that coincide with elevated trading activity. Near resolution, volatility declines again as remaining outcome uncertainty collapses mechanically.
+
+These category-level patterns confirm that the lifecycle regularities documented in Section~4.1 (including spread compression, episodic trading activity, and late-stage convergence) are present across all contract categories despite substantial heterogeneity in baseline liquidity and activity levels.
+
+\subsection{Distribution of Microstructure States by Category}
+
+Category-level analysis of microstructure state distributions confirms the patterns documented in the pooled results. Using the classification framework defined in Section~3, fractions are computed within lifecycle bins and sum to one within each bin.
+
+Across all categories, the Frozen state accounts for the majority of observations throughout most of the contract lifecycle. The Thin and Baseline states occupy smaller shares and appear primarily in early and mid-lifecycle intervals. Information-driven states, including Active Information and Volatility Burst, occur infrequently and are concentrated in narrow lifecycle windows.
+
+While the qualitative structure of state distributions is consistent across categories, relative state frequencies vary. Sports and weather contracts exhibit higher incidences of information-driven states, while economics and culture contracts spend larger fractions of their lifetimes in Frozen states. Resolution Drift emerges near the end of the lifecycle across categories, reflecting late-stage quiet trading and mechanical convergence.
+
+These category-level distributions mirror the pooled patterns shown in Figure~\ref{fig:state_distribution_lifecycle} and confirm that the dominance of inactive regimes and the transience of information-driven regimes are not specific to any single contract type.
+
+\subsection{Regime Persistence and Transition Dynamics by Category}
+
+Category-level regime transition matrices, estimated using the same procedure described in Section~3.4, reveal consistent patterns across contract types. Each matrix summarizes empirical transition probabilities between microstructure states at the observation frequency.
+
+Across all categories, inactive regimes (particularly Frozen) exhibit high persistence. Observations classified as Frozen are most likely to remain Frozen in the subsequent interval. Thin and Baseline states also display persistence, though with higher probabilities of reverting to Frozen states than transitioning into information-driven regimes.
+
+Transitions into Active Information and Volatility Burst states are rare across categories and typically short-lived. When such states occur, observations most often revert to inactive regimes rather than progressing into sustained Baseline trading conditions. Resolution Drift exhibits moderate persistence once entered and is primarily observed in late lifecycle stages.
+
+These category-specific transition patterns are consistent with the pooled transition matrix reported in Section~4.3 and reinforce the characterization of prediction markets as exhibiting persistent inactivity punctuated by brief episodes of information-driven trading.
+
+\subsection{Summary}
+
+The category-level analysis reported in this appendix confirms that the empirical regularities documented in Section~4 are robust across contract types. While baseline liquidity, activity levels, and contract durations differ substantially across categories, the qualitative lifecycle structure (characterized by persistent inactivity, episodic information-driven trading, and late-stage convergence) appears consistently across markets.
+
+\end{document}
